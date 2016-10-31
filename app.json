@@ -7,19 +7,19 @@
   "env": {
     "APIAI_ACCESS_TOKEN": {
       "description": "Client access token for Api.ai",
-      "value": ""
+      "value": "c8021e1a2dac4f85aee8f805a5a920b2"
     },
     "FB_VERIFY_TOKEN": {
       "description": "Verification code",
-      "value": ""
+      "value": "840c13e9fe8f817ff8a72b18aff00556"
     },
     "FB_PAGE_ACCESS_TOKEN": {
       "description": "Page Access Token",
-      "value": ""
+      "value": "EAADDifINr08BAFiZBp2xyGZCSJf7T9isySM3YUZAogICtgNCQhphxhqHRe5acRZCmO67ZAZCcZBpCT2YxJ4wuxE29jZBbla0S2xFhxdWTOEa33ykXlngjYTZANSYGJiS9OSsDetejPRlXTDzVxjDE7sVq2VwkMlkCS61A7wMXjim7bVUTKpNr8jdd"
     },
     "APIAI_LANG": {
       "description": "Agent language",
-      "value": "",
+      "value": "English",
       "required": false
     }
   },
