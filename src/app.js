@@ -18,6 +18,16 @@ var APIAI_VERIFY_TOKEN = process.env.APIAI_VERIFY_TOKEN
 var apiAiService = apiai(APIAI_ACCESS_TOKEN, {language: APIAI_LANG, requestSource: "fb"});
 var sessionIds = new Map();
 
+var REST_PORT = (process.env.PORT || process.env.port || process.env.OPENSHIFT_NODEJS_PORT || 5000);
+var SEVER_IP_ADDR = process.env.OPENSHIFT_NODEJS_IP || process.env.HEROKU_IP || '127.0.0.1';
+var APIAI_ACCESS_TOKEN = "badaab9333804060b3e6195665b3c2ca"; 
+var APIAI_LANG = 'en';
+var FB_VERIFY_TOKEN = "7E783CC9-A7BD-443C-A100-6851D448CDF1";
+var FB_PAGE_ACCESS_TOKEN = "EAAW2bXpIvtoBAHM3nGqKpLdE01LykQbgCIaWkLcZBdqA2MULZA4Cna2cbzk4OAPhZB9KxdoBGSjJyVZAtoI8KZBFf4Q7kENGPEjkp7YPmEBiZCtg9JUYiMOoqzZAa3QdgoOfwaZAL2nVici8yO6LxSTlTHfI5BWf02v19JJlEGeKSgZDZD";
+var APIAI_VERIFY_TOKEN =  "basic1234"
+var apiAiService = apiai(APIAI_ACCESS_TOKEN, {language: APIAI_LANG, requestSource: "fb"});
+var sessionIds = new Map();
+
 function processEvent(event) {
     var sender = event.sender.id.toString();
 
