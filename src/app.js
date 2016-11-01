@@ -64,112 +64,12 @@ function processEvent(event) {
 		console.log('responseData  : - '+ responseData);
 	        console.log('action : - '+ action );
                 console.log('intent : - '+ intent );
-		
+		sendFBMessage(sender, responseText.facebook);
 		    
-                if (isDefined(responseText) || isDefined(responseText.facebook)) {
-			console.log('first  : - ');
-                    if (!Array.isArray(responseText.facebook)) {
-			    console.log('second  : - ');
-                        try {
-                            console.log('Response as formatted message'+ responseText);
-				if(Finished_Status == true || intent=="Default Fallback Intent" ) 
-					{
-          				  session.send(response.result.fulfillment.speech);
-					}
-				else
-				{
-					 console.log("-----------INTENT SELECTION-----------");
-		    var straction =response.result.action;
-		    console.log("Selected_action : "+ straction);
-		   // Methods to be called based on action 
-           	    switch (straction) 
-		    {
-			 case "getStarted":
-			   //getprofile (session) ;
-			   welcomeMsg(session);  
-			   break;
-			case "LinkOptions":
-			    //LinkOptions(response,session);
-			    accountlinking(response,session);
-			    break;
-			case "MoreOptions":
-			    session.send(response.result.fulfillment.speech);
-			    break;
-			case "MainMenu":
-			    MainMenu(session);
-			    break;
-			case "record":
-			     RecordScenario (response,session); 
-			     break;  
-			case "CategoryList":
-			     CategoryList(response,session);
-			     break;
-			case "recommendation":
- 			    recommendations('whatshot',function (str) {recommendationsCallback(str,session)}); 
-			    break;
-			case "channelsearch":
-		   	   ChnlSearch(response,function (str){ ChnlSearchCallback(str,session)}); 
-			   break;
-			case "programSearch":
-  			    PgmSearch(response,function (str){ PgmSearchCallback(str,session)});
-			    break;
-			case "support":
-			     support(session);
-			    break;
-			case "upgradeDVR":
-			     upgradeDVR(response,session);
-			     break;
-			case "upsell":
-			     upsell(response,session);
-			     break;
-			case "Billing":
-			     testmethod(session);
-			    break;
-			case "demowhatshot":
-			    demowhatshot(session);
-			    break;
-			default:
-			     session.send(response.result.fulfillment.speech);
-			 }
-					}
-		           
-                           // sendFBMessage(sender, responseText.facebook);
-                        } catch (err) {
-                            sendFBMessage(sender, {text: err.message});
-                        }
-                    } else {
-                        responseText.facebook.forEach(function (facebookMessage)  {
-                            try {
-                                if (facebookMessage.sender_action) {
-                                    console.log('Response as sender action');
-                                    console.log("facebookMessage.sender_action" + facebookMessage.sender_action);
-                                    sendFBSenderAction(sender, facebookMessage.sender_action);
-                                }
-                                else {
-                                    console.log('Response as formatted message');
-                                    console.log("facebookMessage"+facebookMessage);
-                                    sendFBMessage(sender, facebookMessage);
-                                }
-                            } catch (err) {
-                                sendFBMessage(sender, {text: err.message});
-                            }
-                        });
-                    }
-                } else if (isDefined(responseData)) {
-                    console.log('Response as data message'+ responseData);
-                    // facebook API limit for text length is 320,
-                    // so we must split message if needed
-                    var splittedText = splitResponse(responseData);
-
-                    async.eachSeries(splittedText, function (textPart, callback) {
-                        sendFBMessage(sender, {text: textPart}, callback);
-                    });
-                }
-
-            }
+                
         });
 
-        apiaiRequest.on('error', function (error) {console.error(error)});
+       // apiaiRequest.on('error', function (error) {console.error(error)});
         apiaiRequest.end();
     }
 }
