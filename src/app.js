@@ -65,7 +65,7 @@ function processEvent(event) {
 	        console.log('action : - '+ action );
                 console.log('intent : - '+ intent );
 		sendFBMessage(sender, responseText.facebook);
-		    
+	    }    
                 
         });
 
