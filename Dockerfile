@@ -1,6 +1,6 @@
 FROM node:6
 
-MAINTAINER xVir <danil.skachkov@speaktoit.com>
+MAINTAINER xVir <vzchatbot@hotmail.com>
 
 RUN mkdir -p /usr/app/src
 
