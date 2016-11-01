@@ -58,18 +58,18 @@ function processEvent(event) {
 		console.log('responseText  : - '+ responseText);
 		console.log('responseData  : - '+ responseData);
 		    
- 		sendFBMessage(sender, {responseText});
+ 		//sendFBMessage(sender, {responseText});
 		    
-                if (isDefined(responseData) && isDefined(responseData.facebook)) {
-                    if (!Array.isArray(responseData.facebook)) {
+                if (isDefined(responseText) && isDefined(responseText.facebook)) {
+                    if (!Array.isArray(responseText.facebook)) {
                         try {
-                            console.log('Response as formatted message'+ responseData.facebook);
-                            sendFBMessage(sender, responseData.facebook);
+                            console.log('Response as formatted message'+ responseText.facebook);
+                            sendFBMessage(sender, responseText.facebook);
                         } catch (err) {
                             sendFBMessage(sender, {text: err.message});
                         }
                     } else {
-                        responseData.facebook.forEach(function (facebookMessage)  {
+                        responseText.facebook.forEach(function (facebookMessage)  {
                             try {
                                 if (facebookMessage.sender_action) {
                                     console.log('Response as sender action');
