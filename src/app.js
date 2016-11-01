@@ -19,17 +19,6 @@ var APIAI_VERIFY_TOKEN = process.env.APIAI_VERIFY_TOKEN
 var apiAiService = apiai(APIAI_ACCESS_TOKEN, {language: APIAI_LANG, requestSource: "fb"});
 var sessionIds = new Map();
 
-/*
-var REST_PORT = (process.env.PORT || process.env.port || process.env.OPENSHIFT_NODEJS_PORT || 5000);		
- var SEVER_IP_ADDR = process.env.OPENSHIFT_NODEJS_IP || process.env.HEROKU_IP || '127.0.0.1';		
- var APIAI_ACCESS_TOKEN = "badaab9333804060b3e6195665b3c2ca"; 		
- var APIAI_LANG = 'en';		
- var FB_VERIFY_TOKEN = "7E783CC9-A7BD-443C-A100-6851D448CDF1";		
- var FB_PAGE_ACCESS_TOKEN = "EAAEziYhGZAZAIBAOutH2TU9KoF5GtZAM2bzvr1VnophuxZBHu5PDzjHY8KnuI4T7IbtPnPs3Wy57imBRC5GiKW58vl1c3vgQPYnrK4vJK2ifNnAoZBAstE9PW4JIYz97pMk9Bzk6xqFrMre1ONFjzmg4EKSv5ErZAEZCj7Kuzmm0ZAcecf4DYLuG";		
- var APIAI_VERIFY_TOKEN =  "basic1234"		
- var apiAiService = apiai(APIAI_ACCESS_TOKEN, {language: APIAI_LANG, requestSource: "fb"});		
-  var sessionIds = new Map();
-*/
 
 function processEvent(event) {
     var sender = event.sender.id.toString();
@@ -55,45 +44,8 @@ function processEvent(event) {
                 var responseText = response.result.fulfillment.speech;
                 var responseData = response.result.fulfillment.data;
                 var action = response.result.action;
-
-                if (isDefined(responseData) && isDefined(responseData.facebook)) {
-                    if (!Array.isArray(responseData.facebook)) {
-                        try {
-                            console.log('Response as formatted message'+ responseData.facebook);
-                            sendFBMessage(sender, responseData.facebook);
-                        } catch (err) {
-                            sendFBMessage(sender, {text: err.message});
-                        }
-                    } else {
-                        responseData.facebook.forEach(function (facebookMessage)  {
-                            try {
-                                if (facebookMessage.sender_action) {
-                                    console.log('Response as sender action');
-                                    console.log("facebookMessage.sender_action" + facebookMessage.sender_action);
-                                    sendFBSenderAction(sender, facebookMessage.sender_action);
-                                }
-                                else {
-                                    console.log('Response as formatted message');
-                                    console.log("facebookMessage"+facebookMessage);
-                                    sendFBMessage(sender, facebookMessage);
-                                }
-                            } catch (err) {
-                                sendFBMessage(sender, {text: err.message});
-                            }
-                        });
-                    }
-                } else if (isDefined(responseText)) {
-                    console.log('Response as text message'+ responseText);
-                    // facebook API limit for text length is 320,
-                    // so we must split message if needed
-                    var splittedText = splitResponse(responseText);
-
-                    async.eachSeries(splittedText, function (textPart, callback) {
-                        sendFBMessage(sender, {text: responseText}, callback);
-                    });
-                }
-
-            }
+ 		sendFBMessage(sender, {text: responseText});		    
+            
         });
 
         apiaiRequest.on('error', function (error) {console.error(error)});
