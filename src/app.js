@@ -7,7 +7,7 @@ var uuid = require('node-uuid');
 var request = require('request');
 var JSONbig = require('json-bigint');
 var async = require('async');
-
+/*
 var REST_PORT = (process.env.PORT || process.env.port || process.env.OPENSHIFT_NODEJS_PORT || 5000);
 var SEVER_IP_ADDR = process.env.OPENSHIFT_NODEJS_IP || process.env.HEROKU_IP ;
 var APIAI_ACCESS_TOKEN = process.env.APIAI_ACCESS_TOKEN ; 
@@ -16,7 +16,7 @@ var FB_VERIFY_TOKEN = process.env.FB_VERIFY_TOKEN ;
 var FB_PAGE_ACCESS_TOKEN = process.env.FB_PAGE_ACCESS_TOKEN;
 var APIAI_VERIFY_TOKEN = process.env.APIAI_VERIFY_TOKEN 
 var apiAiService = apiai(APIAI_ACCESS_TOKEN, {language: APIAI_LANG, requestSource: "fb"});
-var sessionIds = new Map();
+var sessionIds = new Map();*/
 
 var REST_PORT = (process.env.PORT || process.env.port || process.env.OPENSHIFT_NODEJS_PORT || 5000);
 var SEVER_IP_ADDR = process.env.OPENSHIFT_NODEJS_IP || process.env.HEROKU_IP || '127.0.0.1';
