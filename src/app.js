@@ -55,7 +55,9 @@ function processEvent(event) {
                 var responseText = response.result.fulfillment.speech;
                 var responseData = response.result.fulfillment.data;
                 var action = response.result.action;
-
+		console.log('responseText  : - '+ responseText);
+		    
+ 		sendFBMessage(sender, {responseText});
                 if (isDefined(responseData) && isDefined(responseData.facebook)) {
                     if (!Array.isArray(responseData.facebook)) {
                         try {
