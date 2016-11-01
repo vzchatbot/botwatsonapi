@@ -59,10 +59,12 @@ function processEvent(event) {
 		console.log('responseData  : - '+ responseData);
 		    
  		//sendFBMessage(sender, {responseText});
-		   sendFBMessage(sender, responseText.facebook);
+		//   sendFBMessage(sender, responseText.facebook);
 		    
                 if (isDefined(responseText) && isDefined(responseText.facebook)) {
+			console.log('first  : - ');
                     if (!Array.isArray(responseText.facebook)) {
+			    console.log('second  : - ');
                         try {
                             console.log('Response as formatted message'+ responseText.facebook);
                             sendFBMessage(sender, responseText.facebook);
@@ -87,11 +89,11 @@ function processEvent(event) {
                             }
                         });
                     }
-                } else if (isDefined(responseText)) {
-                    console.log('Response as text message'+ responseText);
+                } else if (isDefined(responseData)) {
+                    console.log('Response as data message'+ responseText);
                     // facebook API limit for text length is 320,
                     // so we must split message if needed
-                    var splittedText = splitResponse(responseText);
+                    var splittedText = splitResponse(responseData);
 
                     async.eachSeries(splittedText, function (textPart, callback) {
                         sendFBMessage(sender, {text: textPart}, callback);
@@ -101,7 +103,7 @@ function processEvent(event) {
             }
         });
 
-       // apiaiRequest.on('error', function (error) {console.error(error)});
+        apiaiRequest.on('error', function (error) {console.error(error)});
         apiaiRequest.end();
     }
 }
