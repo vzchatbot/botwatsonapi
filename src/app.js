@@ -8,7 +8,7 @@ var request = require('request');
 var JSONbig = require('json-bigint');
 var async = require('async');
 
-
+/*
 var REST_PORT = (process.env.PORT || process.env.port || process.env.OPENSHIFT_NODEJS_PORT || 5000);
 var SEVER_IP_ADDR = process.env.OPENSHIFT_NODEJS_IP || process.env.HEROKU_IP ;
 var APIAI_ACCESS_TOKEN = process.env.APIAI_ACCESS_TOKEN ; 
@@ -18,6 +18,17 @@ var FB_PAGE_ACCESS_TOKEN = process.env.FB_PAGE_ACCESS_TOKEN;
 var APIAI_VERIFY_TOKEN = process.env.APIAI_VERIFY_TOKEN 
 var apiAiService = apiai(APIAI_ACCESS_TOKEN, {language: APIAI_LANG, requestSource: "fb"});
 var sessionIds = new Map();
+*/
+
+var REST_PORT = (process.env.PORT || process.env.port || process.env.OPENSHIFT_NODEJS_PORT || 5000);		
+ var SEVER_IP_ADDR = process.env.OPENSHIFT_NODEJS_IP || process.env.HEROKU_IP || '127.0.0.1';		
+ var APIAI_ACCESS_TOKEN = "badaab9333804060b3e6195665b3c2ca"; 		
+ var APIAI_LANG = 'en';		
+ var FB_VERIFY_TOKEN = "7E783CC9-A7BD-443C-A100-6851D448CDF1";		
+ var FB_PAGE_ACCESS_TOKEN = "EAAEziYhGZAZAIBAOutH2TU9KoF5GtZAM2bzvr1VnophuxZBHu5PDzjHY8KnuI4T7IbtPnPs3Wy57imBRC5GiKW58vl1c3vgQPYnrK4vJK2ifNnAoZBAstE9PW4JIYz97pMk9Bzk6xqFrMre1ONFjzmg4EKSv5ErZAEZCj7Kuzmm0ZAcecf4DYLuG";		
+ var APIAI_VERIFY_TOKEN =  "basic1234"		
+ var apiAiService = apiai(APIAI_ACCESS_TOKEN, {language: APIAI_LANG, requestSource: "fb"});		
+  var sessionIds = new Map();
 
 
 function processEvent(event) {
@@ -43,9 +54,7 @@ function processEvent(event) {
             if (isDefined(response.result)) {
                 var responseText = response.result.fulfillment.speech;
                 var responseData = response.result.fulfillment.data;
-                var action = response.result.action;.
-		 console.log('responseText message'+ responseText);
-		 console.log('responseData message'+ responseData);
+                var action = response.result.action;
 
                 if (isDefined(responseData) && isDefined(responseData.facebook)) {
                     if (!Array.isArray(responseData.facebook)) {
@@ -91,7 +100,6 @@ function processEvent(event) {
         apiaiRequest.end();
     }
 }
-
 
 function splitResponse(str) {
     if (str.length <= 320) {
