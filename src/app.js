@@ -31,6 +31,7 @@ var REST_PORT = (process.env.PORT || process.env.port || process.env.OPENSHIFT_N
   var sessionIds = new Map();
 
 */
+
 function processEvent(event) {
     var sender = event.sender.id.toString();
 
