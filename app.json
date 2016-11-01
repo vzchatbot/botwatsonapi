@@ -7,8 +7,8 @@
   "env": {
     "APIAI_ACCESS_TOKEN": {
       "description": "Client access token for Api.ai",
-     // "value": "901c05fa26b7415196db699acdc5d193"
-       "value": "badaab9333804060b3e6195665b3c2ca"
+      "value": "901c05fa26b7415196db699acdc5d193"
+       //"value": "badaab9333804060b3e6195665b3c2ca"
     },
     "FB_VERIFY_TOKEN": {
       "description": "Verification code",
