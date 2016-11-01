@@ -8,7 +8,7 @@ var request = require('request');
 var JSONbig = require('json-bigint');
 var async = require('async');
 
-/*
+
 var REST_PORT = (process.env.PORT || process.env.port || process.env.OPENSHIFT_NODEJS_PORT || 5000);
 var SEVER_IP_ADDR = process.env.OPENSHIFT_NODEJS_IP || process.env.HEROKU_IP ;
 var APIAI_ACCESS_TOKEN = process.env.APIAI_ACCESS_TOKEN ; 
@@ -18,8 +18,8 @@ var FB_PAGE_ACCESS_TOKEN = process.env.FB_PAGE_ACCESS_TOKEN;
 var APIAI_VERIFY_TOKEN = process.env.APIAI_VERIFY_TOKEN 
 var apiAiService = apiai(APIAI_ACCESS_TOKEN, {language: APIAI_LANG, requestSource: "fb"});
 var sessionIds = new Map();
-*/
 
+/*
 var REST_PORT = (process.env.PORT || process.env.port || process.env.OPENSHIFT_NODEJS_PORT || 5000);		
  var SEVER_IP_ADDR = process.env.OPENSHIFT_NODEJS_IP || process.env.HEROKU_IP || '127.0.0.1';		
  var APIAI_ACCESS_TOKEN = "badaab9333804060b3e6195665b3c2ca"; 		
@@ -30,7 +30,7 @@ var REST_PORT = (process.env.PORT || process.env.port || process.env.OPENSHIFT_N
  var apiAiService = apiai(APIAI_ACCESS_TOKEN, {language: APIAI_LANG, requestSource: "fb"});		
   var sessionIds = new Map();
 
-
+*/
 function processEvent(event) {
     var sender = event.sender.id.toString();
 
