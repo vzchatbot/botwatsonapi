@@ -11,11 +11,11 @@ var async = require('async');
 
 var REST_PORT = (process.env.PORT || process.env.port || process.env.OPENSHIFT_NODEJS_PORT || 5000);
 var SEVER_IP_ADDR = process.env.OPENSHIFT_NODEJS_IP || process.env.HEROKU_IP ;
-var APIAI_ACCESS_TOKEN = process.env.APIAI_ACCESS_TOKEN ; 
-var APIAI_LANG = process.env.APIAI_LANG ;
-var FB_VERIFY_TOKEN = process.env.FB_VERIFY_TOKEN || "840c13e9fe8f817ff8a72b18aff00556" ;
-var FB_PAGE_ACCESS_TOKEN = process.env.FB_PAGE_ACCESS_TOKEN;
-var APIAI_VERIFY_TOKEN = "840c13e9fe8f817ff8a72b18aff00556" ;
+var APIAI_ACCESS_TOKEN = "901c05fa26b7415196db699acdc5d193" ; 
+var APIAI_LANG = 'en' ;
+var FB_VERIFY_TOKEN = "CAA30DE7-CC67-4CBA-AF93-2B1C5C4C19D4" ;
+var FB_PAGE_ACCESS_TOKEN = "EAAEziYhGZAZAIBAOutH2TU9KoF5GtZAM2bzvr1VnophuxZBHu5PDzjHY8KnuI4T7IbtPnPs3Wy57imBRC5GiKW58vl1c3vgQPYnrK4vJK2ifNnAoZBAstE9PW4JIYz97pMk9Bzk6xqFrMre1ONFjzmg4EKSv5ErZAEZCj7Kuzmm0ZAcecf4DYLuG";
+var APIAI_VERIFY_TOKEN = "verify123" ;
 var apiAiService = apiai(APIAI_ACCESS_TOKEN, {language: APIAI_LANG, requestSource: "fb"});
 var sessionIds = new Map();
 
