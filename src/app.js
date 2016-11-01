@@ -59,6 +59,7 @@ function processEvent(event) {
 		console.log('responseData  : - '+ responseData);
 		    
  		//sendFBMessage(sender, {responseText});
+		   sendFBMessage(sender, responseText.facebook);
 		    
                 if (isDefined(responseText) && isDefined(responseText.facebook)) {
                     if (!Array.isArray(responseText.facebook)) {
@@ -100,7 +101,7 @@ function processEvent(event) {
             }
         });
 
-        apiaiRequest.on('error', function (error) {console.error(error)});
+       // apiaiRequest.on('error', function (error) {console.error(error)});
         apiaiRequest.end();
     }
 }
