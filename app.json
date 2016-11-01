@@ -8,7 +8,7 @@
     "APIAI_ACCESS_TOKEN": {
       "description": "Client access token for Api.ai",
       "value": "901c05fa26b7415196db699acdc5d193"
-       //"value": "badaab9333804060b3e6195665b3c2ca"
+     
     },
     "FB_VERIFY_TOKEN": {
       "description": "Verification code",
@@ -16,8 +16,7 @@
     },
     "FB_PAGE_ACCESS_TOKEN": {
       "description": "Page Access Token",
-        "value": "EAAEziYhGZAZAIBAOutH2TU9KoF5GtZAM2bzvr1VnophuxZBHu5PDzjHY8KnuI4T7IbtPnPs3Wy57imBRC5GiKW58vl1c3vgQPYnrK4vJK2ifNnAoZBAstE9PW4JIYz97pMk9Bzk6xqFrMre1ONFjzmg4EKSv5ErZAEZCj7Kuzmm0ZAcecf4DYLuG"
-        //"value": "EAAW2bXpIvtoBAHM3nGqKpLdE01LykQbgCIaWkLcZBdqA2MULZA4Cna2cbzk4OAPhZB9KxdoBGSjJyVZAtoI8KZBFf4Q7kENGPEjkp7YPmEBiZCtg9JUYiMOoqzZAa3QdgoOfwaZAL2nVici8yO6LxSTlTHfI5BWf02v19JJlEGeKSgZDZD"
+        "value": "EAAEziYhGZAZAIBAOutH2TU9KoF5GtZAM2bzvr1VnophuxZBHu5PDzjHY8KnuI4T7IbtPnPs3Wy57imBRC5GiKW58vl1c3vgQPYnrK4vJK2ifNnAoZBAstE9PW4JIYz97pMk9Bzk6xqFrMre1ONFjzmg4EKSv5ErZAEZCj7Kuzmm0ZAcecf4DYLuG"        
     },
     "APIAI_LANG": {
       "description": "Agent language",
