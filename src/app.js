@@ -43,53 +43,55 @@ function processEvent(event) {
             if (isDefined(response.result)) {
                 var responseText = response.result.fulfillment.speech;
                 var responseData = response.result.fulfillment.data;
-                var action = response.result.action;
- 		// sendFBMessage(sender, {text: responseText});		    
-		           if (isDefined(responseData) && isDefined(responseData.facebook)) {		 +            
-                   if (!Array.isArray(responseData.facebook)) {		
-                         try {		
-                             console.log('Response as formatted message'+ responseData.facebook);		
-                             sendFBMessage(sender, responseData.facebook);		
-                         } catch (err) {		
-                             sendFBMessage(sender, {text: err.message});		
-                         }		
-                     } else {		
-                         responseData.facebook.forEach(function (facebookMessage)  {		
-                             try {		
-                                 if (facebookMessage.sender_action) {		
-                                     console.log('Response as sender action');		
-                                     console.log("facebookMessage.sender_action" + facebookMessage.sender_action);		
-                                     sendFBSenderAction(sender, facebookMessage.sender_action);		
-                                 }		
-                                 else {		
-                                     console.log('Response as formatted message');		
-                                     console.log("facebookMessage"+facebookMessage);		
-                                     sendFBMessage(sender, facebookMessage);		
-                                 }		
-                             } catch (err) {		
-                                 sendFBMessage(sender, {text: err.message});		
-                             }		
-                         });		
-                     }		
-                 } else if (isDefined(responseText)) {		
-                     console.log('Response as text message'+ responseText);		
-                     // facebook API limit for text length is 320,		
-                     // so we must split message if needed		
-                     var splittedText = splitResponse(responseText);		
- 		
-                     async.eachSeries(splittedText, function (textPart, callback) {		
-                         sendFBMessage(sender, {text: responseText}, callback);		
-                     });		
-                 }		
- 		
-             }
-            
+                var action = response.result.action;.
+		 console.log('responseText message'+ responseText);
+		 console.log('responseData message'+ responseData);
+
+                if (isDefined(responseData) && isDefined(responseData.facebook)) {
+                    if (!Array.isArray(responseData.facebook)) {
+                        try {
+                            console.log('Response as formatted message'+ responseData.facebook);
+                            sendFBMessage(sender, responseData.facebook);
+                        } catch (err) {
+                            sendFBMessage(sender, {text: err.message});
+                        }
+                    } else {
+                        responseData.facebook.forEach(function (facebookMessage)  {
+                            try {
+                                if (facebookMessage.sender_action) {
+                                    console.log('Response as sender action');
+                                    console.log("facebookMessage.sender_action" + facebookMessage.sender_action);
+                                    sendFBSenderAction(sender, facebookMessage.sender_action);
+                                }
+                                else {
+                                    console.log('Response as formatted message');
+                                    console.log("facebookMessage"+facebookMessage);
+                                    sendFBMessage(sender, facebookMessage);
+                                }
+                            } catch (err) {
+                                sendFBMessage(sender, {text: err.message});
+                            }
+                        });
+                    }
+                } else if (isDefined(responseText)) {
+                    console.log('Response as text message'+ responseText);
+                    // facebook API limit for text length is 320,
+                    // so we must split message if needed
+                    var splittedText = splitResponse(responseText);
+
+                    async.eachSeries(splittedText, function (textPart, callback) {
+                        sendFBMessage(sender, {text: textPart}, callback);
+                    });
+                }
+
+            }
         });
 
         apiaiRequest.on('error', function (error) {console.error(error)});
         apiaiRequest.end();
     }
 }
+
 
 function splitResponse(str) {
     if (str.length <= 320) {
