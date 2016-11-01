@@ -59,7 +59,8 @@ function processEvent(event) {
 		console.log('responseText  : - '+ responseText);
 		console.log('responseData  : - '+ responseData);
 		    
- 		 sendFBMessage(sender, responseText);
+ 		 //sendFBMessage(sender, responseText);
+		 sendFBMessage(sender, {text: responseText});
 		    
                 if (isDefined(responseText) || isDefined(responseText.facebook)) {
 			console.log('first  : - ');
