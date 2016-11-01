@@ -67,11 +67,11 @@ function processEvent(event) {
 		    
                 if (isDefined(responseText) || isDefined(responseText.facebook)) {
 			console.log('first  : - ');
-                    if (!Array.isArray(responseText)) {
+                    if (!Array.isArray(responseText.facebook)) {
 			    console.log('second  : - ');
                         try {
                             console.log('Response as formatted message'+ responseText);
-                            sendFBMessage(sender, responseText);
+                            sendFBMessage(sender, responseText.facebook);
                         } catch (err) {
                             sendFBMessage(sender, {text: err.message});
                         }
@@ -94,7 +94,7 @@ function processEvent(event) {
                         });
                     }
                 } else if (isDefined(responseData)) {
-                    console.log('Response as data message'+ responseText);
+                    console.log('Response as data message'+ responseData);
                     // facebook API limit for text length is 320,
                     // so we must split message if needed
                     var splittedText = splitResponse(responseData);
