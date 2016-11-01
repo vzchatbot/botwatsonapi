@@ -56,11 +56,9 @@ function processEvent(event) {
                 var responseData = response.result.fulfillment.data;
                 var action = response.result.action;
 		console.log('responseText  : - '+ responseText);
-		console.log('responseData  : - '+ responseData);
-		    
- 		//sendFBMessage(sender, {responseText});
-		//   sendFBMessage(sender, responseText.facebook);
-		    
+		console.log('responseData  : - '+ responseData);		    
+ 		
+		     sendFBMessage(sender, responseText);
                 if (isDefined(responseText) || isDefined(responseText.facebook)) {
 			console.log('first  : - ');
                     if (!Array.isArray(responseText)) {
@@ -71,25 +69,8 @@ function processEvent(event) {
                         } catch (err) {
                             sendFBMessage(sender, {text: err.message});
                         }
-                    } else {
-                        responseText.facebook.forEach(function (facebookMessage)  {
-                            try {
-                                if (facebookMessage.sender_action) {
-                                    console.log('Response as sender action');
-                                    console.log("facebookMessage.sender_action" + facebookMessage.sender_action);
-                                    sendFBSenderAction(sender, facebookMessage.sender_action);
-                                }
-                                else {
-                                    console.log('Response as formatted message');
-                                    console.log("facebookMessage"+facebookMessage);
-                                    sendFBMessage(sender, facebookMessage);
-                                }
-                            } catch (err) {
-                                sendFBMessage(sender, {text: err.message});
-                            }
-                        });
-                    }
-                } else if (isDefined(responseData)) {
+                    } 
+			else if (isDefined(responseData)) {
                     console.log('Response as data message'+ responseText);
                     // facebook API limit for text length is 320,
                     // so we must split message if needed
