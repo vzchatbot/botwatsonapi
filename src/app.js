@@ -42,12 +42,7 @@ function processEvent(event) {
         if (!sessionIds.has(sender)) {
             sessionIds.set(sender, uuid.v1());
         }
-
-        console.log("Text", text);
-	     console.log("APIAI_ACCESS_TOKEN",  APIAI_ACCESS_TOKEN);
-	     console.log("FB_VERIFY_TOKEN", FB_VERIFY_TOKEN);
-	     console.log("FB_PAGE_ACCESS_TOKEN", FB_PAGE_ACCESS_TOKEN);
-	     console.log("APIAI_VERIFY_TOKEN", APIAI_VERIFY_TOKEN);               
+        console.log("Text", text);	        
         
         var apiaiRequest = apiAiService.textRequest(text,
             {
@@ -58,9 +53,8 @@ function processEvent(event) {
             if (isDefined(response.result)) {
                 var responseText = response.result.fulfillment.speech;
                 var responseData = response.result.fulfillment.data;
-                var action = response.result.action;
-		  
-                var intent = response.result.metadata.intentName;
+                var action = response.result.action;		  
+                var intent = response.result;
 		console.log('responseText  : - '+ responseText);
 		console.log('responseData  : - '+ responseData);
 		    console.log('action : - '+ action );
