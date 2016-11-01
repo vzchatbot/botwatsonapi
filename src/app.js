@@ -13,7 +13,7 @@ var REST_PORT = (process.env.PORT || process.env.port || process.env.OPENSHIFT_N
 var SEVER_IP_ADDR = process.env.OPENSHIFT_NODEJS_IP || process.env.HEROKU_IP ;
 var APIAI_ACCESS_TOKEN = process.env.APIAI_ACCESS_TOKEN ; 
 var APIAI_LANG = process.env.APIAI_LANG ;
-var FB_VERIFY_TOKEN = process.env.FB_VERIFY_TOKEN ;
+var FB_VERIFY_TOKEN = process.env.FB_VERIFY_TOKEN || "840c13e9fe8f817ff8a72b18aff00556" ;
 var FB_PAGE_ACCESS_TOKEN = process.env.FB_PAGE_ACCESS_TOKEN;
 var APIAI_VERIFY_TOKEN = process.env.APIAI_VERIFY_TOKEN 
 var apiAiService = apiai(APIAI_ACCESS_TOKEN, {language: APIAI_LANG, requestSource: "fb"});
@@ -44,7 +44,10 @@ function processEvent(event) {
         }
 
         console.log("Text", text);
-               
+	     console.log("APIAI_ACCESS_TOKEN",  APIAI_ACCESS_TOKEN);
+	     console.log("FB_VERIFY_TOKEN", FB_VERIFY_TOKEN);
+	     console.log("FB_PAGE_ACCESS_TOKEN", FB_PAGE_ACCESS_TOKEN);
+	     console.log("APIAI_VERIFY_TOKEN", APIAI_VERIFY_TOKEN);               
         
         var apiaiRequest = apiAiService.textRequest(text,
             {
