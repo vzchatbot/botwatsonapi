@@ -59,11 +59,13 @@ function processEvent(event) {
                 var responseText = response.result.fulfillment.speech;
                 var responseData = response.result.fulfillment.data;
                 var action = response.result.action;
+		  
+                var intent = response.result.metadata.intentName;
 		console.log('responseText  : - '+ responseText);
 		console.log('responseData  : - '+ responseData);
-		    
- 		 //sendFBMessage(sender, responseText);
-		 sendFBMessage(sender, {text: responseText});
+		    console.log('action : - '+ action );
+                    console.log('intent : - '+ intent );
+		
 		    
                 if (isDefined(responseText) || isDefined(responseText.facebook)) {
 			console.log('first  : - ');
