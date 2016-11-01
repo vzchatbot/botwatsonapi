@@ -63,11 +63,11 @@ function processEvent(event) {
 		    
                 if (isDefined(responseText) || isDefined(responseText.facebook)) {
 			console.log('first  : - ');
-                    if (!Array.isArray(responseText.facebook)) {
+                    if (!Array.isArray(responseText)) {
 			    console.log('second  : - ');
                         try {
-                            console.log('Response as formatted message'+ responseText.facebook);
-                            sendFBMessage(sender, responseText.facebook);
+                            console.log('Response as formatted message'+ responseText);
+                            sendFBMessage(sender, responseText);
                         } catch (err) {
                             sendFBMessage(sender, {text: err.message});
                         }
