@@ -44,9 +44,9 @@ function processEvent(event) {
         }
         console.log("Text", text);	        
         
-        var request = apiAiService.textRequest(text,{sessionId: sessionIds.get(sender)});
+        var apiaiRequest  = apiAiService.textRequest(text,{sessionId: sessionIds.get(sender)});
 
-        request.on('response', function (response)  {
+        apiaiRequest .on('response', function (response)  {
             if (isDefined(response.result)) {
                 var responseText = response.result.fulfillment.speech;
                 var responseData = response.result.fulfillment.data;
@@ -64,16 +64,10 @@ function processEvent(event) {
 		
 		    //send request to api.ai
     		//var request = app.textRequest(session.message.text, options);
-		request.on('response', function (response) 
-		{
-			var intent = response.result.metadata.intentName;
-			console.log(JSON.stringify(response));
-			var Finished_Status=response.result.actionIncomplete;
-			console.log("Finished_Status "+ Finished_Status);
 		// see if the intent is not finished play the prompt of API.ai or fall back messages
 		if(Finished_Status == true || intent=="Default Fallback Intent" ) 
 		{
-		    session.send(response.result.fulfillment.speech);
+			sendFBMessage(sender, {text: responseText});
 		}
 			else //if the intent is complete do action
 			{
@@ -85,44 +79,44 @@ function processEvent(event) {
 				    {
 					 case "getStarted":
 					   //getprofile (session) ;
-					   welcomeMsg(session);  
+					   welcomeMsg(sender);  
 					   break;
 					case "LinkOptions":
 					    //LinkOptions(response,session);
-					    accountlinking(response,session);
+					    accountlinking(response,sender);
 					    break;
 					case "MoreOptions":
 					    sendFBMessage(sender, {text: responseText});
 					    break;
 					case "MainMenu":
-					    MainMenu(session);
+					    MainMenu(sender);
 					    break;
 					case "record":
-					     RecordScenario (response,session); 
+					     RecordScenario (response,sender); 
 					     break;  
 					case "CategoryList":
-					     CategoryList(response,session);
+					     CategoryList(response,sender);
 					     break;
 					case "recommendation":
-					    recommendations('whatshot',function (str) {recommendationsCallback(str,session)}); 
+					    recommendations('whatshot',function (str) {recommendationsCallback(str,sender)}); 
 					    break;
 					case "channelsearch":
-					   ChnlSearch(response,function (str){ ChnlSearchCallback(str,session)}); 
+					   ChnlSearch(response,function (str){ ChnlSearchCallback(str,sender)}); 
 					   break;
 					case "programSearch":
-					    PgmSearch(response,function (str){ PgmSearchCallback(str,session)});
+					    PgmSearch(response,function (str){ PgmSearchCallback(str,sender)});
 					    break;
 					case "support":
-					     support(session);
+					     support(sender);
 					    break;
 					case "upgradeDVR":
-					     upgradeDVR(response,session);
+					     upgradeDVR(response,sender);
 					     break;
 					case "upsell":
-					     upsell(response,session);
+					     upsell(response,sender);
 					     break;
 					case "Billing":
-					     testmethod(session);
+					     testmethod(sender);
 					    break;
 					case "demowhatshot":
 					    demowhatshot(session);
@@ -131,10 +125,6 @@ function processEvent(event) {
 					     sendFBMessage(sender, {text: responseText});
 					 }
 		    }
-
-				
-    });
-		
 		    
 	    }    
                 
