@@ -23,6 +23,18 @@ var sessionIds = new Map();
 //=================== Logging In text file ===================
 var fs = require('fs');
 var logger = require('./log');
+
+server.get('/api/log', function (req, res) {
+	
+	fs.readFile('./debug.log', 'utf8', function(err, contents) {
+          res.end(contents);
+        });
+	fs.readFile('./exceptions.log', 'utf8', function(err, contents) {
+          res.end(contents);
+        });
+	 
+});
+
 //=========================================================
 
 function processEvent(event) {
