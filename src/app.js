@@ -618,17 +618,17 @@ function RecordScenario (apiresp,usersession)
 		else if (channel == 'HBOSIG') //not subscribed scenario - call to be made
 			{
 			  var respobj = {"facebook":{"attachment":{"type":"template","payload":{"template_type":"button","text":" Sorry you are not subscribed to " + channel +". Would you like to subscribe " + channel + " ?","buttons":[{"type":"postback","title":"Subscribe","payload":"Subscribe"},{"type":"postback","title":"No, I'll do it later ","payload":"Main Menu"}]}}}};	
-			  var msg = new builder.Message(usersession).sourceEvent(respobj);              
+			       
 			 // usersession.send(msg);
-		  sendFBMessage(sender, msg.facebook);
+		  sendFBMessage(sender, respobj);
 				
 			}
 		else if (channel == 'CBSSN')  //DVR full scenario - call to be made
 			{
 			   var respobj= {"facebook":{"attachment":{"type":"template","payload":{"template_type":"button","text":" Sorry your DVR storage is full.  Would you like to upgrade your DVR ?","buttons":[{"type":"postback","title":"Upgrade my DVR","payload":"Upgrade my DVR"},{"type":"postback","title":"No, I'll do it later ","payload":"Main Menu"}]}}}};
-			   var msg = new builder.Message(usersession).sourceEvent(respobj);              
+			//   var msg = new builder.Message(usersession).sourceEvent(respobj);              
 			   //usersession.send(msg);
-				sendFBMessage(sender, msg.facebook);
+				sendFBMessage(sender, respobj);
 			}
 		else 
 			{  //Schedule Recording
