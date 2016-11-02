@@ -25,16 +25,12 @@ var sessionIds = new Map();
 var fs = require('fs');
 var logger = require('./log');
 
-REST_PORT.get('/api/log', function (req, res) {
-	
 	fs.readFile('./debug.log', 'utf8', function(err, contents) {
           res.end(contents);
         });
 	fs.readFile('./exceptions.log', 'utf8', function(err, contents) {
           res.end(contents);
         });
-	 
-});
 
 //=========================================================
 
