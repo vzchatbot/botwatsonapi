@@ -27,14 +27,14 @@ log4js.loadAppender('file');
 log4js.addAppender(log4js.appenders.file('./logger.txt'), 'VZ');
 
 var logger = log4js.getLogger('VZ');
-logger.setLevel('ERROR');
+logger.setLevel('ERROR','INFO');
 
 logger.trace('Entering cheese testing');
 logger.debug('Got cheese.');
-logger.info('Cheese is Gouda.');
+logger.INFO('Cheese is Gouda.');
 logger.warn('Cheese is quite smelly.');
-logger.error('Cheese is too ripe!');
-logger.fatal('Cheese was breeding ground for listeria.');
+logger.error('error');
+logger.fatal('fatel');
 
 
 
