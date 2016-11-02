@@ -19,6 +19,12 @@ var APIAI_VERIFY_TOKEN = "verify123" ;
 var apiAiService = apiai(APIAI_ACCESS_TOKEN, {language: APIAI_LANG, requestSource: "fb"});
 var sessionIds = new Map();
 
+
+//=================== Logging In text file ===================
+var fs = require('fs');
+var logger = require('./log');
+//=========================================================
+
 function processEvent(event) {
     var sender = event.sender.id.toString();
 
