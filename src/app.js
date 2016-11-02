@@ -27,7 +27,7 @@ log4js.loadAppender('file');
 log4js.addAppender(log4js.appenders.file('./logger.txt'), 'VZ');
 
 var logger = log4js.getLogger('VZ');
-logger.setLevel('ERROR','INFO');
+logger.setLevel('INFO');
 
 logger.trace('Entering cheese testing');
 logger.debug('Got cheese.');
