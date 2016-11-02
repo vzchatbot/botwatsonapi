@@ -7,6 +7,7 @@ var uuid = require('node-uuid');
 var request = require('request');
 var JSONbig = require('json-bigint');
 var async = require('async');
+var log4js = require('log4js');
 
 var REST_PORT = (process.env.PORT || process.env.port || process.env.OPENSHIFT_NODEJS_PORT || 5000);
 var SEVER_IP_ADDR = process.env.OPENSHIFT_NODEJS_IP || process.env.HEROKU_IP ;
@@ -17,6 +18,23 @@ var FB_PAGE_ACCESS_TOKEN = "EAAEziYhGZAZAIBAOutH2TU9KoF5GtZAM2bzvr1VnophuxZBHu5P
 var APIAI_VERIFY_TOKEN = "verify123" ;
 var apiAiService = apiai(APIAI_ACCESS_TOKEN, {language: APIAI_LANG, requestSource: "fb"});
 var sessionIds = new Map();
+
+//======================
+
+log4js.loadAppender('file');
+//log4js.addAppender(log4js.appenders.console());
+log4js.addAppender(log4js.appenders.file('./logger.txt'), 'VZ');
+
+var logger = log4js.getLogger('VZ');
+logger.setLevel('ERROR');
+/*
+logger.trace('Entering cheese testing');
+logger.debug('Got cheese.');
+logger.info('Cheese is Gouda.');
+logger.warn('Cheese is quite smelly.');
+logger.error('Cheese is too ripe!');
+logger.fatal('Cheese was breeding ground for listeria.');
+*/
 
 //=========================================================
 
@@ -31,7 +49,7 @@ function processEvent(event) {
             sessionIds.set(sender, uuid.v1());
         }
         console.log("Text", text);	        
-        
+        logger.info("Text :-" text);
         var apiaiRequest  = apiAiService.textRequest(text,{sessionId: sessionIds.get(sender)});
 
         apiaiRequest .on('response', function (response)  {
