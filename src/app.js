@@ -44,12 +44,9 @@ function processEvent(event) {
         }
         console.log("Text", text);	        
         
-        var apiaiRequest = apiAiService.textRequest(text,
-            {
-                sessionId: sessionIds.get(sender)
-            });
+        var request = apiAiService.textRequest(text,{sessionId: sessionIds.get(sender)});
 
-        apiaiRequest.on('response', function (response)  {
+        request.on('response', function (response)  {
             if (isDefined(response.result)) {
                 var responseText = response.result.fulfillment.speech;
                 var responseData = response.result.fulfillment.data;
@@ -64,8 +61,81 @@ function processEvent(event) {
 		console.log('responseData  : - '+ responseData);
 	        console.log('action : - '+ action );
                 console.log('intent : - '+ intent );
-		//sendFBMessage(sender, responseText.facebook);
-		 sendFBMessage(sender, {text: responseText});
+		
+		    //send request to api.ai
+    		//var request = app.textRequest(session.message.text, options);
+		request.on('response', function (response) 
+		{
+			var intent = response.result.metadata.intentName;
+			console.log(JSON.stringify(response));
+			var Finished_Status=response.result.actionIncomplete;
+			console.log("Finished_Status "+ Finished_Status);
+		// see if the intent is not finished play the prompt of API.ai or fall back messages
+		if(Finished_Status == true || intent=="Default Fallback Intent" ) 
+		{
+		    session.send(response.result.fulfillment.speech);
+		}
+			else //if the intent is complete do action
+			{
+				    console.log("-----------INTENT SELECTION-----------");
+				    var straction =response.result.action;
+				    console.log("Selected_action : "+ straction);
+				   // Methods to be called based on action 
+				    switch (straction) 
+				    {
+					 case "getStarted":
+					   //getprofile (session) ;
+					   welcomeMsg(session);  
+					   break;
+					case "LinkOptions":
+					    //LinkOptions(response,session);
+					    accountlinking(response,session);
+					    break;
+					case "MoreOptions":
+					    sendFBMessage(sender, {text: responseText});
+					    break;
+					case "MainMenu":
+					    MainMenu(session);
+					    break;
+					case "record":
+					     RecordScenario (response,session); 
+					     break;  
+					case "CategoryList":
+					     CategoryList(response,session);
+					     break;
+					case "recommendation":
+					    recommendations('whatshot',function (str) {recommendationsCallback(str,session)}); 
+					    break;
+					case "channelsearch":
+					   ChnlSearch(response,function (str){ ChnlSearchCallback(str,session)}); 
+					   break;
+					case "programSearch":
+					    PgmSearch(response,function (str){ PgmSearchCallback(str,session)});
+					    break;
+					case "support":
+					     support(session);
+					    break;
+					case "upgradeDVR":
+					     upgradeDVR(response,session);
+					     break;
+					case "upsell":
+					     upsell(response,session);
+					     break;
+					case "Billing":
+					     testmethod(session);
+					    break;
+					case "demowhatshot":
+					    demowhatshot(session);
+					    break;
+					default:
+					     sendFBMessage(sender, {text: responseText});
+					 }
+		    }
+
+				
+    });
+		
+		    
 	    }    
                 
         });
