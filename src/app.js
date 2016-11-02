@@ -394,7 +394,8 @@ function welcomeMsg(usersession)
      console.log("inside welcomeMsg");
        var respobj= {"facebook":{"attachment":{"type":"template","payload":{"template_type":"button","text":"Want to know what’s on tonight? When your favorite sports team is playing? What time your favorite show is coming on? I can answer almost anything, so try me! Before we get started—let’s take a few minutes to get me linked to your Verizon account, this way I can send you personalized recommendations, alerts.","buttons":[{"type":"postback","title":"Link Account","payload":"Link Account"},{"type":"postback","title":"Maybe later","payload":"Main Menu"}]}}}};
 	 console.log(JSON.stringify(respobj)); 
-	usersession.send("Hi Welcome to Verizon");
+	 sendFBMessage(sender, {text: "Hi Welcome to Verizon"});
+	//usersession.send("Hi Welcome to Verizon");
 	//var msg = new builder.Message(usersession).sourceEvent(respobj);              
        //   usersession.send(respobj);
 	 sendFBMessage(sender, {text: respobj});
@@ -443,7 +444,8 @@ function CategoryList(apireq,usersession) {
 		}
 	
 	//var msg = new builder.Message(usersession).sourceEvent(categlist);              
-        usersession.send(categlist);
+       // usersession.send(categlist);
+	 sendFBMessage(sender, {text: categlist});
 	
 } 
 
@@ -532,7 +534,8 @@ function ChnlSearchCallback(apiresp,usersession) {
 	var chposition = objToJson[0].Inputs.newTemp.Section.Inputs.Response;
 	
 	console.log("chposition :" + chposition)
-	usersession.send ("You can watch it on channel # " + chposition);
+	//usersession.send ("You can watch it on channel # " + chposition);
+	 sendFBMessage(sender, {text: chposition});
 } 
 
 function recommendations(pgmtype,callback) { 
@@ -569,7 +572,8 @@ function recommendationsCallback(apiresp,usersession) {
 	 console.log("subflow " + JSON.stringify(subflow));
 	
 	//var msg = new builder.Message(usersession).sourceEvent(subflow);              
-        usersession.send(subflow);
+        //usersession.send(subflow);
+	 sendFBMessage(sender, {text: subflow});
 } 
 
 function LinkOptions(apireq,usersession)
@@ -601,7 +605,8 @@ function LinkOptions(apireq,usersession)
 	}
 
   //  var msg = new builder.Message(usersession).sourceEvent(respobj);              
-    usersession.send(respobj);
+  //  usersession.send(respobj);
+	sendFBMessage(sender, {text: respobj});
 }
 
 function RecordScenario (apiresp,usersession)
