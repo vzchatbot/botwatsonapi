@@ -496,7 +496,7 @@ function PgmSearchCallback(apiresp,usersession) {
 	//usersession.send("I found several related programs");
 	//var msg = new builder.Message(usersession).sourceEvent(subflow);              
        // usersession.send(subflow);
-	 sendFBMessage(sender, {text: subflow});
+	 sendFBMessage(sender, subflow);
 } 
 
 function ChnlSearch(apireq,callback) { 
