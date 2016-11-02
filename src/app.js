@@ -385,7 +385,7 @@ function accountlinking(apireq,usersession)
 	console.log('Account Linking Button') ;
 	var respobj ={"facebook":{"attachment":{"type":"template","payload":{"template_type":"generic","elements":[{"title":"Login to Verizon","image_url":"https://www98.verizon.com/foryourhome/vzrepair/siwizard/img/verizon-logo-200.png","buttons":[{"type":"account_link","url":"https://www98.verizon.com/foryourhome/myaccount/ngen/upr/bots/preauth.aspx"}]}]}}}};
 	//var msg = new builder.Message(usersession).sourceEvent(respobj);              
-         usersession.send(respobj);
+        sendFBMessage(usersession,  respobj.facebook);
 }
 
 // function calls
@@ -395,12 +395,8 @@ function welcomeMsg(usersession)
        var respobj= {"facebook":{"attachment":{"type":"template","payload":{"template_type":"button","text":"Want to know what’s on tonight? When your favorite sports team is playing? What time your favorite show is coming on? I can answer almost anything, so try me! Before we get started—let’s take a few minutes to get me linked to your Verizon account, this way I can send you personalized recommendations, alerts.","buttons":[{"type":"postback","title":"Link Account","payload":"Link Account"},{"type":"postback","title":"Maybe later","payload":"Main Menu"}]}}}};
 	 console.log(JSON.stringify(respobj)); 
 	 sendFBMessage(usersession, {text: "Hi Welcome to Verizon"});
-	//usersession.send("Hi Welcome to Verizon");
-	//var msg = new builder.Message(usersession).sourceEvent(respobj);              
-       //   usersession.send(respobj);
-	//console.log("attachment "+ JSON.stringify(respobj.attachment)); 
 	 sendFBMessage(usersession,  respobj.facebook);
-	 //sendFBMessage(usersession, respobj.attachment);
+	
 	
 }
 
@@ -410,7 +406,7 @@ function MainMenu(usersession)
      var respobj ={"facebook":{"attachment":{"type":"template","payload":{"template_type":"button","text":"Are you looking for something to watch, or do you want to see more options? Type or tap below.","buttons":[{"type":"postback","title":"What's on tonight?","payload":"On Later"},{"type":"postback","title":"Show Program Categories","payload":"Show Program Categories"},{"type":"postback","title":"More Options","payload":"More Options"}]}}}};
     // var msg = new builder.Message(usersession).sourceEvent(respobj);              
   //   usersession.send(respobj);
-	 sendFBMessage(sender, {text: respobj});
+	sendFBMessage(usersession,  respobj.facebook);
 }
 
 
@@ -447,8 +443,8 @@ function CategoryList(apireq,usersession) {
 		}
 	
 	//var msg = new builder.Message(usersession).sourceEvent(categlist);              
-       // usersession.send(categlist);
-	 sendFBMessage(sender, {text: categlist});
+  	 sendFBMessage(usersession,  categlist.facebook);
+	
 	
 } 
 
@@ -499,7 +495,7 @@ function PgmSearchCallback(apiresp,usersession) {
 	//usersession.send("I found several related programs");
 	//var msg = new builder.Message(usersession).sourceEvent(subflow);              
        // usersession.send(subflow);
-	 sendFBMessage(sender, subflow);
+	 sendFBMessage(usersession,  subflow.facebook);
 } 
 
 function ChnlSearch(apireq,callback) { 
@@ -537,8 +533,8 @@ function ChnlSearchCallback(apiresp,usersession) {
 	var chposition = objToJson[0].Inputs.newTemp.Section.Inputs.Response;
 	
 	console.log("chposition :" + chposition)
-	//usersession.send ("You can watch it on channel # " + chposition);
-	 sendFBMessage(sender, {text: chposition});
+	//usersession.send ("You can watch it on channel # " + chposition);	
+	sendFBMessage(usersession,  chposition.facebook);
 } 
 
 function recommendations(pgmtype,callback) { 
@@ -576,7 +572,7 @@ function recommendationsCallback(apiresp,usersession) {
 	
 	//var msg = new builder.Message(usersession).sourceEvent(subflow);              
         //usersession.send(subflow);
-	 sendFBMessage(sender, {text: subflow});
+	sendFBMessage(usersession,  subflow.facebook);
 } 
 
 function LinkOptions(apireq,usersession)
@@ -608,8 +604,8 @@ function LinkOptions(apireq,usersession)
 	}
 
   //  var msg = new builder.Message(usersession).sourceEvent(respobj);              
-  //  usersession.send(respobj);
-	sendFBMessage(sender, {text: respobj});
+  //  usersession.send(respobj);	
+	sendFBMessage(usersession,  respobj.facebook);
 }
 
 function RecordScenario (apiresp,usersession)
@@ -629,17 +625,13 @@ function RecordScenario (apiresp,usersession)
 		else if (channel == 'HBOSIG') //not subscribed scenario - call to be made
 			{
 			  var respobj = {"facebook":{"attachment":{"type":"template","payload":{"template_type":"button","text":" Sorry you are not subscribed to " + channel +". Would you like to subscribe " + channel + " ?","buttons":[{"type":"postback","title":"Subscribe","payload":"Subscribe"},{"type":"postback","title":"No, I'll do it later ","payload":"Main Menu"}]}}}};	
-			       
-			 // usersession.send(msg);
-		  sendFBMessage(sender, respobj);
+			  sendFBMessage(usersession,  respobj.facebook);
 				
 			}
 		else if (channel == 'CBSSN')  //DVR full scenario - call to be made
 			{
 			   var respobj= {"facebook":{"attachment":{"type":"template","payload":{"template_type":"button","text":" Sorry your DVR storage is full.  Would you like to upgrade your DVR ?","buttons":[{"type":"postback","title":"Upgrade my DVR","payload":"Upgrade my DVR"},{"type":"postback","title":"No, I'll do it later ","payload":"Main Menu"}]}}}};
-			//   var msg = new builder.Message(usersession).sourceEvent(respobj);              
-			   //usersession.send(msg);
-				sendFBMessage(sender, respobj);
+			   sendFBMessage(usersession,  respobj.facebook);
 			}
 		else 
 			{  //Schedule Recording
@@ -690,7 +682,8 @@ function STBListCallBack(apiresp,usersession) {
     objToJson = apiresp;
 	var subflow = objToJson[0].Inputs.newTemp.Section.Inputs.Response;
    	//var msg = new builder.Message(usersession).sourceEvent(subflow);              
-    	usersession.send(subflow);
+    //	usersession.send(subflow);
+	sendFBMessage(usersession,  subflow.facebook);
 } 
 
 function DVRRecord(apireq,callback) { 
@@ -776,25 +769,27 @@ function DVRRecordCallback(apiresp,usersession)
 			{
 				respobj = {"facebook":{"attachment":{"type":"template","payload":{"template_type":"button","text":"Your recording has been scheduled. Would you like to see some other TV Recommendations for tonight?","buttons":[{"type":"postback","title":"Show Recommendations","payload":"Show Recommendations"},{"type":"postback","title":"More Options","payload":"More Options"}]}}}};
 				//var msg = new builder.Message(usersession).sourceEvent(respobj);              
-				usersession.send(respobj);
+				//usersession.send(respobj);
+				sendFBMessage(usersession,  respobj.facebook);
 			}
 			else
 			{
-				var msg = "Sorry!, There is a problem occured in Scheduling( "+ subflow.facebook.result.msg + " ). Try some other.";
-				usersession.send(msg);
+				respobj = "Sorry!, There is a problem occured in Scheduling( "+ subflow.facebook.result.msg + " ). Try some other.";
+				//usersession.send(msg);
+				sendFBMessage(usersession,  respobj.facebook);
 			}
 		}
 		else
 		{
-			var msg = "Sorry!, There is a problem occured in Scheduling. Try some other.";
-			usersession.send(msg);
+			respobj = "Sorry!, There is a problem occured in Scheduling. Try some other.";
+			sendFBMessage(usersession,  respobj.facebook);
 		}
 	}
 	catch (err) 
 	{
 		console.log( "Error occured in recording: " + err);
-		var msg = "Sorry!, There is a problem occured in Scheduling. Try some other.";
-		usersession.send(msg);
+		respobj = "Sorry!, There is a problem occured in Scheduling. Try some other.";
+		sendFBMessage(usersession,  respobj.facebook);
 	}
 }
 
@@ -803,7 +798,7 @@ function support(usersession)
 	var respobj={"facebook":{"attachment":{"type":"template","payload":{"template_type":"button","text":"You may need some additional help. Tap one below.","buttons":[{"type":"web_url","url":"https://m.me/fios","title":"Chat with Agent "},{"type":"phone_number","title":"Talk to an agent","payload":"+918554804789"}]}}}};	
  	//var msg = new builder.Message(usersession).sourceEvent(respobj);              
     	//usersession.send(respobj);
-	 sendFBMessage(usersession,  respobj.facebook);
+	sendFBMessage(usersession,  respobj.facebook);
 }
 
 function upsell(apiresp,usersession) 
@@ -811,7 +806,7 @@ function upsell(apiresp,usersession)
 	var respstr ='Congrats, Now you are subscribed for ' + apiresp.result.parameters.Channel +" Channel.  Now  I can help you with  TV Recommendations or Recording a program. What would you like to do?" ;
 	var respobj={"facebook":{"attachment":{"type":"template","payload":{"template_type":"button","text": respstr,"buttons":[{"type":"postback","title":"TV Recommendations","payload":"Yes"},{"type":"postback","title":"Record","payload":"I want to record"}]}}}};
 	//var msg = new builder.Message(usersession).sourceEvent(respobj);              
-    	usersession.send(respobj);
+    	sendFBMessage(usersession,  respobj.facebook);
 }
 
 function upgradeDVR(apiresp,usersession) 
@@ -824,14 +819,14 @@ function upgradeDVR(apiresp,usersession)
 
     var respobj={"facebook":{"attachment":{"type":"template","payload":{"template_type":"button","text": respstr ,"buttons":[{"type":"postback","title":"TV Recommendations","payload":"Yes"},{"type":"postback","title":"Record","payload":"I want to record"}]}}}}
    // var msg = new builder.Message(usersession).sourceEvent(respobj);              
-    usersession.send(respobj);
+    sendFBMessage(usersession,  respobj.facebook);
 }
 
 function demowhatshot(usersession) 
 {
     var respobj =  {"facebook":{"attachment":{"type":"template","payload":{"template_type":"generic","elements":[{"title":"Family Guy","subtitle":"WBIN : Comedy","image_url":"http://image.vam.synacor.com.edgesuite.net/8d/53/8d532ad0e94c271f8fb153a86141de2c92ee15b0/w=207,h=151,crop=auto/?sig=0cdc5e32bc854a2e2d767ab10d96385797b360a24c9f845ead33b1ea3d79aa01&app=powerplay","buttons":[{"type":"web_url","url":"http://www.verizon.com/msvsearch/whatshotimage/thumbnails/default.jpg","title":"Watch Video"},{"type":"postback","title":"RecordNow","payload":"Get Program info of Program: Family Guy Channel: WBIN"}]},{"title":"NCIS","subtitle":"USA : Action &amp; Adventure,Drama","image_url":"http://image.vam.synacor.com.edgesuite.net/85/ed/85ed791472df3065ae5462d42560773a649fdfaf/w=207,h=151,crop=auto/?sig=0cdc5e32bc854a2e2d767ab10d96385797b360a24c9f845ead33b1ea3d79aa01&app=powerplay","buttons":[{"type":"web_url","url":"http://www.verizon.com/msvsearch/whatshotimage/thumbnails/default.jpg","title":"Watch Video"},{"type":"postback","title":"RecordNow","payload":"Get Program info of Program: NCIS Channel: USA"}]},{"title":"Shark Tank","subtitle":"CNBC : Action &amp; Adventure,Drama","image_url":"http://image.vam.synacor.com.edgesuite.net/0f/07/0f07592094a2a596d2f6646271e9cb0311508415/w=207,h=151,crop=auto/?sig=0cdc5e32bc854a2e2d767ab10d96385797b360a24c9f845ead33b1ea3d79aa01&app=powerplay","buttons":[{"type":"web_url","url":"http://www.verizon.com/msvsearch/whatshotimage/thumbnails/default.jpg","title":"Watch Video"},{"type":"postback","title":"RecordNow","payload":"Get Program info of Program: Shark Tank Channel: CNBC"}]},{"title":"Notorious","subtitle":"ABC WCVB : Action &amp; Adventure,Drama","image_url":"http://image.vam.synacor.com.edgesuite.net/ba/51/ba51ba91eafe2da2a01791589bca98c0044b6622/w=207,h=151,crop=auto/?sig=0cdc5e32bc854a2e2d767ab10d96385797b360a24c9f845ead33b1ea3d79aa01&app=powerplay","buttons":[{"type":"web_url","url":"http://www.verizon.com/msvsearch/whatshotimage/thumbnails/default.jpg","title":"Watch Video"},{"type":"postback","title":"RecordNow","payload":"Get Program info of Program: Notorious Channel: ABC WCVB"}]},{"title":"Chicago Med","subtitle":"NBC WHDH : Action &amp; Adventure,Drama","image_url":"http://image.vam.synacor.com.edgesuite.net/e1/93/e1933b6aee82a467980415c36dced6fddf64d80a/w=207,h=151,crop=auto/?sig=0cdc5e32bc854a2e2d767ab10d96385797b360a24c9f845ead33b1ea3d79aa01&app=powerplay","buttons":[{"type":"web_url","url":"http://www.verizon.com/msvsearch/whatshotimage/thumbnails/default.jpg","title":"Watch Video"},{"type":"postback","title":"RecordNow","payload":"Get Program info of Program: Chicago Med Channel: NBC WHDH"}]},{"title":"Modern Family","subtitle":"CW WLVI : Action &amp; Adventure,Drama","image_url":"http://image.vam.synacor.com.edgesuite.net/c1/58/c1586d0e69ca53c32ae64526da7793b8ec962678/w=207,h=151,crop=auto/?sig=0cdc5e32bc854a2e2d767ab10d96385797b360a24c9f845ead33b1ea3d79aa01&app=powerplay","buttons":[{"type":"web_url","url":"http://www.verizon.com/msvsearch/whatshotimage/thumbnails/default.jpg","title":"Watch Video"},{"type":"postback","title":"RecordNow","payload":"Get Program info of Program: Modern Family Channel: CW WLVI"}]}]}}}};
   //  var msg = new builder.Message(usersession).sourceEvent(respobj);              
-    usersession.send(respobj);
+   sendFBMessage(usersession,  respobj.facebook);
 }
 
 function testmethod(usersession)
@@ -861,5 +856,5 @@ function testmethod(usersession)
 		    };
 	
 	//  var msg = new builder.Message(usersession).sourceEvent(myobj);              
-           usersession.send(myobj);
+         sendFBMessage(usersession,  myobj.facebook);
 }
