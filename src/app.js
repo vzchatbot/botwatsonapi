@@ -91,7 +91,8 @@ function processEvent(event) {
 					case "MainMenu":
 					    MainMenu(sender);
 					    break;
-					case "record":
+					case "recordnew":
+					    console.log("-----------INSIDE recordnew -----------");	    
 					     RecordScenario (response,sender); 
 					     break;  
 					case "CategoryList":
