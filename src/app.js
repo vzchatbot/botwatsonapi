@@ -65,17 +65,19 @@ function processEvent(event) {
 				    switch (straction) 
 				    {
 					 case "getStarted":
-					   //getprofile (session) ;
+					    console.log("-----------INSIDE getStarted -----------");
 					   welcomeMsg(sender);  
 					   break;
 					case "LinkOptions":
-					    //LinkOptions(response,session);
+					     console.log("-----------INSIDE LinkOptions -----------");
 					    accountlinking(response,sender);
 					    break;
 					case "MoreOptions":
-					    sendFBMessage(sender, {text: responseText});
+						     console.log("-----------INSIDE MoreOptions -----------");
+					      sendFBMessage(sender,  {text: responseText});
 					    break;
 					case "MainMenu":
+						     console.log("-----------INSIDE MainMenu -----------");
 					    MainMenu(sender);
 					    break;
 					case "recordnew":
@@ -83,34 +85,44 @@ function processEvent(event) {
 					     RecordScenario (response,sender); 
 					     break;  
 					case "CategoryList":
+						     console.log("-----------INSIDE CategoryList -----------");
 					     CategoryList(response,sender);
 					     break;
-					case "recommendation":
+					case "demowhatshot":
+						     console.log("-----------INSIDE demowhatshot -----------");
 					    recommendations('whatshot',function (str) {recommendationsCallback(str,sender)}); 
 					    break;
 					case "channelsearch":
+						     console.log("-----------INSIDE channelsearch -----------");
 					   ChnlSearch(response,function (str){ ChnlSearchCallback(str,sender)}); 
 					   break;
 					case "programSearch":
+						     console.log("-----------INSIDE programSearch -----------");
 					    PgmSearch(response,function (str){ PgmSearchCallback(str,sender)});
 					    break;
 					case "support":
+						     console.log("-----------INSIDE support -----------");
 					     support(sender);
 					    break;
 					case "upgradeDVR":
+						     console.log("-----------INSIDE upgradeDVR -----------");
 					     upgradeDVR(response,sender);
 					     break;
 					case "upsell":
+						     console.log("-----------INSIDE upsell -----------");
 					     upsell(response,sender);
 					     break;
 					case "Billing":
+						     console.log("-----------INSIDE Billing -----------");
 					     testmethod(sender);
 					    break;
 					case "demowhatshot":
-					    demowhatshot(session);
+						     console.log("-----------INSIDE demowhatshot -----------");
+					    demowhatshot(sender);
 					    break;
 					default:
-					     sendFBMessage(sender, {text: responseText});
+						console.log("-----------INSIDE default -----------");
+					    sendFBMessage(sender,  {text: responseText});
 					 }
 		    }
 		    
