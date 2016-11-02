@@ -11,26 +11,13 @@ var async = require('async');
 
 var REST_PORT = (process.env.PORT || process.env.port || process.env.OPENSHIFT_NODEJS_PORT || 5000);
 var SEVER_IP_ADDR = process.env.OPENSHIFT_NODEJS_IP || process.env.HEROKU_IP ;
-var APIAI_ACCESS_TOKEN = "901c05fa26b7415196db699acdc5d193" ; 
+var APIAI_ACCESS_TOKEN = "c8021e1a2dac4f85aee8f805a5a920b2" ; 
 var APIAI_LANG = 'en' ;
 var FB_VERIFY_TOKEN = "CAA30DE7-CC67-4CBA-AF93-2B1C5C4C19D4" ;
 var FB_PAGE_ACCESS_TOKEN = "EAAEziYhGZAZAIBAOutH2TU9KoF5GtZAM2bzvr1VnophuxZBHu5PDzjHY8KnuI4T7IbtPnPs3Wy57imBRC5GiKW58vl1c3vgQPYnrK4vJK2ifNnAoZBAstE9PW4JIYz97pMk9Bzk6xqFrMre1ONFjzmg4EKSv5ErZAEZCj7Kuzmm0ZAcecf4DYLuG";
 var APIAI_VERIFY_TOKEN = "verify123" ;
 var apiAiService = apiai(APIAI_ACCESS_TOKEN, {language: APIAI_LANG, requestSource: "fb"});
 var sessionIds = new Map();
-
-/*
-var REST_PORT = (process.env.PORT || process.env.port || process.env.OPENSHIFT_NODEJS_PORT || 5000);		
- var SEVER_IP_ADDR = process.env.OPENSHIFT_NODEJS_IP || process.env.HEROKU_IP || '127.0.0.1';		
- var APIAI_ACCESS_TOKEN = "badaab9333804060b3e6195665b3c2ca"; 		
- var APIAI_LANG = 'en';		
- var FB_VERIFY_TOKEN = "7E783CC9-A7BD-443C-A100-6851D448CDF1";		
- var FB_PAGE_ACCESS_TOKEN = "EAAEziYhGZAZAIBAOutH2TU9KoF5GtZAM2bzvr1VnophuxZBHu5PDzjHY8KnuI4T7IbtPnPs3Wy57imBRC5GiKW58vl1c3vgQPYnrK4vJK2ifNnAoZBAstE9PW4JIYz97pMk9Bzk6xqFrMre1ONFjzmg4EKSv5ErZAEZCj7Kuzmm0ZAcecf4DYLuG";		
- var APIAI_VERIFY_TOKEN =  "basic1234"		
- var apiAiService = apiai(APIAI_ACCESS_TOKEN, {language: APIAI_LANG, requestSource: "fb"});		
-  var sessionIds = new Map();
-
-*/
 
 function processEvent(event) {
     var sender = event.sender.id.toString();
