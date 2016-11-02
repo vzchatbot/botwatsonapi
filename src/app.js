@@ -398,7 +398,8 @@ function welcomeMsg(usersession)
 	//usersession.send("Hi Welcome to Verizon");
 	//var msg = new builder.Message(usersession).sourceEvent(respobj);              
        //   usersession.send(respobj);
-	 sendFBMessage(sender, {text: respobj});
+	 sendFBMessage(sender, respobj);
+	
 }
 
 function MainMenu(usersession)
