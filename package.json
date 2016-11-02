@@ -19,7 +19,9 @@
     "node-uuid": "^1.4.7",
     "request": "^2.73.0",
     "winston":"^2.2.0",
-    "log4js":"^0.6.38"
+    "log4js":"^0.6.38",
+    "fs":"0.0.0-security"
+    
     
   },
   "repository": {
