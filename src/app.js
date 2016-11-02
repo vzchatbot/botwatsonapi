@@ -27,14 +27,14 @@ log4js.addAppender(log4js.appenders.file('./logger.txt'), 'VZ');
 
 var logger = log4js.getLogger('VZ');
 logger.setLevel('ERROR');
-/*
+
 logger.trace('Entering cheese testing');
 logger.debug('Got cheese.');
 logger.info('Cheese is Gouda.');
 logger.warn('Cheese is quite smelly.');
 logger.error('Cheese is too ripe!');
 logger.fatal('Cheese was breeding ground for listeria.');
-*/
+
 
 //=========================================================
 
@@ -49,7 +49,8 @@ function processEvent(event) {
             sessionIds.set(sender, uuid.v1());
         }
         console.log("Text", text);	        
-        logger.info("Text :-" text);
+        logger.info("Text :-"+ text);
+	    logger.error("Error Text :-"+ text);
         var apiaiRequest  = apiAiService.textRequest(text,{sessionId: sessionIds.get(sender)});
 
         apiaiRequest .on('response', function (response)  {
