@@ -31,7 +31,7 @@ logger.setLevel('ERROR','INFO');
 
 logger.trace('Entering cheese testing');
 logger.debug('Got cheese.');
-logger.INFO('Cheese is Gouda.');
+logger.info('Cheese is Gouda.');
 logger.warn('Cheese is quite smelly.');
 logger.error('error');
 logger.fatal('fatel');
