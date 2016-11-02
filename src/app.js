@@ -399,7 +399,7 @@ function welcomeMsg(usersession)
 	//var msg = new builder.Message(usersession).sourceEvent(respobj);              
        //   usersession.send(respobj);
 	//console.log("attachment "+ JSON.stringify(respobj.attachment)); 
-	 sendFBMessage(usersession, {message: respobj});
+	 sendFBMessage(usersession,  respobj);
 	 //sendFBMessage(usersession, respobj.attachment);
 	
 }
