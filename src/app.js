@@ -35,6 +35,14 @@ logger.warn('Cheese is quite smelly.');
 logger.error('Cheese is too ripe!');
 logger.fatal('Cheese was breeding ground for listeria.');
 
+request.get('/api/log', function (req, res) {
+	
+	fs.readFile('./logger.txt', 'utf8', function(err, contents) {
+          res.end(contents);
+        });
+	
+	 
+});
 
 //=========================================================
 
