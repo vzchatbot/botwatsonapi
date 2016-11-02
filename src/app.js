@@ -802,7 +802,8 @@ function support(usersession)
 {
 	var respobj={"facebook":{"attachment":{"type":"template","payload":{"template_type":"button","text":"You may need some additional help. Tap one below.","buttons":[{"type":"web_url","url":"https://m.me/fios","title":"Chat with Agent "},{"type":"phone_number","title":"Talk to an agent","payload":"+918554804789"}]}}}};	
  	//var msg = new builder.Message(usersession).sourceEvent(respobj);              
-    	usersession.send(respobj);
+    	//usersession.send(respobj);
+	 sendFBMessage(usersession,  respobj.facebook);
 }
 
 function upsell(apiresp,usersession) 
