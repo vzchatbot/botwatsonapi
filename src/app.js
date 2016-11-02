@@ -392,14 +392,14 @@ function accountlinking(apireq,usersession)
 function welcomeMsg(usersession)
 {
      console.log("inside welcomeMsg");
-       var respobj= {"facebook":{"attachment":{"type":"template","payload":{"template_type":"button","text":"Want to know what’s on tonight? When your favorite sports team is playing? What time your favorite show is coming on? I can answer almost anything, so try me! Before we get started—let’s take a few minutes to get me linked to your Verizon account, this way I can send you personalized recommendations, alerts.","buttons":[{"type":"postback","title":"Link Account","payload":"Link Account"},{"type":"postback","title":"Maybe later","payload":"Main Menu"}]}}}};
+       var respobj= {"attachment":{"type":"template","payload":{"template_type":"button","text":"Want to know what’s on tonight? When your favorite sports team is playing? What time your favorite show is coming on? I can answer almost anything, so try me! Before we get started—let’s take a few minutes to get me linked to your Verizon account, this way I can send you personalized recommendations, alerts.","buttons":[{"type":"postback","title":"Link Account","payload":"Link Account"},{"type":"postback","title":"Maybe later","payload":"Main Menu"}]}}};
 	 console.log(JSON.stringify(respobj)); 
 	 sendFBMessage(usersession, {text: "Hi Welcome to Verizon"});
 	//usersession.send("Hi Welcome to Verizon");
 	//var msg = new builder.Message(usersession).sourceEvent(respobj);              
        //   usersession.send(respobj);
-	console.log("attachment "+ JSON.stringify(respobj.attachment)); 
-	 sendFBMessage(usersession, {attachment: respobj.facebook});
+	//console.log("attachment "+ JSON.stringify(respobj.attachment)); 
+	 sendFBMessage(usersession, {attachment: respobj});
 	 //sendFBMessage(usersession, respobj.attachment);
 	
 }
