@@ -556,7 +556,7 @@ function ChnlSearchCallback(apiresp,usersession) {
 	
 	console.log("chposition :" + chposition)
 	//usersession.send ("You can watch it on channel # " + chposition);	
-	sendFBMessage(usersession,  chposition.facebook);
+	sendFBMessage(usersession,  {text:"You can watch it on channel # " + chposition});
 } 
 
 function recommendations(pgmtype,callback) { 
