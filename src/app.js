@@ -103,7 +103,7 @@ function processEvent(event) {
 						     console.log("-----------INSIDE MainMenu -----------");
 					    MainMenu(sender);
 					    break;
-					case "recordnew":
+					case "record":
 					    console.log("-----------INSIDE recordnew -----------");	    
 					     RecordScenario (response,sender); 
 					     break;  
@@ -111,7 +111,7 @@ function processEvent(event) {
 						     console.log("-----------INSIDE CategoryList -----------");
 					     CategoryList(response,sender);
 					     break;
-					case "demowhatshot":
+					case "recommendation":
 						     console.log("-----------INSIDE demowhatshot -----------");
 					    recommendations('whatshot',function (str) {recommendationsCallback(str,sender)}); 
 					    break;
