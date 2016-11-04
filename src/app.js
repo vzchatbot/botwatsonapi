@@ -81,70 +81,70 @@ function processEvent(event) {
 		}
 			else //if the intent is complete do action
 			{
-				    console.log("-----------INTENT SELECTION-----------");
+				    console.log("----->>>>>>>>>>>> INTENT SELECTION <<<<<<<<<<<------");
 				    var straction =response.result.action;
 				    console.log("Selected_action : "+ straction);
 				   // Methods to be called based on action 
 				    switch (straction) 
 				    {
 					 case "getStarted":
-					    console.log("-----------INSIDE getStarted -----------");
+					    console.log("----->>>>>>>>>>>> INSIDE getStarted <<<<<<<<<<<------");
 					   welcomeMsg(sender);  
 					   break;
 					case "LinkOptions":
-					     console.log("-----------INSIDE LinkOptions -----------");
+					     console.log("----->>>>>>>>>>>> INSIDE LinkOptions <<<<<<<<<<<------");
 					    accountlinking(response,sender);
 					    break;
 					case "MoreOptions":
-						     console.log("-----------INSIDE MoreOptions -----------");
+						     console.log("----->>>>>>>>>>>> INSIDE MoreOptions <<<<<<<<<<<------");
 					      sendFBMessage(sender,  {text: responseText});
 					    break;
 					case "MainMenu":
-						     console.log("-----------INSIDE MainMenu -----------");
+						     console.log("----->>>>>>>>>>>> INSIDE MainMenu <<<<<<<<<<<------");
 					    MainMenu(sender);
 					    break;
 					case "record":
-					    console.log("-----------INSIDE recordnew -----------");	    
+					    console.log("----->>>>>>>>>>>> INSIDE recordnew <<<<<<<<<<<------");	    
 					     RecordScenario (response,sender); 
 					     break;  
 					case "CategoryList":
-						     console.log("-----------INSIDE CategoryList -----------");
+						     console.log("----->>>>>>>>>>>> INSIDE CategoryList <<<<<<<<<<<------");
 					     CategoryList(response,sender);
 					     break;
 					case "recommendation":
-						     console.log("-----------INSIDE demowhatshot -----------");
+						     console.log("----->>>>>>>>>>>> INSIDE demowhatshot <<<<<<<<<<<------");
 					    recommendations('whatshot',function (str) {recommendationsCallback(str,sender)}); 
 					    break;
 					case "channelsearch":
-						     console.log("-----------INSIDE channelsearch -----------");
+						     console.log("----->>>>>>>>>>>> INSIDE channelsearch <<<<<<<<<<<------");
 					   ChnlSearch(response,function (str){ ChnlSearchCallback(str,sender)}); 
 					   break;
 					case "programSearch":
-						     console.log("-----------INSIDE programSearch -----------");
+						     console.log("----->>>>>>>>>>>> INSIDE programSearch <<<<<<<<<<<------");
 					    PgmSearch(response,function (str){ PgmSearchCallback(str,sender)});
 					    break;
 					case "support":
-						     console.log("-----------INSIDE support -----------");
+						     console.log("----->>>>>>>>>>>> INSIDE support <<<<<<<<<<<------");
 					     support(sender);
 					    break;
 					case "upgradeDVR":
-						     console.log("-----------INSIDE upgradeDVR -----------");
+						     console.log("----->>>>>>>>>>>> INSIDE upgradeDVR <<<<<<<<<<<------");
 					     upgradeDVR(response,sender);
 					     break;
 					case "upsell":
-						     console.log("-----------INSIDE upsell -----------");
+						     console.log("----->>>>>>>>>>>> INSIDE upsell <<<<<<<<<<<------");
 					     upsell(response,sender);
 					     break;
 					case "Billing":
-						     console.log("-----------INSIDE Billing -----------");
+						     console.log("----->>>>>>>>>>>> INSIDE Billing <<<<<<<<<<<------");
 					     testmethod(sender);
 					    break;
 					case "demowhatshot":
-						     console.log("-----------INSIDE demowhatshot -----------");
+						     console.log("----->>>>>>>>>>>> INSIDE demowhatshot <<<<<<<<<<<------");
 					    demowhatshot(sender);
 					    break;
 					default:
-						console.log("-----------INSIDE default -----------");
+						console.log("----->>>>>>>>>>>> INSIDE default <<<<<<<<<<<------");
 					    sendFBMessage(sender,  {text: responseText});
 					 }
 		    }
@@ -298,11 +298,9 @@ app.post('/apiaiwebhook/', function (req, res)  {
 try {
         console.log ("here1");
         var data = JSONbig.parse(req.body);
-        var actualFBMessage={"attachment":{"type":"template","payload":{"template_type":"generic","elements":[{"title":"Login to Verizon","image_url":"https://ss7.vzw.com/is/image/VerizonWireless/vzw-logo-156-130-c?$pngalpha$&wid=156&hei=30","buttons":[{"type":"account_link","url":"https://www98.verizon.com/foryourhome/myaccount/ngen/upr/bots/preauth.aspx"}]}]}}};
-        
-var datResponse={"speech":"Sign in ","data":{"facebook": actualFBMessage},"contextOut":[{"name":"signin", "lifespan":2, "parameters":{"type":"signin"}}],"source":"apiaiwebhook"};
-console.log ("here"+JSONbig.stringify(datResponse));
-  
+        var actualFBMessage={"attachment":{"type":"template","payload":{"template_type":"generic","elements":[{"title":"Login to Verizon","image_url":"https://ss7.vzw.com/is/image/VerizonWireless/vzw-logo-156-130-c?$pngalpha$&wid=156&hei=30","buttons":[{"type":"account_link","url":"https://www98.verizon.com/foryourhome/myaccount/ngen/upr/bots/preauth.aspx"}]}]}}};        
+	var datResponse={"speech":"Sign in ","data":{"facebook": actualFBMessage},"contextOut":[{"name":"signin", "lifespan":2, "parameters":{"type":"signin"}}],"source":"apiaiwebhook"};
+	console.log ("here"+JSONbig.stringify(datResponse));  
         res.send(datResponse);
             /*return res.status(200).json({
             status: "ok"
@@ -460,9 +458,7 @@ function CategoryList(apireq,usersession) {
 			    { "content_type": "text", "payload":"show categories list pageno: 1" , "title":"More Categories "}
 			 ] }};
 			break;
-		}
-	
-	//var msg = new builder.Message(usersession).sourceEvent(categlist);              
+		}           
   	 sendFBMessage(usersession,  categlist.facebook);
 	
 	
@@ -554,7 +550,6 @@ function ChnlSearchCallback(apiresp,usersession) {
 	var chposition = objToJson[0].Inputs.newTemp.Section.Inputs.Response;
 	
 	console.log("chposition :" + chposition)
-	//usersession.send ("You can watch it on channel # " + chposition);	
 	sendFBMessage(usersession,  {text:"You can watch it on channel # " + chposition});
 } 
 
@@ -590,9 +585,6 @@ function recommendationsCallback(apiresp,usersession) {
 	var subflow = objToJson[0].Inputs.newTemp.Section.Inputs.Response;
 	
 	 console.log("subflow " + JSON.stringify(subflow));
-	
-	//var msg = new builder.Message(usersession).sourceEvent(subflow);              
-        //usersession.send(subflow);
 	sendFBMessage(usersession,  subflow.facebook);
 } 
 
@@ -623,9 +615,6 @@ function LinkOptions(apireq,usersession)
 
 		respobj= {"facebook":{"attachment":{"type":"template","payload":{"template_type":"button","text":"Congrats, we got your details. Tap Continue to proceed.","buttons":[{"type":"postback","title":"Continue","payload":"Userid : " + struserid + "   Regionid : 92377"}]}}}};
 	}
-
-  //  var msg = new builder.Message(usersession).sourceEvent(respobj);              
-  //  usersession.send(respobj);	
 	sendFBMessage(usersession,  respobj.facebook);
 }
 
@@ -701,9 +690,7 @@ function STBList(apireq,callback) {
 function STBListCallBack(apiresp,usersession) {
     var objToJson = {};
     objToJson = apiresp;
-	var subflow = objToJson[0].Inputs.newTemp.Section.Inputs.Response;
-   	//var msg = new builder.Message(usersession).sourceEvent(subflow);              
-    //	usersession.send(subflow);
+	var subflow = objToJson[0].Inputs.newTemp.Section.Inputs.Response;   	
 	sendFBMessage(usersession,  subflow.facebook);
 } 
 
@@ -796,21 +783,22 @@ function DVRRecordCallback(apiresp,usersession)
 			else
 			{
 				respobj = "Sorry!, There is a problem occured in Scheduling( "+ subflow.facebook.result.msg + " ). Try some other.";
-				//usersession.send(msg);
-				sendFBMessage(usersession,  respobj.facebook);
+				sendFBMessage(usersession,  {text: respobj});
+				
 			}
 		}
 		else
 		{
-			respobj = "Sorry!, There is a problem occured in Scheduling. Try some other.";
-			sendFBMessage(usersession,  respobj.facebook);
+			respobj = "Sorry!, There is a problem occured in Scheduling. Try some other.";			
+			sendFBMessage(usersession,  {text: respobj});
 		}
 	}
 	catch (err) 
 	{
 		console.log( "Error occured in recording: " + err);
 		respobj = "Sorry!, There is a problem occured in Scheduling. Try some other.";
-		sendFBMessage(usersession,  respobj.facebook);
+		//sendFBMessage(usersession,  respobj.facebook);
+		 sendFBMessage(usersession,  {text: respobj});
 	}
 }
 
