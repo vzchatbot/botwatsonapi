@@ -406,7 +406,7 @@ function accountlinking(apireq,usersession)
 {
 	console.log('Account Linking Button') ;
 	var respobj ={"facebook":{"attachment":{"type":"template","payload":{"template_type":"generic","elements":[{"title":"Login to Verizon","image_url":"https://www98.verizon.com/foryourhome/vzrepair/siwizard/img/verizon-logo-200.png","buttons":[{"type":"account_link","url":"https://www98.verizon.com/foryourhome/myaccount/ngen/upr/bots/preauth.aspx"}]}]}}}};
-	//var msg = new builder.Message(usersession).sourceEvent(respobj);              
+	         
         sendFBMessage(usersession,  respobj.facebook);
 }
 
@@ -425,9 +425,7 @@ function welcomeMsg(usersession)
 function MainMenu(usersession)
 {
    // var respobj = {"facebook":{"attachment":{"type":"template","payload":{"template_type":"button","text":"Are you looking for something to watch, or do you want to see more options? Type or tap below.","buttons":[{"type":"postback","title":"What's on tonight?","payload":"On Later"},{"type":"postback","title":"More Options","payload":"More Options"}]}}}};
-     var respobj ={"facebook":{"attachment":{"type":"template","payload":{"template_type":"button","text":"Are you looking for something to watch, or do you want to see more options? Type or tap below.","buttons":[{"type":"postback","title":"What's on tonight?","payload":"On Later"},{"type":"postback","title":"Show Program Categories","payload":"Show Program Categories"},{"type":"postback","title":"More Options","payload":"More Options"}]}}}};
-    // var msg = new builder.Message(usersession).sourceEvent(respobj);              
-  //   usersession.send(respobj);
+     var respobj ={"facebook":{"attachment":{"type":"template","payload":{"template_type":"button","text":"Are you looking for something to watch, or do you want to see more options? Type or tap below.","buttons":[{"type":"postback","title":"What's on tonight?","payload":"On Later"},{"type":"postback","title":"Show Program Categories","payload":"Show Program Categories"},{"type":"postback","title":"More Options","payload":"More Options"}]}}}};    
 	sendFBMessage(usersession,  respobj.facebook);
 }
 
@@ -514,11 +512,11 @@ function PgmSearchCallback(apiresp,usersession) {
 	var subflow = objToJson[0].Inputs.newTemp.Section.Inputs.Response;
 	 console.log("subflow-PgmSearchCallback " + JSON.stringify(subflow));
 	 logger.info("subflow-PgmSearchCallback" + subflow );
-	if(subflow.attachment =="" || subflow.attachment ="undefined")
+	/*if(subflow.attachment =="" || subflow.attachment ="undefined")
 	{
 		 console.log("Attachment is EMpty ");
 		 logger.info("Attachment is EMpty");
-	}
+	}*/
 	 sendFBMessage(usersession,  subflow.facebook);
 } 
 
