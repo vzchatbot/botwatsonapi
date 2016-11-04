@@ -513,7 +513,12 @@ function PgmSearchCallback(apiresp,usersession) {
     objToJson = apiresp;
 	var subflow = objToJson[0].Inputs.newTemp.Section.Inputs.Response;
 	 console.log("subflow-PgmSearchCallback " + JSON.stringify(subflow));
-	
+	 logger.info("subflow-PgmSearchCallback" + subflow );
+	if(subflow.attachment =="" || subflow.attachment ="undefined")
+	{
+		 console.log("Attachment is EMpty ");
+		 logger.info("Attachment is EMpty");
+	}
 	 sendFBMessage(usersession,  subflow.facebook);
 } 
 
