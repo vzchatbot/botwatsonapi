@@ -513,8 +513,8 @@ function PgmSearchCallback(apiresp,usersession) {
 	 console.log("subflow-PgmSearchCallback " + JSON.stringify(subflow));
 	 logger.info("subflow-PgmSearchCallback" + subflow );
 	
-		 console.log("=====>>>>>>>>>Attachment is EMpty " + JSON.stringify(subflow.facebook));
-		 logger.info("Attachment is EMpty");
+		// console.log("=====>>>>>>>>>Attachment is EMpty " + JSON.stringify(subflow.facebook));
+		// logger.info("Attachment is EMpty");
 	
 	 sendFBMessage(usersession,  subflow.facebook);
 } 
