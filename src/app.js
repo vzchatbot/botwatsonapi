@@ -682,7 +682,7 @@ function STBList(apireq,callback) {
 		}
 	} 
 	
-	if (struserid == '' || struserid == undefined) struserid='lt6sth2'; //hardcoding if its empty
+	if (struserid == '' || struserid == undefined) struserid='lt6sth3'; //hardcoding if its empty
 	
 		console.log('struserid '+ struserid);
         var headersInfo = { "Content-Type": "application/json" };
