@@ -469,6 +469,8 @@ function PgmSearch(apireq,callback) {
 	 var strGenre =  apireq.result.parameters.Genre;
 	 var strdate =  apireq.result.parameters.date;
 	 var strChannelName =  apireq.result.parameters.Channel;
+	 var strFiosId =  apireq.result.parameters.FiosId;
+ 	 var strStationId =  apireq.result.parameters.StationId;
 	 var strRegionId = "92377";
 	 console.log("strProgram " + strProgram + "strGenre " + strGenre + "strdate " +strdate);
 	
@@ -482,7 +484,9 @@ function PgmSearch(apireq,callback) {
 				   BotdtAirStartDateTime : strdate,
 				   BotstrGenreRootId : strGenre,
 				   BotstrStationCallSign:strChannelName,
-				   BotstrFIOSRegionID : strRegionId
+				   BotstrFIOSRegionID : strRegionId,
+			     BotstrFIOSID : strFiosId,
+				   BotstrFIOSServiceId : strStationId
 				  } 
 			}
 		};
@@ -561,7 +565,10 @@ function recommendations(pgmtype,callback) {
 		"json": {
 			Flow: 'TroubleShooting Flows\\Test\\APIChatBot.xml',
 			Request: {
-				ThisValue: pgmtype, BotstrVCN:''
+				//ThisValue: pgmtype, BotstrVCN:''
+				ThisValue:  'HydraTrending', 
+ 				BotPgmType :pgmtype,
+ 				BotstrVCN:''
 			}
 		}
 	};
@@ -775,28 +782,35 @@ function DVRRecordCallback(apiresp,usersession)
 		{
 			if (subflow.facebook.result.msg =="success" )
 			{
-				respobj = {"facebook":{"attachment":{"type":"template","payload":{"template_type":"button","text":"Your recording has been scheduled. Would you like to see some other TV Recommendations for tonight?","buttons":[{"type":"postback","title":"Show Recommendations","payload":"Show Recommendations"},{"type":"postback","title":"More Options","payload":"More Options"}]}}}};
+				respobj = {"facebook":{"attachment":{"type":"template","payload":{"template_type":"button","text":"Good news, you have successfully scheduled this recording. Would you like to see some other TV Recommendations for tonight?","buttons":[{"type":"postback","title":"Show Recommendations","payload":"Show Recommendations"},{"type":"postback","title":"More Options","payload":"More Options"}]}}}};
+				//respobj = {"facebook":{"attachment":{"type":"template","payload":{"template_type":"button","text":"Your recording has been scheduled. Would you like to see some other TV Recommendations for tonight?","buttons":[{"type":"postback","title":"Show Recommendations","payload":"Show Recommendations"},{"type":"postback","title":"More Options","payload":"More Options"}]}}}};
 				//var msg = new builder.Message(usersession).sourceEvent(respobj);              
 				//usersession.send(respobj);
 				sendFBMessage(usersession,  respobj.facebook);
 			}
+			else if (subflow.facebook.result.code = "9507")
+ 			{
+ 				respobj = "This Program has already been scheduled";
+ 				sendFBMessage(usersession,  {text: respobj});
+ 			}
 			else
 			{
-				respobj = "Sorry!, There is a problem occured in Scheduling( "+ subflow.facebook.result.msg + " ). Try some other.";
+				console.log( "Error occured in recording: " + subflow.facebook.result.msg);			
+				respobj = "I'm unable to schedule this Program now. Can you please try this later.";
 				sendFBMessage(usersession,  {text: respobj});
 				
 			}
 		}
 		else
 		{
-			respobj = "Sorry!, There is a problem occured in Scheduling. Try some other.";			
+			respobj = "I'm unable to schedule this Program now. Can you please try this later.";			
 			sendFBMessage(usersession,  {text: respobj});
 		}
 	}
 	catch (err) 
 	{
 		console.log( "Error occured in recording: " + err);
-		respobj = "Sorry!, There is a problem occured in Scheduling. Try some other.";
+		respobj = "I'm unable to schedule this Program now. Can you please try this later.";
 		//sendFBMessage(usersession,  respobj.facebook);
 		 sendFBMessage(usersession,  {text: respobj});
 	}
