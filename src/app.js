@@ -9,6 +9,7 @@ var JSONbig = require('json-bigint');
 var async = require('async');
 var log4js = require('log4js');
 var fs = require('fs');
+var util = require('util');
 
 var REST_PORT = (process.env.PORT || process.env.port || process.env.OPENSHIFT_NODEJS_PORT || 5000);
 var SEVER_IP_ADDR = process.env.OPENSHIFT_NODEJS_IP || process.env.HEROKU_IP ;
