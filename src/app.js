@@ -511,12 +511,24 @@ function PgmSearchCallback(apiresp,usersession) {
     objToJson = apiresp;
 	var subflow = objToJson[0].Inputs.newTemp.Section.Inputs.Response;
 	 console.log("subflow-PgmSearchCallback " + JSON.stringify(subflow));
-	 logger.info("subflow-PgmSearchCallback" + subflow );
-	
-		// console.log("=====>>>>>>>>>Attachment is EMpty " + JSON.stringify(subflow.facebook));
-		// logger.info("Attachment is EMpty");
-	
-	 sendFBMessage(usersession,  subflow.facebook);
+	 //fix to single element array 
+ 	 if (subflow != null 
+         && subflow.facebook != null 
+         && subflow.facebook.attachment != null 
+         && subflow.facebook.attachment.payload != null 
+         && subflow.facebook.attachment.payload.buttons != null) {
+         try {
+ 				var pgms = subflow.facebook.attachment.payload.buttons;
+ 				if (!util.isArray(pgms))
+ 				{
+					
+ 					subflow.facebook.attachment.payload.buttons = [];
+ 					subflow.facebook.attachment.payload.buttons.push(pgms);					
+ 					console.log("ProgramSearchCallBack=After=" + JSON.stringify(subflow));
+ 				}
+ 			 }
+         } catch (err) { console.log(err); }
+	sendFBMessage(usersession,  subflow.facebook);
 } 
 
 function ChnlSearch(apireq,callback) { 
@@ -788,7 +800,7 @@ function DVRRecordCallback(apiresp,usersession)
 				//usersession.send(respobj);
 				sendFBMessage(usersession,  respobj.facebook);
 			}
-			else if (subflow.facebook.result.code = "9507")
+			else if (subflow.facebook.result.code == "9507")
  			{
  				respobj = "This Program has already been scheduled";
  				sendFBMessage(usersession,  {text: respobj});
