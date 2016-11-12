@@ -865,7 +865,7 @@ function demowhatshot(usersession)
   //  var msg = new builder.Message(usersession).sourceEvent(respobj);              
    sendFBMessage(usersession,  respobj.facebook);
 }
-
+/*
 function testmethod(usersession)
 {
  	console.log("inside test method");
@@ -894,4 +894,4 @@ function testmethod(usersession)
 	
 	//  var msg = new builder.Message(usersession).sourceEvent(myobj);              
          sendFBMessage(usersession,  myobj.facebook);
-}
+}*/
