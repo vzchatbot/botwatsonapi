@@ -9,7 +9,6 @@ var JSONbig = require('json-bigint');
 var async = require('async');
 var log4js = require('log4js');
 var fs = require('fs');
-//var util = require('util');
 
 var REST_PORT = (process.env.PORT || process.env.port || process.env.OPENSHIFT_NODEJS_PORT || 5000);
 var SEVER_IP_ADDR = process.env.OPENSHIFT_NODEJS_IP || process.env.HEROKU_IP ;
@@ -37,7 +36,6 @@ logger.info('Cheese is Gouda.');
 logger.warn('Cheese is quite smelly.');
 logger.error('error');
 logger.fatal('fatel');
-
 */
 
 //=========================================================
@@ -470,8 +468,6 @@ function PgmSearch(apireq,callback) {
 	 var strGenre =  apireq.result.parameters.Genre;
 	 var strdate =  apireq.result.parameters.date;
 	 var strChannelName =  apireq.result.parameters.Channel;
-	 var strFiosId =  apireq.result.parameters.FiosId;
- 	 var strStationId =  apireq.result.parameters.StationId;
 	 var strRegionId = "92377";
 	 console.log("strProgram " + strProgram + "strGenre " + strGenre + "strdate " +strdate);
 	
@@ -485,9 +481,7 @@ function PgmSearch(apireq,callback) {
 				   BotdtAirStartDateTime : strdate,
 				   BotstrGenreRootId : strGenre,
 				   BotstrStationCallSign:strChannelName,
-				   BotstrFIOSRegionID : strRegionId,
-			     BotstrFIOSID : strFiosId,
-				   BotstrFIOSServiceId : strStationId
+				   BotstrFIOSRegionID : strRegionId
 				  } 
 			}
 		};
@@ -512,25 +506,12 @@ function PgmSearchCallback(apiresp,usersession) {
     objToJson = apiresp;
 	var subflow = objToJson[0].Inputs.newTemp.Section.Inputs.Response;
 	 console.log("subflow-PgmSearchCallback " + JSON.stringify(subflow));
-	 //fix to single element array 
- 	 if (subflow != null 
-         && subflow.facebook != null 
-         && subflow.facebook.attachment != null 
-         && subflow.facebook.attachment.payload != null 
-         && subflow.facebook.attachment.payload.buttons != null) {
-         try {
- 				var pgms = subflow.facebook.attachment.payload.buttons;
- 				if (!util.isArray(pgms))
- 				{
-					
- 					subflow.facebook.attachment.payload.buttons = [];
- 					subflow.facebook.attachment.payload.buttons.push(pgms);					
- 					console.log("ProgramSearchCallBack=After=" + JSON.stringify(subflow));
- 				}
- 			
-         } 
-		 catch (err) { console.log(err); }
-	sendFBMessage(usersession,  subflow.facebook);
+	 logger.info("subflow-PgmSearchCallback" + subflow );
+	
+		// console.log("=====>>>>>>>>>Attachment is EMpty " + JSON.stringify(subflow.facebook));
+		// logger.info("Attachment is EMpty");
+	
+	 sendFBMessage(usersession,  subflow.facebook);
 } 
 
 function ChnlSearch(apireq,callback) { 
@@ -579,10 +560,7 @@ function recommendations(pgmtype,callback) {
 		"json": {
 			Flow: 'TroubleShooting Flows\\Test\\APIChatBot.xml',
 			Request: {
-				//ThisValue: pgmtype, BotstrVCN:''
-				ThisValue:  'HydraTrending', 
- 				BotPgmType :pgmtype,
- 				BotstrVCN:''
+				ThisValue: pgmtype, BotstrVCN:''
 			}
 		}
 	};
@@ -683,7 +661,7 @@ function STBList(apireq,callback) {
 		}
 	} 
 	
-	if (struserid == '' || struserid == undefined) struserid='lt6sth3'; //hardcoding if its empty
+	if (struserid == '' || struserid == undefined) struserid='lt6sth2'; //hardcoding if its empty
 	
 		console.log('struserid '+ struserid);
         var headersInfo = { "Content-Type": "application/json" };
@@ -796,35 +774,28 @@ function DVRRecordCallback(apiresp,usersession)
 		{
 			if (subflow.facebook.result.msg =="success" )
 			{
-				respobj = {"facebook":{"attachment":{"type":"template","payload":{"template_type":"button","text":"Good news, you have successfully scheduled this recording. Would you like to see some other TV Recommendations for tonight?","buttons":[{"type":"postback","title":"Show Recommendations","payload":"Show Recommendations"},{"type":"postback","title":"More Options","payload":"More Options"}]}}}};
-				//respobj = {"facebook":{"attachment":{"type":"template","payload":{"template_type":"button","text":"Your recording has been scheduled. Would you like to see some other TV Recommendations for tonight?","buttons":[{"type":"postback","title":"Show Recommendations","payload":"Show Recommendations"},{"type":"postback","title":"More Options","payload":"More Options"}]}}}};
+				respobj = {"facebook":{"attachment":{"type":"template","payload":{"template_type":"button","text":"Your recording has been scheduled. Would you like to see some other TV Recommendations for tonight?","buttons":[{"type":"postback","title":"Show Recommendations","payload":"Show Recommendations"},{"type":"postback","title":"More Options","payload":"More Options"}]}}}};
 				//var msg = new builder.Message(usersession).sourceEvent(respobj);              
 				//usersession.send(respobj);
 				sendFBMessage(usersession,  respobj.facebook);
 			}
-			else if (subflow.facebook.result.code == "9507")
- 			{
- 				respobj = "This Program has already been scheduled";
- 				sendFBMessage(usersession,  {text: respobj});
- 			}
 			else
 			{
-				console.log( "Error occured in recording: " + subflow.facebook.result.msg);			
-				respobj = "I'm unable to schedule this Program now. Can you please try this later.";
+				respobj = "Sorry!, There is a problem occured in Scheduling( "+ subflow.facebook.result.msg + " ). Try some other.";
 				sendFBMessage(usersession,  {text: respobj});
 				
 			}
 		}
 		else
 		{
-			respobj = "I'm unable to schedule this Program now. Can you please try this later.";			
+			respobj = "Sorry!, There is a problem occured in Scheduling. Try some other.";			
 			sendFBMessage(usersession,  {text: respobj});
 		}
 	}
 	catch (err) 
 	{
 		console.log( "Error occured in recording: " + err);
-		respobj = "I'm unable to schedule this Program now. Can you please try this later.";
+		respobj = "Sorry!, There is a problem occured in Scheduling. Try some other.";
 		//sendFBMessage(usersession,  respobj.facebook);
 		 sendFBMessage(usersession,  {text: respobj});
 	}
