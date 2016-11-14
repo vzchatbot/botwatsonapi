@@ -1079,10 +1079,23 @@ function DVRRecordCallback(apiresp,usersession)
  				respobj = "This Program has already been scheduled";
  				sendFBMessage(usersession,  {text: respobj});
  			}
-			else
+			else if (subflow.facebook.result.code == "9117") //not subscribed
 			{
-				console.log( "Error occured in recording: " + subflow.facebook.result.msg); 				
-				respobj = "I'm unable to schedule this Program now. Can you please try this later";
+				 respobj = {"facebook":{"attachment":{"type":"template","payload":
+									 {"template_type":"button","text":" Sorry you are not subscribed to this channel. Would you like to subscribe ?","buttons":[
+										 {"type":"postback","title":"Subscribe","payload":"Subscribe"},
+										 {"type":"postback","title":"No, I'll do it later ","payload":"Main Menu"}]}}}};	
+			  	sendFBMessage(usersession,  respobj.facebook);
+			}
+			else
+			{				
+				console.log( "Error occured in recording: " + subflow.facebook.result.msg);
+			        if (subflow != null  && subflow.facebook != null  && subflow.facebook.result != null && subflow.facebook.result.msg != null)
+					 respobj =  "I'm unable to schedule this Program now. Can you please try this later ("+subflow.facebook.result.code+" : " + subflow.facebook.result.msg +")"  ;
+				else if (subflow != null  && subflow.facebook != null  && subflow.facebook.errorPage != null && subflow.facebook.errorPage.errormsg  != null)
+					 respobj =  "I'm unable to schedule this Program now. Can you please try this later (" + subflow.facebook.errorPage.errormsg +")"  ;
+				else
+				 	respobj =  "I'm unable to schedule this Program now. Can you please try this later" ;
 				sendFBMessage(usersession,  {text: respobj});				
 			}
 		}
@@ -1095,7 +1108,7 @@ function DVRRecordCallback(apiresp,usersession)
 	catch (err) 
 	{
 		console.log( "Error occured in recording: " + err);
-		respobj = "Sorry!, There is a problem occured in Scheduling. Try some other.";
+		respobj = "I'm unable to schedule this Program now. Can you please try this later (" + err + ")";
 		//sendFBMessage(usersession,  respobj.facebook);
 		 sendFBMessage(usersession,  {text: respobj});
 	}
