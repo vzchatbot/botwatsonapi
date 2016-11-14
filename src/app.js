@@ -440,7 +440,9 @@ function getVzProfileCallBack(apiresp,usersession) {
 }
 
 //====================
-	app.get('/deeplink', function (req, res) {
+
+    app.use(bodyParser.text({ type: 'application/json' }));
+    app.get('/deeplink', function (req, res) {
     var reqUrl;
     var redirectURL;
     var contentString;
