@@ -468,6 +468,8 @@ function PgmSearch(apireq,callback) {
 	 var strGenre =  apireq.result.parameters.Genre;
 	 var strdate =  apireq.result.parameters.date;
 	 var strChannelName =  apireq.result.parameters.Channel;
+	 var strFiosId =  apireq.result.parameters.FiosId;
+	 var strStationId =  apireq.result.parameters.StationId;
 	 var strRegionId = "92377";
 	 console.log("strProgram " + strProgram + "strGenre " + strGenre + "strdate " +strdate);
 	
@@ -481,7 +483,9 @@ function PgmSearch(apireq,callback) {
 				   BotdtAirStartDateTime : strdate,
 				   BotstrGenreRootId : strGenre,
 				   BotstrStationCallSign:strChannelName,
-				   BotstrFIOSRegionID : strRegionId
+				   BotstrFIOSRegionID : strRegionId,
+ 				   BotstrFIOSID : strFiosId,
+ 				   BotstrFIOSServiceId : strStationId
 				  } 
 			}
 		};
@@ -782,7 +786,7 @@ function DVRRecordCallback(apiresp,usersession)
 						     {"type":"postback","title":"More Options","payload":"More Options"}]}}}};				
 				sendFBMessage(usersession,  respobj.facebook);
 			}
-			else if (subflow.facebook.result.code = "9507")
+			else if (subflow.facebook.result.code == "9507")
  			{
  				respobj = "This Program has already been scheduled";
  				sendFBMessage(usersession,  {text: respobj});
