@@ -517,18 +517,23 @@ function PgmSearchCallback(apiresp,usersession) {
          && subflow.facebook != null 
          && subflow.facebook.attachment != null 
          && subflow.facebook.attachment.payload != null 
-         && subflow.facebook.attachment.payload.buttons != null) {
-         try {
- 				var pgms = subflow.facebook.attachment.payload.buttons;
- 				if (!util.isArray(pgms))
- 				{
- 					subflow.facebook.attachment.payload.buttons = [];
- 					subflow.facebook.attachment.payload.buttons.push(pgms);
- 					console.log("ProgramSearchCallBack=After=" + JSON.stringify(subflow));
- 				}
- 			 }
-         } catch (err) { console.log(err); }
-	
+         && subflow.facebook.attachment.payload.buttons != null) 
+	{
+		 try
+		 {
+					var pgms = subflow.facebook.attachment.payload.buttons;
+					if (!util.isArray(pgms))
+					{
+						subflow.facebook.attachment.payload.buttons = [];
+						subflow.facebook.attachment.payload.buttons.push(pgms);
+						console.log("ProgramSearchCallBack=After=" + JSON.stringify(subflow));
+					}
+		 } 
+		catch (err) 
+		 {
+			 console.log(err);
+		 }
+	}
 	 sendFBMessage(usersession,  subflow.facebook);
 } 
 
