@@ -48,42 +48,7 @@ function processEvent(event) {
         var text = event.message ? event.message.text : event.postback.payload;
         // Handle a text message from this sender
         
-        if (!sessionIds.has(sender)) {
-            sessionIds.set(sender, uuid.v1());
-        }
-        console.log("Text", text);	        
-        logger.info("info text :-"+ text);
-	logger.error("Error Text :-"+ text);
-	    
-	 var options = {};
-	 console.log("session id : "+ session.userData.sessionId);	
-	//check session id exists, if not create one.
-	if (session.userData.sessionId == undefined)
-	{  
-		var guid = uuid.v1();
-		options = {sessionId:guid };
-		console.log("New id.. Sessionid:" + guid );
-		session.userData.sessionId = guid;
-	}
-	else
-	{ options = {sessionId: session.userData.sessionId}}
-	
-   //account linking check
-        if (session.message.sourceEvent.account_linking == undefined) 
-	{
-            console.log("Account Linking null");
-        }
-        else {
-            console.log("Account Linking convert: " + JSON.stringify(session.message.sourceEvent.account_linking, null, 2));
-            console.log("Account Linking convert: " + JSON.stringify(session.message.sourceEvent.account_linking.authorization_code, null, 2));
-            console.log("Account Linking convert: " + JSON.stringify(session.message.sourceEvent.account_linking.status, null, 2));
-  	    session.send("Your account is linked now.");
-		getVzProfile(function (str){ getVzProfileCallback(str,session)}); 
-		MainMenu(session);	
-        }
-	// Log the conversation of the user
-	console.log("Conversation: session id : "+ session.userData.sessionId + " User Typed:" + session.message.text  );
-	    
+    
         var apiaiRequest  = apiAiService.textRequest(text,{sessionId: sessionIds.get(sender)});
         apiaiRequest .on('response', function (response)  {
             if (isDefined(response.result)) {
