@@ -54,8 +54,37 @@ function processEvent(event) {
         console.log("Text", text);	        
         logger.info("info text :-"+ text);
 	logger.error("Error Text :-"+ text);
+	    
+	 var options = {};
+	 console.log("session id : "+ session.userData.sessionId);	
+	//check session id exists, if not create one.
+	if (session.userData.sessionId == undefined)
+	{  
+		var guid = uuid.v1();
+		options = {sessionId:guid };
+		console.log("New id.. Sessionid:" + guid );
+		session.userData.sessionId = guid;
+	}
+	else
+	{ options = {sessionId: session.userData.sessionId}}
+	
+   //account linking check
+        if (session.message.sourceEvent.account_linking == undefined) 
+	{
+            console.log("Account Linking null");
+        }
+        else {
+            console.log("Account Linking convert: " + JSON.stringify(session.message.sourceEvent.account_linking, null, 2));
+            console.log("Account Linking convert: " + JSON.stringify(session.message.sourceEvent.account_linking.authorization_code, null, 2));
+            console.log("Account Linking convert: " + JSON.stringify(session.message.sourceEvent.account_linking.status, null, 2));
+  	    session.send("Your account is linked now.");
+		getVzProfile(function (str){ getVzProfileCallback(str,session)}); 
+		MainMenu(session);	
+        }
+	// Log the conversation of the user
+	console.log("Conversation: session id : "+ session.userData.sessionId + " User Typed:" + session.message.text  );
+	    
         var apiaiRequest  = apiAiService.textRequest(text,{sessionId: sessionIds.get(sender)});
-
         apiaiRequest .on('response', function (response)  {
             if (isDefined(response.result)) {
                 var responseText = response.result.fulfillment.speech;
@@ -72,8 +101,7 @@ function processEvent(event) {
 	        console.log('action : - '+ action );
                 console.log('intent : - '+ intent );
 		
-		    //send request to api.ai
-    		//var request = app.textRequest(session.message.text, options);
+		    
 		// see if the intent is not finished play the prompt of API.ai or fall back messages
 		if(Finished_Status == true || intent=="Default Fallback Intent" ) 
 		{
@@ -357,7 +385,98 @@ app.listen(REST_PORT,SEVER_IP_ADDR, function()  {
 doSubscribeRequest();
 	
 	//=========================================
+function getVzProfile(callback) { 
+       	console.log('Inside Verizon Profile');
+	
+	var struserid = ''; 
+	/*for (var i = 0, len = apireq.result.contexts.length; i < len; i++) {
+		if (apireq.result.contexts[i].name == "sessionuserid") {
+			 struserid = apireq.result.contexts[i].parameters.Userid;
+			console.log("original userid " + ": " + struserid);
+		}
+	} */
+	
+	if (struserid == '' || struserid == undefined) struserid='lt6sth2'; //hardcoding if its empty
+	console.log('struserid '+ struserid);
+        
+	var headersInfo = { "Content-Type": "application/json" };
+	var args = {
+		"headers": headersInfo,
+		"json": {Flow: 'TroubleShooting Flows\\Test\\APIChatBot.xml',
+			 Request: {ThisValue: 'GetProfile',Userid:struserid} 
+			}
+		
+	};
 
+    request.post("https://www.verizon.com/foryourhome/vzrepair/flowengine/restapi.ashx", args,
+        function (error, response, body) {
+            if (!error && response.statusCode == 200) {
+             
+                 console.log("body " + body);
+                 callback(body);
+            }
+            else
+            	console.log('error: ' + error + ' body: ' + body);
+        }
+    );
+ } 
+
+function getVzProfileCallBack(apiresp,usersession) {
+	console.log('Inside Verizon Profile Call back');
+    var objToJson = {};
+    objToJson = apiresp;
+	
+	var profileDetails = objToJson[0].Inputs.newTemp.Section.Inputs.Response;
+   	console.log('Profile Details ' + JSON.stringify(profileDetails));
+	
+	var CKTID = JSON.stringify(profileDetails.ProfileResponse.CKTID, null, 2)
+	var regionId = JSON.stringify(profileDetails.ProfileResponse.regionId, null, 2)
+	var vhoId = JSON.stringify(profileDetails.ProfileResponse.vhoId, null, 2)
+	var CanNo = JSON.stringify(profileDetails.ProfileResponse.Can, null, 2)
+	var VisionCustId = JSON.stringify(profileDetails.ProfileResponse.VisionCustId, null, 2)
+	var VisionAcctId = JSON.stringify(profileDetails.ProfileResponse.VisionAcctId, null, 2)
+	
+	console.log("CKT ID  " + CKTID );
+	console.log("regionId  " + regionId );
+	console.log("vhoId  " + vhoId );
+	console.log("CanNo  " + CanNo );
+	console.log("VisionCustId  " + VisionCustId );
+	console.log("VisionAcctId  " + VisionAcctId );
+	
+	if ((session.userData.CKTID == undefined) || (session.userData.CKTID = ""))
+	{
+		console.log("with No CKT ID  in Session Userdata" );
+		session.userData.CKTID = CKTID;
+	}
+	if ((session.userData.regionId == undefined) || (session.userData.regionId = ""))
+	{
+		console.log("No Region ID  in Session Userdata" );
+		session.userData.regionId = regionId;
+	}
+	if ((session.userData.vhoId == undefined) || (session.userData.vhoId = ""))
+	{
+		console.log("No VHO ID  in Session Userdata" );
+		session.userData.vhoId = vhoId;
+	}
+	if ((session.userData.Can == undefined) || (session.userData.Can = ""))
+	{
+		console.log("No CAN in  in Session Userdata" );
+		session.userData.Can = CanNo;
+	}
+	if ((session.userData.VisionCustId == undefined) || (session.userData.VisionCustId = ""))
+	{
+		console.log("No Vision Customer ID  in Session Userdata" );
+		session.userData.VisionCustId = VisionCustId;
+	}
+	if ((session.userData.VisionAcctId == undefined) || (session.userData.VisionAcctId = ""))
+	{
+		console.log("No Vision Account ID in Session Userdata" );
+		session.userData.VisionAcctId = VisionAcctId;
+	}
+}
+
+	
+	//=================================
 	
 function recommendations(apireq,pgmtype,callback) { 
        	console.log('inside recommendations ');
