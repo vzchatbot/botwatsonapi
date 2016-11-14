@@ -534,6 +534,7 @@ function CategoryList(apireq,usersession) {
 } 
 
 function PgmSearch(apireq,callback) { 
+	console.log("<<<Inside PgmSearch>>>");
          var strProgram =  apireq.result.parameters.Programs;
 	 var strGenre =  apireq.result.parameters.Genre;
 	 var strdate =  apireq.result.parameters.date;
@@ -789,12 +790,13 @@ function STBListCallBack(apiresp,usersession) {
 
 function DVRRecord(apireq,callback) { 
 	
+	console.log("<<< Inside DVRRecord function >>>");
 	var strUserid = ''; 
 	var args ={};
 	for (var i = 0, len = apireq.result.contexts.length; i < len; i++) {
-		if (apireq.result.contexts[i].name == "sessionuserid") {
-
-			 strUserid = apireq.result.contexts[i].parameters.Userid;
+		if (apireq.result.contexts[i].name == "sessionuserid") 
+		{
+		        strUserid = apireq.result.contexts[i].parameters.Userid;
 			console.log("original userid " + ": " + strUserid);
 		}
 	} 
