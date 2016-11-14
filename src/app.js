@@ -512,8 +512,22 @@ function PgmSearchCallback(apiresp,usersession) {
 	 console.log("subflow-PgmSearchCallback " + JSON.stringify(subflow));
 	 logger.info("subflow-PgmSearchCallback" + subflow );
 	
-		// console.log("=====>>>>>>>>>Attachment is EMpty " + JSON.stringify(subflow.facebook));
-		// logger.info("Attachment is EMpty");
+	//fix to single element array 
+ 	if (subflow != null 
+         && subflow.facebook != null 
+         && subflow.facebook.attachment != null 
+         && subflow.facebook.attachment.payload != null 
+         && subflow.facebook.attachment.payload.buttons != null) {
+         try {
+ 				var pgms = subflow.facebook.attachment.payload.buttons;
+ 				if (!util.isArray(pgms))
+ 				{
+ 					subflow.facebook.attachment.payload.buttons = [];
+ 					subflow.facebook.attachment.payload.buttons.push(pgms);
+ 					console.log("ProgramSearchCallBack=After=" + JSON.stringify(subflow));
+ 				}
+ 			 }
+         } catch (err) { console.log(err); }
 	
 	 sendFBMessage(usersession,  subflow.facebook);
 } 
