@@ -1060,7 +1060,7 @@ function DVRRecordCallback(apiresp,usersession)
      objToJson = apiresp;
 	try{
 		var subflow = objToJson[0].Inputs.newTemp.Section.Inputs.Response;
-		console.log(JSON.stringify(subflow));
+		console.log( "subflow Value -----" + JSON.stringify(subflow));
 		var respobj={};
 		if (subflow !=null )
 		{
