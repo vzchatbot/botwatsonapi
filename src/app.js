@@ -579,7 +579,8 @@ function PgmSearch(apireq,callback) {
 	 var strChannelName =  apireq.result.parameters.Channel;
 	 var strFiosId =  apireq.result.parameters.FiosId;
 	 var strStationId =  apireq.result.parameters.StationId;
-	 var strRegionId = "92377";
+	 var strRegionId = session.userData.regionId ;
+ 	console.log("strRegionId:"+strRegionId);
 	 console.log("strProgram " + strProgram + "strGenre " + strGenre + "strdate " +strdate);
 	
         var headersInfo = { "Content-Type": "application/json" };
