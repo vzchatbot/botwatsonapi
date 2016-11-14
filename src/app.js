@@ -46,8 +46,20 @@ function processEvent(event) {
 
     if ((event.message && event.message.text) || (event.postback && event.postback.payload)) {
         var text = event.message ? event.message.text : event.postback.payload;
-        // Handle a text message from this sender
-        
+       
+	    
+        //check session id exists, if not create one.
+	if (session.userData.sessionId == undefined)
+	{  
+		var guid = uuid.v1();
+		options = {sessionId:guid };
+		console.log("New id.. Sessionid:" + guid );
+		session.userData.sessionId = guid;
+	}
+	else
+	{ 
+		options = {sessionId: session.userData.sessionId}
+	}
     
         var apiaiRequest  = apiAiService.textRequest(text,{sessionId: sessionIds.get(sender)});
         apiaiRequest .on('response', function (response)  {
