@@ -9,6 +9,7 @@ var JSONbig = require('json-bigint');
 var async = require('async');
 var log4js = require('log4js');
 var fs = require('fs');
+var util = require('util');
 
 var REST_PORT = (process.env.PORT || process.env.port || process.env.OPENSHIFT_NODEJS_PORT || 5000);
 var SEVER_IP_ADDR = process.env.OPENSHIFT_NODEJS_IP || process.env.HEROKU_IP ;
@@ -522,6 +523,7 @@ function PgmSearchCallback(apiresp,usersession) {
 		 try
 		 {
 					var pgms = subflow.facebook.attachment.payload.buttons;
+			 		console.log ("Is array? "+ util.isArray(pgms))
 					if (!util.isArray(pgms))
 					{
 						subflow.facebook.attachment.payload.buttons = [];
@@ -633,7 +635,7 @@ function LinkOptions(apireq,usersession)
 				}
 		} 
 
-		if (struserid == '' || struserid == undefined) struserid='lt6sth2'; //hardcoding if its empty	
+		if (struserid == '' || struserid == undefined) struserid='lt6sth4'; //hardcoding if its empty	
 
 		respobj= {"facebook":{"attachment":{"type":"template","payload":{"template_type":"button","text":"Congrats, we got your details. Tap Continue to proceed.","buttons":[{"type":"postback","title":"Continue","payload":"Userid : " + struserid + "   Regionid : 92377"}]}}}};
 	}
@@ -684,7 +686,7 @@ function STBList(apireq,callback) {
 		}
 	} 
 	
-	if (struserid == '' || struserid == undefined) struserid='lt6sth2'; //hardcoding if its empty
+	if (struserid == '' || struserid == undefined) struserid='lt6sth3'; //hardcoding if its empty
 	
 		console.log('struserid '+ struserid);
         var headersInfo = { "Content-Type": "application/json" };
@@ -692,8 +694,7 @@ function STBList(apireq,callback) {
 		"headers": headersInfo,
 		"json": {Flow: 'TroubleShooting Flows\\Test\\APIChatBot.xml',
 			 Request: {ThisValue: 'STBList',Userid:struserid} 
-			}
-		
+			}		
 	};
 
     request.post("https://www.verizon.com/foryourhome/vzrepair/flowengine/restapi.ashx", args,
@@ -712,7 +713,8 @@ function STBList(apireq,callback) {
 function STBListCallBack(apiresp,usersession) {
     var objToJson = {};
     objToJson = apiresp;
-	var subflow = objToJson[0].Inputs.newTemp.Section.Inputs.Response;   	
+	var subflow = objToJson[0].Inputs.newTemp.Section.Inputs.Response; 
+	console.log("STBListCallBack=before=" + JSON.stringify(subflow));
 	sendFBMessage(usersession,  subflow.facebook);
 } 
 
