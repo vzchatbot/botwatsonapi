@@ -143,10 +143,10 @@ function processEvent(event) {
 						     console.log("----->>>>>>>>>>>> INSIDE Billing <<<<<<<<<<<------");
 					     testmethod(sender);
 					    break;
-					case "demowhatshot":
+					/*case "demowhatshot":
 						     console.log("----->>>>>>>>>>>> INSIDE demowhatshot <<<<<<<<<<<------");
 					    demowhatshot(sender);
-					    break;
+					    break; */
 					default:
 						console.log("----->>>>>>>>>>>> INSIDE default <<<<<<<<<<<------");
 					    sendFBMessage(sender,  {text: responseText});
@@ -411,14 +411,11 @@ function recommendations(apireq,pgmtype,callback) {
 	var struserid = ''; 
 	for (var i = 0, len = apireq.result.contexts.length; i < len; i++) {
 		if (apireq.result.contexts[i].name == "sessionuserid") {
-
 			 struserid = apireq.result.contexts[i].parameters.Userid;
 			console.log("original userid " + ": " + struserid);
 		}
-	} 
-	
-	if (struserid == '' || struserid == undefined) struserid='lt6sth2'; //hardcoding if its empty
-	
+	} 	
+	if (struserid == '' || struserid == undefined) struserid='lt6sth2'; //hardcoding if its empty	
         var headersInfo = { "Content-Type": "application/json" };
 	var args={};
 	if(pgmtype == "OnNow")
