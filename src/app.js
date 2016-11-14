@@ -112,8 +112,12 @@ function processEvent(event) {
 					     CategoryList(response,sender);
 					     break;
 					case "recommendation":
-						     console.log("----->>>>>>>>>>>> INSIDE demowhatshot <<<<<<<<<<<------");
-					    recommendations('whatshot',function (str) {recommendationsCallback(str,sender)}); 
+						     console.log("----->>>>>>>>>>>> INSIDE recommendation <<<<<<<<<<<------");
+					    recommendations(response,'OnLater',function (str) {recommendationsCallback(str,sender)}); 
+					    break;
+					case "OnNowrecommendation":
+						     console.log("----->>>>>>>>>>>> INSIDE OnNowrecommendation <<<<<<<<<<<------");
+					    recommendations(response,'OnNow',function (str) {recommendationsCallback(str,sender)}); 
 					    break;
 					case "channelsearch":
 						     console.log("----->>>>>>>>>>>> INSIDE channelsearch <<<<<<<<<<<------");
@@ -400,6 +404,74 @@ doSubscribeRequest();
 		);
 }
 
+	
+function recommendations(apireq,pgmtype,callback) { 
+       	console.log('inside recommendations ');
+	
+	var struserid = ''; 
+	for (var i = 0, len = apireq.result.contexts.length; i < len; i++) {
+		if (apireq.result.contexts[i].name == "sessionuserid") {
+
+			 struserid = apireq.result.contexts[i].parameters.Userid;
+			console.log("original userid " + ": " + struserid);
+		}
+	} 
+	
+	if (struserid == '' || struserid == undefined) struserid='lt6sth2'; //hardcoding if its empty
+	
+        var headersInfo = { "Content-Type": "application/json" };
+	var args={};
+	if(pgmtype == "OnNow")
+	{
+		args = {
+			"headers": headersInfo,
+			"json": {
+				Flow: 'TroubleShooting Flows\\Test\\APIChatBot.xml',
+				Request: {
+					ThisValue:  'HydraTrending', 
+					BotPgmType :"MyDashBoard",
+					BotstrVCN:''
+				}
+			}
+		};
+	}
+	else
+	{
+		args = {
+			"headers": headersInfo,
+			"json": {
+				Flow: 'TroubleShooting Flows\\Test\\APIChatBot.xml',
+				Request: {
+					ThisValue:  'HydraOnLater', 
+					Userid :struserid,
+					BotVhoId:'VHO1'
+				}
+			}
+		};
+	
+	}
+		 console.log("args " + JSON.stringify(args));
+	
+    request.post("https://www.verizon.com/foryourhome/vzrepair/flowengine/restapi.ashx", args,
+        function (error, response, body) {
+            if (!error && response.statusCode == 200) {
+             
+                 console.log("body " + body);
+                callback(body);
+            }
+            else
+            	console.log('error: ' + error + ' body: ' + body);
+        }
+    );
+ } 
+
+function recommendationsCallback(apiresp,usersession) {
+    var objToJson = {};
+    objToJson = apiresp;
+	var subflow = objToJson[0].Inputs.newTemp.Section.Inputs.Response;	
+	console.log("subflow " + JSON.stringify(subflow));		               
+	sendFBMessage(usersession,  subflow.facebook);
+} 
 function accountlinking(apireq,usersession)
 {
 	console.log('Account Linking Button') ;
@@ -576,7 +648,7 @@ function ChnlSearchCallback(apiresp,usersession) {
 	console.log("chposition :" + chposition)
 	sendFBMessage(usersession,  {text:"You can watch it on channel # " + chposition});
 } 
-
+/*
 function recommendations(pgmtype,callback) { 
        	console.log('inside external call ');
         var headersInfo = { "Content-Type": "application/json" };
@@ -606,11 +678,11 @@ function recommendations(pgmtype,callback) {
 function recommendationsCallback(apiresp,usersession) {
     var objToJson = {};
     objToJson = apiresp;
-	var subflow = objToJson[0].Inputs.newTemp.Section.Inputs.Response;
-	
+	var subflow = objToJson[0].Inputs.newTemp.Section.Inputs.Response;	
 	 console.log("subflow " + JSON.stringify(subflow));
 	sendFBMessage(usersession,  subflow.facebook);
 } 
+*/
 
 function LinkOptions(apireq,usersession)
 {
