@@ -439,7 +439,116 @@ function getVzProfileCallBack(apiresp,usersession) {
 	}
 }
 
-	
+//====================
+	app.get('/deeplink', function (req, res) {
+    var reqUrl;
+    var redirectURL;
+    var contentString;
+    var redirectAppStoreURL;
+    var redirectPlayStoreURL;
+    var userAgent = req.headers['user-agent'].toLowerCase();
+
+    console.log("DeepLink-Started");
+    console.log(req.get('User-Agent'));
+
+    if (userAgent.match(/(iphone|ipod|ipad)/)) {
+        console.log("iOS");
+
+        if (req.query.fiosID && req.query.SeriesID && req.query.AFSID && req.query.ChannelName && req.query.StartTime && req.query.EndTime && req.query.ContentType) {
+            reqUrl = "fiosID=" + req.query.fiosID + "&SeriesID=" + req.query.SeriesID +
+                     "&ChannelName=\\'" + req.query.ChannelName + "\\'&AFSID=" + req.query.AFSID +
+                     "&StartTime=\\'" + req.query.StartTime + "\\'&EndTime=\\'" + req.query.EndTime +
+                     "\\'&ContentType=\\'" + req.query.ContentType + "\\'";
+
+            console.log("TV Listing TV Episode");
+        }
+        else if (req.query.fiosID && req.query.AFSID && req.query.ChannelName && req.query.StartTime && req.query.EndTime && req.query.ContentType) {
+            reqUrl = "fiosID=" + req.query.fiosID + "&ChannelName=\\'" + req.query.ChannelName +
+                     "\\'&AFSID=" + req.query.AFSID + "&StartTime=\\'" + req.query.StartTime +
+                     "\\'&EndTime=\\'" + req.query.EndTime + "\\'&ContentType=\\'" + req.query.ContentType + "\\'";
+
+            console.log("TV Listing Movie");
+        }
+        else if ((req.query.PID && req.query.PAID) || (req.query.CID && req.query.ContentType)) {
+
+            if (req.query.PID && req.query.PAID) {
+                reqUrl = "PID=\\'" + req.query.PID + "\\'&PAID=\\'" + req.query.PAID + "\\'";
+
+                console.log("On Demand Movie");
+            }
+            else if (req.query.CID && req.query.ContentType) {
+
+                reqUrl = "CID=\\'" + req.query.CID + "\\'&ContentType=\\'" + req.query.ContentType + "\\'";
+
+                if (req.query.ContentType.toLowerCase().indexOf("mov") != -1)
+                    console.log("On Demand Movie");
+                else if (req.query.ContentType.toLowerCase().indexOf("tvs") != -1)
+                    console.log("On Demand TV Episode");
+                else
+                    console.log(req.query.ContentType);
+
+            }
+        }
+        else {
+            reqUrl = "SeriesID=" + req.query.SeriesID;
+
+            console.log("On Demand TV Shows (Seasons)");
+        }
+
+        redirectURL = 'vz-carbon://app/details?' + reqUrl;
+        redirectAppStoreURL = "https://itunes.apple.com/us/app/verizon-fios-mobile/id406387206";
+
+        console.log("URI = " + redirectURL);
+
+        contentString = "<html><head><script type='text/javascript' charset='utf-8'>window.location = '" + redirectURL + "';  var isActive = true;  var testInterval = function () { if(isActive) { window.location='" + redirectAppStoreURL + "';} else {clearInterval(testInterval); testInterval = null;} }; window.onfocus = function () { if(!isActive) return; else {isActive = true;}}; window.onblur = function () { isActive = false; };  setInterval(testInterval, 5000); </script></head> <body> Hello </body> </html>";
+    }
+    else if (userAgent.match(/(android)/)) {
+        console.log("Android");
+
+        var now = new Date().valueOf();
+
+        if (req.query.fiosID) {
+            reqUrl = "/tvlistingdetail/" + req.query.fiosID;
+
+            console.log("Linear Program");
+        }
+        else {
+            var cType = '';
+            var assetID = '';
+            if (req.query.ContentType) {
+                if (req.query.ContentType.toLowerCase().indexOf("mov") != -1)
+                    cType = "moviedetails";
+                else
+                    cType = "tvepisodedetails";
+            }
+
+            if (req.query.PAID)
+                assetID = req.query.PAID
+
+            reqUrl = ".mm/" + cType + "/" + assetID;
+        }
+
+
+        redirectURL = 'app://com.verizon.fiosmobile' + reqUrl;
+        redirectPlayStoreURL = "market://details?id=com.verizon.fiosmobile";
+
+        console.log("URI = " + redirectURL);
+
+        contentString = "<html><head><title></title><script type='text/javascript' charset='utf-8'> window.location = '" + redirectURL + "'; setTimeout(function () { window.location.replace('" + redirectPlayStoreURL + "'); }, 500); </script></head><body></body></html>"
+    }
+    else {
+        console.log("WebSite");
+        redirectURL = 'http://tv.verizon.com/';
+        contentString = "<html><head><script type='text/javascript' charset='utf-8'> window.location='" + redirectURL + "'; </script></head></html>";
+    }
+
+    res.writeHead(200, { 'Content-Type': 'text/html' });
+    res.write(contentString);
+    res.end();
+
+    console.log("URI = " + redirectURL);
+    console.log("DeepLink-Ended");
+});
 	//=================================
 	
 function recommendations(apireq,pgmtype,callback) { 
