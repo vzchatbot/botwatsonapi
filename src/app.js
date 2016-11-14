@@ -721,6 +721,7 @@ function STBListCallBack(apiresp,usersession) {
 function DVRRecord(apireq,callback) { 
 	
 	var strUserid = ''; 
+	var args ={};
 	for (var i = 0, len = apireq.result.contexts.length; i < len; i++) {
 		if (apireq.result.contexts[i].name == "sessionuserid") {
 
