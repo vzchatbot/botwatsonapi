@@ -822,6 +822,24 @@ function STBListCallBack(apiresp,usersession) {
     var objToJson = {};
     objToJson = apiresp;
 	var subflow = objToJson[0].Inputs.newTemp.Section.Inputs.Response; 
+	
+	//fix to single element array 
+ 	if (subflow != null 
+         && subflow.facebook != null 
+         && subflow.facebook.attachment != null 
+         && subflow.facebook.attachment.payload != null 
+         && subflow.facebook.attachment.payload.buttons != null) {
+         try {
+ 		var pgms = subflow.facebook.attachment.payload.buttons;
+ 		console.log ("Is array? "+ util.isArray(pgms))
+ 				if (!util.isArray(pgms))
+ 				{
+ 					subflow.facebook.attachment.payload.buttons = [];
+ 					subflow.facebook.attachment.payload.buttons.push(pgms);
+ 					console.log("STBListCallBack=After=" + JSON.stringify(subflow));
+ 				}
+ 			 }catch (err) { console.log(err); }
+         } 
 	console.log("STBListCallBack=before=" + JSON.stringify(subflow));
 	sendFBMessage(usersession,  subflow.facebook);
 } 
