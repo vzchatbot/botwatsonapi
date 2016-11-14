@@ -1064,6 +1064,7 @@ function DVRRecordCallback(apiresp,usersession)
 		var respobj={};
 		if (subflow !=null )
 		{
+			console.log( "Msg Value -----" + subflow.facebook.result.msg);
 			if (subflow.facebook.result.msg =="success" )
 			{
 				respobj = {"facebook":
