@@ -48,6 +48,20 @@ function processEvent(event) {
         var text = event.message ? event.message.text : event.postback.payload;
         // Handle a text message from this sender
         
+	    //account linking check
+        if (session.message.sourceEvent.account_linking == undefined) 
+	{
+            console.log("Account Linking null");
+        }
+        else {
+            console.log("Account Linking convert: " + JSON.stringify(session.message.sourceEvent.account_linking, null, 2));
+            console.log("Account Linking convert: " + JSON.stringify(session.message.sourceEvent.account_linking.authorization_code, null, 2));
+            console.log("Account Linking convert: " + JSON.stringify(session.message.sourceEvent.account_linking.status, null, 2));
+  	    session.send("Your account is linked now.");
+		getVzProfile(function (str){ getVzProfileCallback(str,session)}); 
+		MainMenu(session);
+	
+        }
     
         var apiaiRequest  = apiAiService.textRequest(text,{sessionId: sessionIds.get(sender)});
         apiaiRequest .on('response', function (response)  {
