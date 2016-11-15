@@ -60,7 +60,7 @@ function processEvent(event) {
         console.log("Text", text);
         console.log("info text :-" + text);
         console.log("Error Text :-" + text);
-	console.log("event content :- " + event.messaging.account_linking);
+	console.log("event content :- " + event);
 	    
 	/*    
 	if (event.message.sourceEvent.account_linking == undefined) 
