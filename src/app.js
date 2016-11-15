@@ -61,7 +61,7 @@ function processEvent(event) {
         console.log("info text :-" + text);
         console.log("Error Text :-" + text);
 	console.log("event content :- " +JSON.stringify(event.message));
-	console.log("event account_linking content :- " +JSON.stringify(event.message.account_linking));
+	//console.log("event account_linking content :- " +JSON.stringify(event.message.account_linking));
 	  
 	if (event.message.account_linking == undefined) 
 	{
