@@ -1033,22 +1033,17 @@ function DVRRecordCallback(apiresp,usersession)
 		if (subflow !=null )
 		{
 			console.log( "Msg Value -----" + subflow.facebook.result.msg);
-			if (subflow.facebook.result.msg =="success" )
+			if (subflow != null  && subflow.facebook != null  && subflow.facebook.result != null && subflow.facebook.result.msg =="success" )
 			{
-				respobj = {"facebook":
-					   {"attachment":
-					    {"type":"template","payload":
-					     {"template_type":"button","text":"Good news, you have successfully scheduled this recording. Would you like to see some other TV Recommendations for tonight?","buttons":[
-						     {"type":"postback","title":"Show Recommendations","payload":"Show Recommendations"},
-						     {"type":"postback","title":"More Options","payload":"More Options"}]}}}};				
+				respobj = {"facebook":{"attachment":{"type":"template","payload":{"template_type":"button","text":"Good news, you have successfully scheduled this recording. Would you like to see some other TV Recommendations for tonight?","buttons":[{"type":"postback","title":"Show Recommendations","payload":"Show Recommendations"},{"type":"postback","title":"More Options","payload":"More Options"}]}}}};				
 				sendFBMessage(usersession,  respobj.facebook);
 			}
-			else if (subflow.facebook.result.code == "9507")
+			else if (subflow != null  && subflow.facebook != null  && subflow.facebook.result != null && subflow.facebook.result.code == "9507")
  			{
  				respobj = "This Program has already been scheduled";
  				sendFBMessage(usersession,  {text: respobj});
  			}
-			else if (subflow.facebook.result.code == "9117") //not subscribed
+			else if (subflow != null  && subflow.facebook != null  && subflow.facebook.result != null && subflow.facebook.result.code == "9117") //not subscribed
 			{
 				 respobj = {"facebook":{"attachment":{"type":"template","payload":
 									 {"template_type":"button","text":" Sorry you are not subscribed to this channel. Would you like to subscribe ?","buttons":[
