@@ -677,10 +677,12 @@ function PgmSearchCallback(apiresp,usersession) {
 		 {
 			 console.log(err);
 		 }
-	   sendFBMessage(usersession,  subflow.facebook);
+	  
 	}
+	if (subflow.facebook != null)
+	      sendFBMessage(usersession,  subflow.facebook);
 	else
-	    sendFBMessage(usersession,  {text:"Sorry I don't have the details. Can you try with the different one."});
+	      sendFBMessage(usersession,  {text:"Sorry I don't have the details. Can you try with the different one."});
 } 
 
 function ChnlSearch(apireq,callback) { 
