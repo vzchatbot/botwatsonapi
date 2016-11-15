@@ -48,10 +48,10 @@ function processEvent(event) {
     {
         var text = event.message ? event.message.text : event.postback.payload;      
 	 console.log("Before Account Linking ");  
-	 console.log(event);  
-	 console.log("event content :- " + event.entry);
+	// console.log(event);  
+	// console.log("event content :- " + event.entry);
 	    
-	if (!sessionIds.has(sender))
+	/* if (!sessionIds.has(sender))
 	{
             sessionIds.set(sender, uuid.v1());
         }
@@ -59,7 +59,7 @@ function processEvent(event) {
         console.log("Text", text);
         console.log("info text :-" + text);
         console.log("Error Text :-" + text);
-	/*console.log("event content :- " + event.message.sourceEvent.account_linking);
+	console.log("event content :- " + event.message.sourceEvent.account_linking);
 	    
 	if (event.message.sourceEvent.account_linking == undefined) 
 	{
