@@ -51,15 +51,16 @@ function processEvent(event) {
 	// console.log(event);  
 	// console.log("event content :- " + event.entry);
 	    
-	/* if (!sessionIds.has(sender))
+	if (!sessionIds.has(sender))
 	{
+	    console.log("Inside sessionID:- ");
             sessionIds.set(sender, uuid.v1());
         }
 	    
         console.log("Text", text);
         console.log("info text :-" + text);
         console.log("Error Text :-" + text);
-	console.log("event content :- " + event.message.sourceEvent.account_linking);
+	console.log("event content :- " + event.messaging.account_linking);
 	    
 	if (event.message.sourceEvent.account_linking == undefined) 
 	{
