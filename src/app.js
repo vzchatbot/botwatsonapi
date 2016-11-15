@@ -76,7 +76,7 @@ function processEvent(event) {
 			sendFBMessage(sender,  {text:"Your account is linked now."});
 			getVzProfile(event,function (str){ getVzProfileCallBack(str,event)});   
 			MainMenu(event);
-	
+	}
        
      
         var apiaiRequest  = apiAiService.textRequest(text,{sessionId: sessionIds.get(sender)});
