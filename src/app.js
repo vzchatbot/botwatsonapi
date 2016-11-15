@@ -553,70 +553,7 @@ function getVzProfileCallBack(apiresp,usersession) {
 });
 	//=================================
 	
-function recommendations(apireq,pgmtype,callback) { 
-       	console.log('inside recommendations ');
-	
-	var struserid = ''; 
-	for (var i = 0, len = apireq.result.contexts.length; i < len; i++) {
-		if (apireq.result.contexts[i].name == "sessionuserid") {
-			 struserid = apireq.result.contexts[i].parameters.Userid;
-			console.log("original userid " + ": " + struserid);
-		}
-	} 	
-	if (struserid == '' || struserid == undefined) struserid='lt6sth2'; //hardcoding if its empty	
-        var headersInfo = { "Content-Type": "application/json" };
-	var args={};
-	if(pgmtype == "OnNow")
-	{
-		args = {
-			"headers": headersInfo,
-			"json": {
-				Flow: 'TroubleShooting Flows\\Test\\APIChatBot.xml',
-				Request: {
-					ThisValue:  'HydraTrending', 
-					BotPgmType :"MyDashBoard",
-					BotstrVCN:''
-				}
-			}
-		};
-	}
-	else
-	{
-		args = {
-			"headers": headersInfo,
-			"json": {
-				Flow: 'TroubleShooting Flows\\Test\\APIChatBot.xml',
-				Request: {
-					ThisValue:  'HydraOnLater', 
-					Userid :struserid,
-					BotVhoId:'VHO1'
-				}
-			}
-		};
-	
-	}
-		 console.log("args " + JSON.stringify(args));
-	
-    request.post("https://www.verizon.com/foryourhome/vzrepair/flowengine/restapi.ashx", args,
-        function (error, response, body) {
-            if (!error && response.statusCode == 200) {
-             
-                 console.log("body " + body);
-                callback(body);
-            }
-            else
-            	console.log('error: ' + error + ' body: ' + body);
-        }
-    );
- } 
 
-function recommendationsCallback(apiresp,usersession) {
-    var objToJson = {};
-    objToJson = apiresp;
-	var subflow = objToJson[0].Inputs.newTemp.Section.Inputs.Response;	
-	console.log("subflow " + JSON.stringify(subflow));		               
-	sendFBMessage(usersession,  subflow.facebook);
-} 
 function accountlinking(apireq,usersession)
 {
 	console.log('Account Linking Button') ;
@@ -636,12 +573,13 @@ function welcomeMsg(usersession)
 	
 	
 }
+	
 
 function MainMenu(usersession)
 {
    // var respobj = {"facebook":{"attachment":{"type":"template","payload":{"template_type":"button","text":"Are you looking for something to watch, or do you want to see more options? Type or tap below.","buttons":[{"type":"postback","title":"What's on tonight?","payload":"On Later"},{"type":"postback","title":"More Options","payload":"More Options"}]}}}};
-     var respobj ={"facebook":{"attachment":{"type":"template","payload":{"template_type":"button","text":"Are you looking for something to watch, or do you want to see more options? Type or tap below.","buttons":[{"type":"postback","title":"What's on tonight?","payload":"On Later"},{"type":"postback","title":"Show Program Categories","payload":"Show Program Categories"},{"type":"postback","title":"More Options","payload":"More Options"}]}}}};    
-	sendFBMessage(usersession,  respobj.facebook);
+    var respobj ={"facebook":{"attachment":{"type":"template","payload":{"template_type":"button","text":"Are you looking for something to watch, or do you want to see more options? Type or tap below.","buttons":[{"type":"postback","title":"On Now","payload":"On Now"},{"type":"postback","title":"On Later","payload":"On Later"},{"type":"postback","title":"More Options","payload":"More Options"}]}}}};
+  	sendFBMessage(usersession,  respobj.facebook);
 }
 
 
@@ -796,20 +734,51 @@ function ChnlSearchCallback(apiresp,usersession) {
 	console.log("chposition :" + chposition)
 	sendFBMessage(usersession,  {text:"You can watch it on channel # " + chposition});
 } 
-/*
-function recommendations(pgmtype,callback) { 
-       	console.log('inside external call ');
-        var headersInfo = { "Content-Type": "application/json" };
-	var args = {
-		"headers": headersInfo,
-		"json": {
-			Flow: 'TroubleShooting Flows\\Test\\APIChatBot.xml',
-			Request: {
-				ThisValue: pgmtype, BotstrVCN:''
-			}
+	
+function recommendations(apireq,pgmtype,callback) { 
+       	console.log('inside recommendations ');
+	
+	var struserid = ''; 
+	for (var i = 0, len = apireq.result.contexts.length; i < len; i++) {
+		if (apireq.result.contexts[i].name == "sessionuserid") {
+			 struserid = apireq.result.contexts[i].parameters.Userid;
+			console.log("original userid " + ": " + struserid);
 		}
-	};
-
+	} 	
+	if (struserid == '' || struserid == undefined) struserid='lt6sth2'; //hardcoding if its empty	
+        var headersInfo = { "Content-Type": "application/json" };
+	var args={};
+	if(pgmtype == "OnNow")
+	{
+		args = {
+			"headers": headersInfo,
+			"json": {
+				Flow: 'TroubleShooting Flows\\Test\\APIChatBot.xml',
+				Request: {
+					ThisValue:  'HydraTrending', 
+					BotPgmType :"MyDashBoard",
+					BotstrVCN:''
+				}
+			}
+		};
+	}
+	else
+	{
+		args = {
+			"headers": headersInfo,
+			"json": {
+				Flow: 'TroubleShooting Flows\\Test\\APIChatBot.xml',
+				Request: {
+					ThisValue:  'HydraOnLater', 
+					Userid :struserid,
+					BotVhoId:'VHO1'
+				}
+			}
+		};
+	
+	}
+		 console.log("args " + JSON.stringify(args));
+	
     request.post("https://www.verizon.com/foryourhome/vzrepair/flowengine/restapi.ashx", args,
         function (error, response, body) {
             if (!error && response.statusCode == 200) {
@@ -822,15 +791,14 @@ function recommendations(pgmtype,callback) {
         }
     );
  } 
-  
+
 function recommendationsCallback(apiresp,usersession) {
     var objToJson = {};
     objToJson = apiresp;
 	var subflow = objToJson[0].Inputs.newTemp.Section.Inputs.Response;	
-	 console.log("subflow " + JSON.stringify(subflow));
+	console.log("subflow " + JSON.stringify(subflow));		               
 	sendFBMessage(usersession,  subflow.facebook);
 } 
-*/
 
 function LinkOptions(apireq,usersession)
 {
@@ -876,7 +844,7 @@ function RecordScenario (apiresp,usersession)
 			{ PgmSearch(apiresp,function (str){ PgmSearchCallback(str,usersession)});}
 		else if (SelectedSTB == "" || SelectedSTB == undefined) 
 			{ STBList(apiresp,function (str){ STBListCallBack(str,usersession)}); }
-		else if (channel == 'HBOSIG') //not subscribed scenario - call to be made
+		/*else if (channel == 'HBOSIG') //not subscribed scenario - call to be made
 			{
 			  var respobj = {"facebook":{"attachment":{"type":"template","payload":{"template_type":"button","text":" Sorry you are not subscribed to " + channel +". Would you like to subscribe " + channel + " ?","buttons":[{"type":"postback","title":"Subscribe","payload":"Subscribe"},{"type":"postback","title":"No, I'll do it later ","payload":"Main Menu"}]}}}};	
 			  sendFBMessage(usersession,  respobj.facebook);
@@ -886,7 +854,7 @@ function RecordScenario (apiresp,usersession)
 			{
 			   var respobj= {"facebook":{"attachment":{"type":"template","payload":{"template_type":"button","text":" Sorry your DVR storage is full.  Would you like to upgrade your DVR ?","buttons":[{"type":"postback","title":"Upgrade my DVR","payload":"Upgrade my DVR"},{"type":"postback","title":"No, I'll do it later ","payload":"Main Menu"}]}}}};
 			   sendFBMessage(usersession,  respobj.facebook);
-			}
+			}*/
 		else 
 			{  //Schedule Recording
 			   console.log(" Channel: " + apiresp.result.parameters.Channel +" Programs: " + apiresp.result.parameters.Programs +" SelectedSTB: " + apiresp.result.parameters.SelectedSTB +" Duration: " + apiresp.result.parameters.Duration +" FiosId: " + apiresp.result.parameters.FiosId +" RegionId: " + apiresp.result.parameters.RegionId +" STBModel: " + apiresp.result.parameters.STBModel +" StationId: " + apiresp.result.parameters.StationId +" date: " + apiresp.result.parameters.date +" timeofpgm: " + apiresp.result.parameters.timeofpgm );
