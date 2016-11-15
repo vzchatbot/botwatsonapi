@@ -1058,7 +1058,7 @@ function DVRRecordCallback(apiresp,usersession)
 			}
 			else
 			{				
-				console.log( "Error occured in recording: " + subflow.facebook.result.msg);
+				console.log( "Error occured in recording: ");
 			        if (subflow != null  && subflow.facebook != null  && subflow.facebook.result != null && subflow.facebook.result.msg != null)
 					 respobj =  "I'm unable to schedule this Program now. Can you please try this later ("+subflow.facebook.result.code+" : " + subflow.facebook.result.msg +")"  ;
 				else if (subflow != null  && subflow.facebook != null  && subflow.facebook.errorPage != null && subflow.facebook.errorPage.errormsg  != null)
