@@ -590,10 +590,10 @@ function accountlinking(apireq,usersession)
 		       {"type":"template","payload":
 			{"template_type":"generic","elements":[
 				{"title":"Login to Verizon","image_url":"https://www98.verizon.com/foryourhome/vzrepair/siwizard/img/verizon-logo-200.png","buttons":[
-					{"type":"account_link","url":"https://www98.verizon.com/foryourhome/myaccount/ngen/upr/bots/preauth.aspx"}]}]}}}};
+					{"type":"account_link","url":"https://www98.verizon.com/vzssobot/upr/preauth"}]}]}}}};
 	         
         sendFBMessage(usersession,  respobj.facebook);
-	
+	/*
 	console.log("event content :- " +JSON.stringify(usersession.entry));	
 	    if(event)
 	       {
@@ -621,7 +621,7 @@ function accountlinking(apireq,usersession)
 				}
 			}
 		   }
-    		}
+    		} */
 	
 }
 
