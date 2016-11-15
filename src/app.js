@@ -44,28 +44,15 @@ logger.fatal('fatel');
 function processEvent(event) {
     var sender = event.sender.id.toString();
 
-    if ((event.message && event.message.text) || (event.postback && event.postback.payload)) {
+    if ((event.message && event.message.text) || (event.postback && event.postback.payload)) 
+    {
         var text = event.message ? event.message.text : event.postback.payload;      
 	 console.log("Before Account Linking ");  
-	    console.log(event);  
-	    console.log("event content :- " + event.entry);
-	//account linking check
-        /*if (session.message.sourceEvent.account_linking == undefined) 
-	{
-            console.log("Account Linking null");
-        }
-        else {
-		 console.log("inside Account Linking ");  
-            console.log("Account Linking convert: " + JSON.stringify(session.message.sourceEvent.account_linking, null, 2));
-            console.log("Account Linking convert: " + JSON.stringify(session.message.sourceEvent.account_linking.authorization_code, null, 2));
-            console.log("Account Linking convert: " + JSON.stringify(session.message.sourceEvent.account_linking.status, null, 2));
-  	    session.send("Your account is linked now.");
-		getVzProfile(session,function (str){ getVzProfileCallBack(str,session)});   
-		MainMenu(session);
-	
-        }   */
+	 console.log(event);  
+	 console.log("event content :- " + event.entry);
 	    
-	if (!sessionIds.has(sender)) {
+	if (!sessionIds.has(sender))
+	{
             sessionIds.set(sender, uuid.v1());
         }
 	    
