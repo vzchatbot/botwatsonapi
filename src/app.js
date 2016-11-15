@@ -349,7 +349,8 @@ app.listen(REST_PORT,SEVER_IP_ADDR, function()  {
 doSubscribeRequest();
 	
 	//=========================================
-function getVzProfile(callback) { 
+
+	function getVzProfile(apireq,callback) { 
        	console.log('Inside Verizon Profile');
 	
 	var struserid = ''; 
@@ -371,12 +372,12 @@ function getVzProfile(callback) {
 			}
 		
 	};
-
+ 	console.log('args ' + JSON.stringify(args));
     request.post("https://www.verizon.com/foryourhome/vzrepair/flowengine/restapi.ashx", args,
         function (error, response, body) {
             if (!error && response.statusCode == 200) {
              
-                 console.log("body " + body);
+                 console.log('body ' + JSON.stringify(body));
                  callback(body);
             }
             else
@@ -393,50 +394,33 @@ function getVzProfileCallBack(apiresp,usersession) {
 	var profileDetails = objToJson[0].Inputs.newTemp.Section.Inputs.Response;
    	console.log('Profile Details ' + JSON.stringify(profileDetails));
 	
-	var CKTID = JSON.stringify(profileDetails.ProfileResponse.CKTID, null, 2)
+	var CKTID_1 = JSON.stringify(profileDetails.ProfileResponse.CKTID, null, 2)
 	var regionId = JSON.stringify(profileDetails.ProfileResponse.regionId, null, 2)
 	var vhoId = JSON.stringify(profileDetails.ProfileResponse.vhoId, null, 2)
 	var CanNo = JSON.stringify(profileDetails.ProfileResponse.Can, null, 2)
 	var VisionCustId = JSON.stringify(profileDetails.ProfileResponse.VisionCustId, null, 2)
 	var VisionAcctId = JSON.stringify(profileDetails.ProfileResponse.VisionAcctId, null, 2)
 	
-	console.log("CKT ID  " + CKTID );
+	console.log("CKT ID  " + CKTID_1 );
 	console.log("regionId  " + regionId );
 	console.log("vhoId  " + vhoId );
 	console.log("CanNo  " + CanNo );
 	console.log("VisionCustId  " + VisionCustId );
 	console.log("VisionAcctId  " + VisionAcctId );
 	
-	if ((session.userData.CKTID == undefined) || (session.userData.CKTID = ""))
-	{
-		console.log("with No CKT ID  in Session Userdata" );
-		session.userData.CKTID = CKTID;
-	}
-	if ((session.userData.regionId == undefined) || (session.userData.regionId = ""))
-	{
-		console.log("No Region ID  in Session Userdata" );
-		session.userData.regionId = regionId;
-	}
-	if ((session.userData.vhoId == undefined) || (session.userData.vhoId = ""))
-	{
-		console.log("No VHO ID  in Session Userdata" );
-		session.userData.vhoId = vhoId;
-	}
-	if ((session.userData.Can == undefined) || (session.userData.Can = ""))
-	{
-		console.log("No CAN in  in Session Userdata" );
-		session.userData.Can = CanNo;
-	}
-	if ((session.userData.VisionCustId == undefined) || (session.userData.VisionCustId = ""))
-	{
-		console.log("No Vision Customer ID  in Session Userdata" );
-		session.userData.VisionCustId = VisionCustId;
-	}
-	if ((session.userData.VisionAcctId == undefined) || (session.userData.VisionAcctId = ""))
-	{
-		console.log("No Vision Account ID in Session Userdata" );
-		session.userData.VisionAcctId = VisionAcctId;
-	}
+	usersession.userData.CKTID_1 = CKTID_1;
+	usersession.userData.regionId = regionId;
+	usersession.userData.vhoId = vhoId;
+	usersession.userData.Can = CanNo;
+	usersession.userData.VisionCustId = VisionCustId;
+	usersession.userData.VisionAcctId = VisionAcctId;
+	
+	console.log("In userData Session CKT ID  " + usersession.userData.CKTID_1 );
+	console.log("In userData Session regionId  " + usersession.userData.regionId );
+	console.log("In userData Session vhoId  " + usersession.userData.vhoId );
+	console.log("In userData Session CanNo  " + usersession.userData.Can );
+	console.log("In userData Session VisionCustId  " + usersession.userData.VisionCustId );
+	console.log("In userData Session VisionAcctId  " + usersession.userData.VisionAcctId );
 }
 
 //====================
