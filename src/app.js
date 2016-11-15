@@ -61,22 +61,23 @@ function processEvent(event) {
         console.log("info text :-" + text);
         console.log("Error Text :-" + text);
 	console.log("event content :- " +JSON.stringify(event.message));
-	    
-	/*    
-	if (event.message.sourceEvent.account_linking == undefined) 
+	console.log("event account_linking content :- " +JSON.stringify(event.message.account_linking));
+	  
+	if (event.message.account_linking == undefined) 
 	{
             console.log("Account Linking null");
         }
         else {
-		 console.log("inside Account Linking ");  
-            console.log("Account Linking convert: " + JSON.stringify(event.message.sourceEvent.account_linking, null, 2));
-            console.log("Account Linking convert: " + JSON.stringify(event.message.sourceEvent.account_linking.authorization_code, null, 2));
-            console.log("Account Linking convert: " + JSON.stringify(event.message.sourceEvent.account_linking.status, null, 2));
-  	    session.send("Your account is linked now.");
-		getVzProfile(event,function (str){ getVzProfileCallBack(str,event)});   
-		MainMenu(event);
+		    console.log("inside Account Linking ");  
+		    console.log("Account Linking convert: " + JSON.stringify(event.message.account_linking, null, 2));
+		    console.log("Account Linking convert: " + JSON.stringify(event.message.account_linking.authorization_code, null, 2));
+		    console.log("Account Linking convert: " + JSON.stringify(event.message.account_linking.status, null, 2));
+		    //session.send("Your account is linked now.");
+			sendFBMessage(sender,  {text:"Your account is linked now."});
+			getVzProfile(event,function (str){ getVzProfileCallBack(str,event)});   
+			MainMenu(event);
 	
-        }*/
+       
      
         var apiaiRequest  = apiAiService.textRequest(text,{sessionId: sessionIds.get(sender)});
         apiaiRequest .on('response', function (response)  {
@@ -525,7 +526,6 @@ function getVzProfileCallBack(apiresp,usersession) {
 
         if (req.query.fiosID) {
             reqUrl = "/tvlistingdetail/" + req.query.fiosID;
-
             console.log("Linear Program");
         }
         else {
