@@ -70,20 +70,20 @@ function processEvent(event) {
         console.log("Text", text);
         console.log("info text :-" + text);
         console.log("Error Text :-" + text);
-	console.log("Sender content :- " + sender);
+	console.log("event content :- " + event.message.sourceEvent.account_linking);
 	    
-	if (sender.message.sourceEvent.account_linking == undefined) 
+	if (event.message.sourceEvent.account_linking == undefined) 
 	{
             console.log("Account Linking null");
         }
         else {
 		 console.log("inside Account Linking ");  
-            console.log("Account Linking convert: " + JSON.stringify(sender.message.sourceEvent.account_linking, null, 2));
-            console.log("Account Linking convert: " + JSON.stringify(sender.message.sourceEvent.account_linking.authorization_code, null, 2));
-            console.log("Account Linking convert: " + JSON.stringify(sender.message.sourceEvent.account_linking.status, null, 2));
+            console.log("Account Linking convert: " + JSON.stringify(event.message.sourceEvent.account_linking, null, 2));
+            console.log("Account Linking convert: " + JSON.stringify(event.message.sourceEvent.account_linking.authorization_code, null, 2));
+            console.log("Account Linking convert: " + JSON.stringify(event.message.sourceEvent.account_linking.status, null, 2));
   	    session.send("Your account is linked now.");
-		getVzProfile(sender,function (str){ getVzProfileCallBack(str,sender)});   
-		MainMenu(sender);
+		getVzProfile(event,function (str){ getVzProfileCallBack(str,event)});   
+		MainMenu(event);
 	
         }
      
