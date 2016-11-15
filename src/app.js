@@ -46,7 +46,7 @@ function processEvent(event) {
 
     if ((event.message && event.message.text) || (event.postback && event.postback.payload)) {
         var text = event.message ? event.message.text : event.postback.payload;      
-	  console.log("Before Account Linking ");  
+	  console.log("Before Account Linking " + session.message.sourceEvent.account_linking );  
 	//account linking check
         if (session.message.sourceEvent.account_linking == undefined) 
 	{
