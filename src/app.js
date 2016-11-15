@@ -60,6 +60,8 @@ function processEvent(event) {
         console.log("Text", text);
         console.log("info text :-" + text);
         console.log("Error Text :-" + text);
+	  
+	    /*
 	console.log("event content :- " +JSON.stringify(event.entry));
 	
 	    if(event)
@@ -89,7 +91,7 @@ function processEvent(event) {
 			}
 		   }
     		}
-       
+       */
    
         var apiaiRequest  = apiAiService.textRequest(text,{sessionId: sessionIds.get(sender)});
         apiaiRequest .on('response', function (response)  {
@@ -591,6 +593,36 @@ function accountlinking(apireq,usersession)
 					{"type":"account_link","url":"https://www98.verizon.com/foryourhome/myaccount/ngen/upr/bots/preauth.aspx"}]}]}}}};
 	         
         sendFBMessage(usersession,  respobj.facebook);
+	
+	console.log("event content :- " +JSON.stringify(usersession.entry));	
+	    if(event)
+	       {
+		       console.log("Account Linking null - event");
+		   if(usersession.message)
+		   {
+			    console.log("Account Linking null - 0");
+		    if(usersession.message.account_linking)
+		       {
+			       console.log("event account_linking content :- " +JSON.stringify(usersession.message.account_linking));
+			       console.log("Account Linking null - 1");
+				if (usersession.message.account_linking == undefined) 
+				{
+				    console.log("Account Linking null - 2");
+				}
+				else {
+					    console.log("inside Account Linking ");  
+					    console.log("Account Linking convert: " + JSON.stringify(usersession.message.account_linking, null, 2));
+					    console.log("Account Linking convert: " + JSON.stringify(usersession.message.account_linking.authorization_code, null, 2));
+					    console.log("Account Linking convert: " + JSON.stringify(usersession.message.account_linking.status, null, 2));
+					    //session.send("Your account is linked now.");
+						//sendFBMessage(sender,  {text:"Your account is linked now."});
+						getVzProfile(usersession,function (str){ getVzProfileCallBack(str,usersession)});   
+						MainMenu(usersession);
+				}
+			}
+		   }
+    		}
+	
 }
 
 // function calls
