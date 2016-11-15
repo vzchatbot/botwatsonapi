@@ -61,10 +61,11 @@ function processEvent(event) {
         console.log("info text :-" + text);
         console.log("Error Text :-" + text);
 	console.log("event content :- " +JSON.stringify(event.message));
-	//console.log("event account_linking content :- " +JSON.stringify(event.message.account_linking));
+	
 	  
 	    if(event.message.account_linking)
 	       {
+		       console.log("event account_linking content :- " +JSON.stringify(event.message.account_linking));
 		       console.log("Account Linking null - 1");
 			if (event.message.account_linking == undefined) 
 			{
@@ -76,7 +77,7 @@ function processEvent(event) {
 				    console.log("Account Linking convert: " + JSON.stringify(event.message.account_linking.authorization_code, null, 2));
 				    console.log("Account Linking convert: " + JSON.stringify(event.message.account_linking.status, null, 2));
 				    //session.send("Your account is linked now.");
-					sendFBMessage(sender,  {text:"Your account is linked now."});
+					//sendFBMessage(sender,  {text:"Your account is linked now."});
 					getVzProfile(event,function (str){ getVzProfileCallBack(str,event)});   
 					MainMenu(event);
 			}
