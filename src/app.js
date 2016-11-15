@@ -649,7 +649,7 @@ function PgmSearch(apireq,callback) {
 			}
 		};
 	
-	 console.log("args " + args);
+	console.log("args : " + JSON.stringify(args));
 	
     request.post("https://www.verizon.com/foryourhome/vzrepair/flowengine/restapi.ashx", args,
         function (error, response, body) {
@@ -734,7 +734,10 @@ function ChnlSearchCallback(apiresp,usersession) {
 	var chposition = objToJson[0].Inputs.newTemp.Section.Inputs.Response;
 	
 	console.log("chposition :" + chposition)
-	sendFBMessage(usersession,  {text:"You can watch it on channel # " + chposition});
+	if(chposition !=null)
+		sendFBMessage(usersession,  {text:"You can watch it on channel # " + chposition});
+	else
+		sendFBMessage(usersession,  {text:"Sorry I don't have the details. Can you try with another. "});
 } 
 	
 function recommendations(apireq,pgmtype,callback) { 
