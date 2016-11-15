@@ -193,7 +193,7 @@ function chunkString(s, len) {
 
 function sendFBMessage(sender, messageData, callback) {
 	
-	   console.log('sendFBMessage: sender '+ sender + "messageData  " + messageData);
+	 //  console.log('sendFBMessage: sender '+ sender + "messageData  " + messageData);
     request({
         url: 'https://graph.facebook.com/v2.6/me/messages',
         qs: {access_token: FB_PAGE_ACCESS_TOKEN},
