@@ -712,7 +712,7 @@ function PgmSearchCallback(apiresp,usersession) {
 		 }
 	  
 	}
-	if (subflow.facebook != null)
+	if (subflow != null && subflow.facebook != null)
 	      sendFBMessage(usersession,  subflow.facebook);
 	else
 	      sendFBMessage(usersession,  {text:"Sorry I don't have the details. Can you try with the different one."});
