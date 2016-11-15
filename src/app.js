@@ -47,6 +47,7 @@ function processEvent(event) {
     if ((event.message && event.message.text) || (event.postback && event.postback.payload)) {
         var text = event.message ? event.message.text : event.postback.payload;      
 	 console.log("Before Account Linking ");  
+	    console.log(event);  
 	//account linking check
         /*if (session.message.sourceEvent.account_linking == undefined) 
 	{
@@ -70,7 +71,7 @@ function processEvent(event) {
         console.log("Text", text);
         console.log("info text :-" + text);
         console.log("Error Text :-" + text);
-	console.log("event content :- " + event.message.sourceEvent.account_linking);
+	/*console.log("event content :- " + event.message.sourceEvent.account_linking);
 	    
 	if (event.message.sourceEvent.account_linking == undefined) 
 	{
@@ -85,7 +86,7 @@ function processEvent(event) {
 		getVzProfile(event,function (str){ getVzProfileCallBack(str,event)});   
 		MainMenu(event);
 	
-        }
+        }*/
      
         var apiaiRequest  = apiAiService.textRequest(text,{sessionId: sessionIds.get(sender)});
         apiaiRequest .on('response', function (response)  {
