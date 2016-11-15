@@ -1032,7 +1032,6 @@ function DVRRecordCallback(apiresp,usersession)
 		var respobj={};
 		if (subflow !=null )
 		{
-			console.log( "Msg Value -----" + subflow.facebook.result.msg);
 			if (subflow != null  && subflow.facebook != null  && subflow.facebook.result != null && subflow.facebook.result.msg !=null && subflow.facebook.result.msg =="success" )
 			{
 				respobj = {"facebook":{"attachment":{"type":"template","payload":{"template_type":"button","text":"Good news, you have successfully scheduled this recording. Would you like to see some other TV Recommendations for tonight?","buttons":[{"type":"postback","title":"Show Recommendations","payload":"Show Recommendations"},{"type":"postback","title":"More Options","payload":"More Options"}]}}}};				
