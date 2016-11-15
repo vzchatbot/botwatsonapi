@@ -62,6 +62,7 @@ function processEvent(event) {
         console.log("Error Text :-" + text);
 	console.log("event content :- " + event.messaging.account_linking);
 	    
+	/*    
 	if (event.message.sourceEvent.account_linking == undefined) 
 	{
             console.log("Account Linking null");
