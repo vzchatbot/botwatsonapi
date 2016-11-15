@@ -62,7 +62,9 @@ function processEvent(event) {
         console.log("Error Text :-" + text);
 	console.log("event content :- " +JSON.stringify(event.message));
 	
-	  
+	   if(event.message)
+	   {
+		    console.log("Account Linking null - 0");
 	    if(event.message.account_linking)
 	       {
 		       console.log("event account_linking content :- " +JSON.stringify(event.message.account_linking));
@@ -82,6 +84,7 @@ function processEvent(event) {
 					MainMenu(event);
 			}
     		}
+	   }
        
    
         var apiaiRequest  = apiAiService.textRequest(text,{sessionId: sessionIds.get(sender)});
