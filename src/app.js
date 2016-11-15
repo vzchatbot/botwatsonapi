@@ -48,6 +48,7 @@ function processEvent(event) {
         var text = event.message ? event.message.text : event.postback.payload;      
 	 console.log("Before Account Linking ");  
 	    console.log(event);  
+	    console.log("event content :- " + event.entry);
 	//account linking check
         /*if (session.message.sourceEvent.account_linking == undefined) 
 	{
@@ -581,7 +582,12 @@ function getVzProfileCallBack(apiresp,usersession) {
 function accountlinking(apireq,usersession)
 {
 	console.log('Account Linking Button') ;
-	var respobj ={"facebook":{"attachment":{"type":"template","payload":{"template_type":"generic","elements":[{"title":"Login to Verizon","image_url":"https://www98.verizon.com/foryourhome/vzrepair/siwizard/img/verizon-logo-200.png","buttons":[{"type":"account_link","url":"https://www98.verizon.com/foryourhome/myaccount/ngen/upr/bots/preauth.aspx"}]}]}}}};
+	var respobj ={"facebook":
+		      {"attachment":
+		       {"type":"template","payload":
+			{"template_type":"generic","elements":[
+				{"title":"Login to Verizon","image_url":"https://www98.verizon.com/foryourhome/vzrepair/siwizard/img/verizon-logo-200.png","buttons":[
+					{"type":"account_link","url":"https://www98.verizon.com/foryourhome/myaccount/ngen/upr/bots/preauth.aspx"}]}]}}}};
 	         
         sendFBMessage(usersession,  respobj.facebook);
 }
