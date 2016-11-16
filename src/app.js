@@ -1218,7 +1218,7 @@ function stationsearch(usersession)
 	 var splittedText = splitResponse(respobj.facebook.text);
 	console.log ("splittedText:"+splittedText)
                      async.eachSeries(splittedText, (textPart, callback) => {
-                        sendFBMessage(sender, {text: textPart}, callback); });
+                        sendFBMessage(usersession, {text: textPart}, callback); });
 }
 function testmethod(usersession)
 {
