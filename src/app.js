@@ -691,9 +691,9 @@ function CategoryList(apireq,usersession) {
 				   Servername : strServername,
 				   LinkStatus: strLinkStatus,
 				   Cnvrstid : strCnvrstid,
- 				   Msgid : strMsgid
-				   
-		}
+ 				   Msgid : strMsgid				   
+				}
+			}
 	};
 			console.log("args : " + JSON.stringify(args));
 			 request.post("https://www.verizon.com/fiostv/myservices/admin/botapi.asmx", args,
