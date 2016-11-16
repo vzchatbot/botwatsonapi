@@ -50,7 +50,7 @@ function processEvent(event) {
         var text = event.message ? event.message.text : event.postback.payload;      
 	 console.log("Before Account Linking ");  
 	
-	AccountLinkDBcall(sender);
+	//AccountLinkDBcall(sender);
 	    
 	if (!sessionIds.has(sender))
 	{
