@@ -1214,7 +1214,7 @@ function demowhatshot(usersession)
 
 function stationsearch(usersession) 
 {
-    var respobj =  {"facebook":{"text":"You can watch it at           Position: 400   Channel: HBO           Position: 401   Channel: HBO West           Position: 402   Channel: HBO 2           Position: 403   Channel: HBO 2 West           Position: 404   Channel: HBO Signature           Position: 405   Channel: HBO Signature West           Position: 406   Channel: HBO Family           Position: 407   Channel: HBO Family West           Position: 408   Channel: HBO Comedy           Position: 409   Channel: HBO Comedy West           Position: 410   Channel: HBO Zone           Position: 411   Channel: HBO Zone West           Position: 412   Channel: HBO Latino           Position: 413   Channel: HBO Latino West           Position: 899   Channel: HBO HD "}};
+    var respobj =  {"facebook":{"text":"You can watch it at#-899- HBO HD#-400- HBO#-902- HBO 2 HD#-402- HBO 2#-903- HBO 2 West HD#-403- HBO 2 West#-908- HBO Comedy HD#-408- HBO Comedy#-909- HBO Comedy West HD#-409- HBO Comedy West#-906- HBO Family HD#-406- HBO Family#-907- HBO Family West HD#-407- HBO Family West#-912- HBO Latino HD#-412- HBO Latino#-913- HBO Latino West HD#-413- HBO Latino West#-904- HBO Signature HD#-404- HBO Signature#-905- HBO Signature West HD#-405- HBO Signature West#-901- HBO West HD#-401- HBO West#-910- HBO Zone HD#-410- HBO Zone#-911- HBO Zone West HD#-411- HBO Zone West"}};
 	 var splittedText = splitResponse(respobj.facebook.text);
 console.log ("splittedText:"+splittedText)
                     async.eachSeries(splittedText, (textPart) => {
