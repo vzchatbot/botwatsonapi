@@ -673,9 +673,14 @@ function CategoryList(apireq,usersession) {
 			 "quick_replies":[ 
 			    { "content_type": "text", "payload":"Show Comedy movies", "title":"Comedy" }, 
 			    { "content_type": "text", "payload":"Show Drama movies", "title":"Drama" }, 
+			    { "content_type": "text", "title":"Music", "payload":"show Music shows" },
 			    { "content_type": "text", "payload":"Show Sports program" , "title":"Sports"}, 
 			    { "content_type": "text", "payload":"show Sci-Fi movies" , "title":"Sci-Fi"},
-			    { "content_type": "text", "payload":"show categories list pageno: 1" , "title":"More Categories "}
+			    { "content_type": "text", "title":"Children & Family", "payload":"show Kids movies" }, 
+			    { "content_type": "text", "title":"Action & Adventure", "payload":"show Action movies" }, 
+			    { "content_type": "text", "title":"Documentary", "payload":"show Documentary movies" }, 
+			    { "content_type": "text", "title":"Mystery", "payload":"show Mystery movies" }
+			   // { "content_type": "text", "payload":"show categories list pageno: 1" , "title":"More Categories "}
 			 ] }};
 			break;
 		}           
