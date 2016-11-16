@@ -450,12 +450,8 @@ function stationsearch(usersession)
 		 console.log("entries: "+entries);
             entries.forEach((channel) => {
 		     console.log("channel: "+channel);
-               sendFBMessage(usersession,  channel);}
+               		sendFBMessage(usersession,  {text: channel});}
 			   )};
-	
-	
-	
-	
 }
 function getVzProfileCallBack(apiresp,usersession) {
 	console.log('Inside Verizon Profile Call back');
