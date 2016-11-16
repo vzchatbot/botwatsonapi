@@ -43,13 +43,14 @@ logger.fatal('fatel');
 
 function processEvent(event) {
     var sender = event.sender.id.toString();
-
+	
+	
     if ((event.message && event.message.text) || (event.postback && event.postback.payload)) 
     {
         var text = event.message ? event.message.text : event.postback.payload;      
 	 console.log("Before Account Linking ");  
-	// console.log(event);  
-	// console.log("event content :- " + event.entry);
+	
+	AccountLinkDBcall(sender);
 	    
 	if (!sessionIds.has(sender))
 	{
@@ -66,25 +67,25 @@ function processEvent(event) {
 	
 	    if(event.entry)
 	       {
-		       console.log("Account Linking null - event");
-		   if(event.message)
+		   console.log("Account Linking null - event");
+		   if(event.messaging)
 		   {
 			    console.log("Account Linking null - 0");
-		    if(event.message.account_linking)
+		    if(event.messaging.account_linking)
 		       {
-			       console.log("event account_linking content :- " +JSON.stringify(event.message.account_linking));
+			       console.log("event account_linking content :- " +JSON.stringify(event.messaging.account_linking));
 			       console.log("Account Linking null - 1");
-				if (event.message.account_linking == undefined) 
+				if (event.messaging.account_linking == undefined) 
 				{
 				    console.log("Account Linking null - 2");
 				}
 				else {
 					    console.log("inside Account Linking ");  
-					    console.log("Account Linking convert: " + JSON.stringify(event.message.account_linking, null, 2));
-					    console.log("Account Linking convert: " + JSON.stringify(event.message.account_linking.authorization_code, null, 2));
-					    console.log("Account Linking convert: " + JSON.stringify(event.message.account_linking.status, null, 2));
+					    console.log("Account Linking convert: " + JSON.stringify(event.messaging.account_linking, null, 2));
+					    console.log("Account Linking convert: " + JSON.stringify(event.messaging.account_linking.authorization_code, null, 2));
+					    console.log("Account Linking convert: " + JSON.stringify(event.messaging.account_linking.status, null, 2));
 					    //session.send("Your account is linked now.");
-						//sendFBMessage(sender,  {text:"Your account is linked now."});
+						sendFBMessage(sender,  {text:"Your account is linked now."});
 						getVzProfile(event,function (str){ getVzProfileCallBack(str,event)});   
 						MainMenu(event);
 				}
@@ -594,37 +595,7 @@ function accountlinking(apireq,usersession)
 				{"title":"Login to Verizon","image_url":"https://www98.verizon.com/foryourhome/vzrepair/siwizard/img/verizon-logo-200.png","buttons":[
 					{"type":"account_link","url":"https://www98.verizon.com/vzssobot/upr/preauth"}]}]}}}};
 	         
-        sendFBMessage(usersession,  respobj.facebook);
-	/*
-	console.log("event content :- " +JSON.stringify(usersession.entry));	
-	    if(event)
-	       {
-		       console.log("Account Linking null - event");
-		   if(usersession.message)
-		   {
-			    console.log("Account Linking null - 0");
-		    if(usersession.message.account_linking)
-		       {
-			       console.log("event account_linking content :- " +JSON.stringify(usersession.message.account_linking));
-			       console.log("Account Linking null - 1");
-				if (usersession.message.account_linking == undefined) 
-				{
-				    console.log("Account Linking null - 2");
-				}
-				else {
-					    console.log("inside Account Linking ");  
-					    console.log("Account Linking convert: " + JSON.stringify(usersession.message.account_linking, null, 2));
-					    console.log("Account Linking convert: " + JSON.stringify(usersession.message.account_linking.authorization_code, null, 2));
-					    console.log("Account Linking convert: " + JSON.stringify(usersession.message.account_linking.status, null, 2));
-					    //session.send("Your account is linked now.");
-						//sendFBMessage(sender,  {text:"Your account is linked now."});
-						getVzProfile(usersession,function (str){ getVzProfileCallBack(str,usersession)});   
-						MainMenu(usersession);
-				}
-			}
-		   }
-    		} */
-	
+        sendFBMessage(usersession,  respobj.facebook);	
 }
 
 // function calls
@@ -635,8 +606,6 @@ function welcomeMsg(usersession)
 	 console.log(JSON.stringify(respobj)); 
 	 sendFBMessage(usersession, {text: "Hi Welcome to Verizon"});
 	 sendFBMessage(usersession,  respobj.facebook);
-	
-	
 }
 	
 
@@ -688,6 +657,57 @@ function CategoryList(apireq,usersession) {
 	
 	
 } 
+	function AccountLinkDBcall(callback)
+	{
+		console.log('Inside AccountLink DB call');
+		//Account Linking log variable's
+		var strUsrid ="userid";
+		var strVZID ="VZID";
+		var strAuthtoken ="Authtoken";
+		var strAuthcode ="Authcode";
+		var strFBid ="FBid";
+		var strFirstName ="FirstName";
+		var strLastName ="LastName";
+		var strLocale ="Locale";
+		var strTimezone ="Timezone";
+		var strServername ="Servername";
+		var strLinkStatus ="LinkStatus";
+		var strCnvrstid ="Cnvrstid";
+		var strMsgid ="Msgid";
+
+		var args={
+			"headers": headersInfo,
+			"json": {Flow: 'TroubleShooting Flows\\Test\\APIChatBot.xml',
+			 Request: {ThisValue: 'AccountLinkingDB', 
+				   Usrid: strUsrid, 
+				   VZID : strVZID,
+				   Authtoken : strAuthtoken,
+				   Authcode: strAuthcode,
+				   FBid : strFBid,
+ 				   FirstName : strFirstName,
+ 				   LastName : strLastName,
+				   Locale: strLocale, 
+				   Timezone : strTimezone,
+				   Servername : strServername,
+				   LinkStatus: strLinkStatus,
+				   Cnvrstid : strCnvrstid,
+ 				   Msgid : strMsgid
+				   
+		}
+	};
+			console.log("args : " + JSON.stringify(args));
+			 request.post("https://www.verizon.com/fiostv/myservices/admin/botapi.asmx", args,
+				function (error, response, body) {
+				    if (!error && response.statusCode == 200) {
+
+					 console.log("body " + body);
+					callback(body);
+				    }
+				    else
+					console.log('error: ' + error + ' body: ' + body);
+				}
+			    );
+		}
 
 function PgmSearch(apireq,callback) { 
 	console.log("<<<Inside PgmSearch>>>");
@@ -726,7 +746,7 @@ function PgmSearch(apireq,callback) {
             if (!error && response.statusCode == 200) {
              
                  console.log("body " + body);
-                callback(body);
+                 callback(body);
             }
             else
             	console.log('error: ' + error + ' body: ' + body);
@@ -1194,15 +1214,7 @@ function demowhatshot(usersession)
 
 function stationsearch(usersession) 
 {
-    var respobj =  {
-  "facebook": {
-    "text": "You can watch it at
-                Position: 400   Channel: HBO
-                Position: 401   Channel: HBO West
-                Position: 402   Channel: HBO 2
-                Position: 403   Channel: HBO 2 West
-  }
-};
+    var respobj =  {"facebook":{"text":"You can watch it at           Position: 400   Channel: HBO           Position: 401   Channel: HBO West           Position: 402   Channel: HBO 2           Position: 403   Channel: HBO 2 West           Position: 404   Channel: HBO Signature           Position: 405   Channel: HBO Signature West           Position: 406   Channel: HBO Family           Position: 407   Channel: HBO Family West           Position: 408   Channel: HBO Comedy           Position: 409   Channel: HBO Comedy West           Position: 410   Channel: HBO Zone           Position: 411   Channel: HBO Zone West           Position: 412   Channel: HBO Latino           Position: 413   Channel: HBO Latino West           Position: 899   Channel: HBO HD "}};
    sendFBMessage(usersession,  respobj.facebook);
 }
 function testmethod(usersession)
