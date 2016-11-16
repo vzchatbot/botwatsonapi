@@ -1217,7 +1217,7 @@ function stationsearch(usersession)
 console.log ("splittedText:"+splittedText)
                     async.eachSeries(splittedText, (textPart) => {
 			    console.log ("textPart:"+textPart)
-                        sendFBMessage(sender, {text: textPart});  }); 
+                        sendFBMessage(usersession, {text: textPart});  }); 
 	//sendFBMessage(usersession,  respobj.facebook);
 }
 function testmethod(usersession)
