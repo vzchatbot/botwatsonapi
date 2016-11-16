@@ -50,7 +50,6 @@ function processEvent(event) {
         var text = event.message ? event.message.text : event.postback.payload;      
 	 console.log("Before Account Linking ");  
 	
-	//AccountLinkDBcall(sender);
 	    
 	if (!sessionIds.has(sender))
 	{
@@ -594,8 +593,8 @@ function accountlinking(apireq,usersession)
 			{"template_type":"generic","elements":[
 				{"title":"Login to Verizon","image_url":"https://www98.verizon.com/foryourhome/vzrepair/siwizard/img/verizon-logo-200.png","buttons":[
 					{"type":"account_link","url":"https://www98.verizon.com/vzssobot/upr/preauth"}]}]}}}};
-	         
-        sendFBMessage(usersession,  respobj.facebook);	
+	AccountLinkDBcall(apireq,usersession);         
+	sendFBMessage(usersession,  respobj.facebook);	
 }
 
 // function calls
@@ -657,7 +656,7 @@ function CategoryList(apireq,usersession) {
 	
 	
 } 
-	function AccountLinkDBcall(callback)
+	function AccountLinkDBcall(apireq,usersession)
 	{
 		console.log('Inside AccountLink DB call');
 		//Account Linking log variable's
@@ -677,8 +676,7 @@ function CategoryList(apireq,usersession) {
 
 		var args={
 			"headers": headersInfo,
-			"json": {Flow: 'TroubleShooting Flows\\Test\\APIChatBot.xml',
-			 Request: {ThisValue: 'AccountLinkingDB', 
+			"json": {Request: {ThisValue: 'AccountLinkingDB', 
 				   Usrid: strUsrid, 
 				   VZID : strVZID,
 				   Authtoken : strAuthtoken,
@@ -701,7 +699,7 @@ function CategoryList(apireq,usersession) {
 				    if (!error && response.statusCode == 200) {
 
 					 console.log("body " + body);
-					callback(body);
+					usersession(body);
 				    }
 				    else
 					console.log('error: ' + error + ' body: ' + body);
