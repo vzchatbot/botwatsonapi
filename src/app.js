@@ -1194,39 +1194,7 @@ function demowhatshot(usersession)
 
 function stationsearch(usersession) 
 {
-    var respobj =  {
-  "facebook": {
-    "text": "You can watch it at
-           Position: 400   Channel: HBO
-           Position: 401   Channel: HBO West
-           Position: 402   Channel: HBO 2
-           Position: 403   Channel: HBO 2 West
-           Position: 404   Channel: HBO Signature
-           Position: 405   Channel: HBO Signature West
-           Position: 406   Channel: HBO Family
-           Position: 407   Channel: HBO Family West
-           Position: 408   Channel: HBO Comedy
-           Position: 409   Channel: HBO Comedy West
-           Position: 410   Channel: HBO Zone
-           Position: 411   Channel: HBO Zone West
-           Position: 412   Channel: HBO Latino
-           Position: 413   Channel: HBO Latino West
-           Position: 899   Channel: HBO HD
-           Position: 901   Channel: HBO West HD
-           Position: 902   Channel: HBO 2 HD
-           Position: 903   Channel: HBO 2 West HD
-           Position: 904   Channel: HBO Signature HD
-           Position: 905   Channel: HBO Signature West HD
-           Position: 906   Channel: HBO Family HD
-           Position: 907   Channel: HBO Family West HD
-           Position: 908   Channel: HBO Comedy HD
-           Position: 909   Channel: HBO Comedy West HD
-           Position: 910   Channel: HBO Zone HD
-           Position: 911   Channel: HBO Zone West HD
-           Position: 912   Channel: HBO Latino HD
-           Position: 913   Channel: HBO Latino West HD"
-  }
-};
+    var respobj =  {"facebook":{"text":"You can watch it at           Position: 400   Channel: HBO           Position: 401   Channel: HBO West           Position: 402   Channel: HBO 2           Position: 403   Channel: HBO 2 West           Position: 404   Channel: HBO Signature           Position: 405   Channel: HBO Signature West           Position: 406   Channel: HBO Family           Position: 407   Channel: HBO Family West           Position: 408   Channel: HBO Comedy           Position: 409   Channel: HBO Comedy West           Position: 410   Channel: HBO Zone           Position: 411   Channel: HBO Zone West           Position: 412   Channel: HBO Latino           Position: 413   Channel: HBO Latino West           Position: 899   Channel: HBO HD "}};
    sendFBMessage(usersession,  respobj.facebook);
 }
 function testmethod(usersession)
