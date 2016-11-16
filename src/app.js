@@ -61,10 +61,10 @@ function processEvent(event) {
         console.log("info text :-" + text);
         console.log("Error Text :-" + text);
 	  
-	    /*
+	    
 	console.log("event content :- " +JSON.stringify(event.entry));
 	
-	    if(event)
+	    if(event.entry)
 	       {
 		       console.log("Account Linking null - event");
 		   if(event.message)
@@ -91,7 +91,7 @@ function processEvent(event) {
 			}
 		   }
     		}
-       */
+    
    
         var apiaiRequest  = apiAiService.textRequest(text,{sessionId: sessionIds.get(sender)});
         apiaiRequest .on('response', function (response)  {
@@ -339,7 +339,9 @@ app.post('/apiaiwebhook/', function (req, res)  {
 try {
         console.log ("here1");
         var data = JSONbig.parse(req.body);
-        var actualFBMessage={"attachment":{"type":"template","payload":{"template_type":"generic","elements":[{"title":"Login to Verizon","image_url":"https://ss7.vzw.com/is/image/VerizonWireless/vzw-logo-156-130-c?$pngalpha$&wid=156&hei=30","buttons":[{"type":"account_link","url":"https://www98.verizon.com/foryourhome/myaccount/ngen/upr/bots/preauth.aspx"}]}]}}};        
+        var actualFBMessage={"attachment":{"type":"template","payload":{"template_type":"generic","elements":[
+		{"title":"Login to Verizon","image_url":"https://ss7.vzw.com/is/image/VerizonWireless/vzw-logo-156-130-c?$pngalpha$&wid=156&hei=30","buttons":[
+		{"type":"account_link","url":"https://www98.verizon.com/foryourhome/myaccount/ngen/upr/bots/preauth.aspx"}]}]}}};        
 	var datResponse={"speech":"Sign in ","data":{"facebook": actualFBMessage},"contextOut":[{"name":"signin", "lifespan":2, "parameters":{"type":"signin"}}],"source":"apiaiwebhook"};
 	console.log ("here"+JSONbig.stringify(datResponse));  
         res.send(datResponse);
