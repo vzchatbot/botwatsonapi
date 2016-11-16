@@ -1194,7 +1194,15 @@ function demowhatshot(usersession)
 
 function stationsearch(usersession) 
 {
-    var respobj =  {"facebook":{"text":"You can watch it at           Position: 400   Channel: HBO           Position: 401   Channel: HBO West           Position: 402   Channel: HBO 2           Position: 403   Channel: HBO 2 West           "}};
+    var respobj =  {
+  "facebook": {
+    "text": "You can watch it at           
+        Position: 400   Channel: HBO           
+        Position: 401   Channel: HBO West           
+        Position: 402   Channel: HBO 2           
+        Position: 403   Channel: HBO 2 West"
+  }
+};
    sendFBMessage(usersession,  respobj.facebook);
 }
 function testmethod(usersession)
