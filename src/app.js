@@ -449,6 +449,7 @@ function stationsearch(usersession)
             let entries = respobj.facebook.channels.channel;
 		 console.log("entries: "+entries);
             entries.forEach((channel) => {
+		     console.log("channel: "+channel);
                sendFBMessage(usersession,  channel);}
 			   )};
 	
