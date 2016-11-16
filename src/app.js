@@ -613,7 +613,7 @@ function accountlinking(apireq,usersession)
 			{"template_type":"generic","elements":[
 				{"title":"Login to Verizon","image_url":"https://www98.verizon.com/foryourhome/vzrepair/siwizard/img/verizon-logo-200.png","buttons":[
 					{"type":"account_link","url":"https://www98.verizon.com/vzssobot/upr/preauth"}]}]}}}};
-	AccountLinkDBcall(apireq,usersession);         
+	// AccountLinkDBcall(apireq,usersession);         
 	sendFBMessage(usersession,  respobj.facebook);	
 }
 
