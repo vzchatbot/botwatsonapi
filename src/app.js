@@ -658,7 +658,7 @@ function CategoryList(apireq,usersession) {
 } 
 	function AccountLinkDBcall(apireq,usersession)
 	{
-		console.log('Inside AccountLink DB call');
+		console.log('Inside AccountLink DB call-0');
 		//Account Linking log variable's
 		var strUsrid ="userid";
 		var strVZID ="VZID";
@@ -674,6 +674,7 @@ function CategoryList(apireq,usersession) {
 		var strCnvrstid ="Cnvrstid";
 		var strMsgid ="Msgid";
 
+		console.log('Inside AccountLink DB call-1')
 		var args={
 			"headers": headersInfo,
 			"json": {Request: {ThisValue: 'AccountLinkingDB', 
@@ -693,6 +694,7 @@ function CategoryList(apireq,usersession) {
 				}
 			}
 	};
+		console.log('Inside AccountLink DB call-3')
 			console.log("args : " + JSON.stringify(args));
 			 request.post("https://www.verizon.com/fiostv/myservices/admin/botapi.asmx", args,
 				function (error, response, body) {
