@@ -437,14 +437,37 @@ doSubscribeRequest();
 	
 function stationsearch(usersession) 
 {
-    /*var respobj =  {"facebook":{"text":"You can watch it at#-899- HBO HD#-400- HBO#-902- HBO 2 HD#-402- HBO 2#-903- HBO 2 West HD#-403- HBO 2 West#-908- HBO Comedy HD#-408- HBO Comedy#-909- HBO Comedy West HD#-409- HBO Comedy West#-906- HBO Family HD#-406- HBO Family#-907- HBO Family West HD#-407- HBO Family West#-912- HBO Latino HD#-412- HBO Latino#-913- HBO Latino West HD#-413- HBO Latino West#-904- HBO Signature HD#-404- HBO Signature#-905- HBO Signature West HD#-405- HBO Signature West#-901- HBO West HD#-401- HBO West#-910- HBO Zone HD#-410- HBO Zone#-911- HBO Zone West HD#-411- HBO Zone West"}};
+        var cntr=0;
+	var diplaytext="";
+	var respobj ={"facebook":{"text":"You can watch it at ","channels":{"channel":["#-899- HBO HD","#-400- HBO","#-902- HBO 2 HD","#-402- HBO 2","#-903- HBO 2 West HD","#-403- HBO 2 West","#-908- HBO Comedy HD","#-408- HBO Comedy","#-909- HBO Comedy West HD","#-409- HBO Comedy West","#-906- HBO Family HD","#-406- HBO Family","#-907- HBO Family West HD","#-407- HBO Family West","#-912- HBO Latino HD","#-412- HBO Latino","#-913- HBO Latino West HD","#-413- HBO Latino West","#-904- HBO Signature HD","#-404- HBO Signature","#-905- HBO Signature West HD","#-405- HBO Signature West","#-901- HBO West HD","#-401- HBO West","#-910- HBO Zone HD","#-410- HBO Zone","#-911- HBO Zone West HD","#-411- HBO Zone West"]}}};
+	 if (respobj.facebook.channels.channel) {
+            let entries = respobj.facebook.channels.channel;
+		 console.log("entries: "+entries);
+            entries.forEach((channel) => {
+			     	console.log("channel: "+channel);
+				if(cntr==3)
+				{
+		    			sendFBMessage(usersession,  {text: diplaytext});
+					cntr=0;
+					diplaytext="";
+				}
+		    		else
+				{
+					cntr=cntr+1;
+					diplaytext =diplaytext + channel;
+				}
+	    			
+	    			       }
+			   )};
+	
+	/*var respobj =  {"facebook":{"text":"You can watch it at#-899- HBO HD#-400- HBO#-902- HBO 2 HD#-402- HBO 2#-903- HBO 2 West HD#-403- HBO 2 West#-908- HBO Comedy HD#-408- HBO Comedy#-909- HBO Comedy West HD#-409- HBO Comedy West#-906- HBO Family HD#-406- HBO Family#-907- HBO Family West HD#-407- HBO Family West#-912- HBO Latino HD#-412- HBO Latino#-913- HBO Latino West HD#-413- HBO Latino West#-904- HBO Signature HD#-404- HBO Signature#-905- HBO Signature West HD#-405- HBO Signature West#-901- HBO West HD#-401- HBO West#-910- HBO Zone HD#-410- HBO Zone#-911- HBO Zone West HD#-411- HBO Zone West"}};
 	 var splittedText = splitResponse(respobj.facebook.text);
 	console.log ("splittedText:"+splittedText)
                      async.eachSeries(splittedText, (textPart, callback) => {
                         sendFBMessage(usersession, {text: textPart}, callback); });
 			*/
 	
-	var respobj ={"facebook":{"text":"You can watch it at ","channels":{"channel":["#-899- HBO HD","#-400- HBO","#-902- HBO 2 HD","#-402- HBO 2","#-903- HBO 2 West HD","#-403- HBO 2 West","#-908- HBO Comedy HD","#-408- HBO Comedy","#-909- HBO Comedy West HD","#-409- HBO Comedy West","#-906- HBO Family HD","#-406- HBO Family","#-907- HBO Family West HD","#-407- HBO Family West","#-912- HBO Latino HD","#-412- HBO Latino","#-913- HBO Latino West HD","#-413- HBO Latino West","#-904- HBO Signature HD","#-404- HBO Signature","#-905- HBO Signature West HD","#-405- HBO Signature West","#-901- HBO West HD","#-401- HBO West","#-910- HBO Zone HD","#-410- HBO Zone","#-911- HBO Zone West HD","#-411- HBO Zone West"]}}};
+	/*var respobj ={"facebook":{"text":"You can watch it at ","channels":{"channel":["#-899- HBO HD","#-400- HBO","#-902- HBO 2 HD","#-402- HBO 2","#-903- HBO 2 West HD","#-403- HBO 2 West","#-908- HBO Comedy HD","#-408- HBO Comedy","#-909- HBO Comedy West HD","#-409- HBO Comedy West","#-906- HBO Family HD","#-406- HBO Family","#-907- HBO Family West HD","#-407- HBO Family West","#-912- HBO Latino HD","#-412- HBO Latino","#-913- HBO Latino West HD","#-413- HBO Latino West","#-904- HBO Signature HD","#-404- HBO Signature","#-905- HBO Signature West HD","#-405- HBO Signature West","#-901- HBO West HD","#-401- HBO West","#-910- HBO Zone HD","#-410- HBO Zone","#-911- HBO Zone West HD","#-411- HBO Zone West"]}}};
 	 if (respobj.facebook.channels.channel) {
             let entries = respobj.facebook.channels.channel;
 		 console.log("entries: "+entries);
@@ -452,6 +475,9 @@ function stationsearch(usersession)
 		     console.log("channel: "+channel);
                		sendFBMessage(usersession,  {text: channel});}
 			   )};
+	*/
+	
+	
 }
 function getVzProfileCallBack(apiresp,usersession) {
 	console.log('Inside Verizon Profile Call back');
