@@ -69,7 +69,7 @@ function processEvent(event) {
 	    
 	console.log("event content :- " +JSON.stringify(event.entry));
 	
-	    if(event.entry)
+	    if(event)
 	       {
 		   console.log("Account Linking null - event");
 		   if(event.messaging)
