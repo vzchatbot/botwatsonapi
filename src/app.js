@@ -520,6 +520,9 @@ function getVzProfileCallBack(apiresp,usersession) {
         userData_maps.set("VisionCustId", VisionCustId.replace(/\"/g, ""));
         userData_maps.set("VisionAcctId", VisionAcctId.replace(/\"/g, ""));
 	
+	
+	
+	
 	console.log("In userData Session CKT ID  " + usersession.userData.CKTID_1 );
 	console.log("In userData Session regionId  " + usersession.userData.regionId );
 	console.log("In userData Session vhoId  " + usersession.userData.vhoId );
@@ -771,7 +774,7 @@ function CategoryList(apireq,usersession) {
 
 function PgmSearch(apireq,callback) { 
 	console.log("<<<Inside PgmSearch>>>");
-	 userData_maps.get("struserid")
+	 var userData_maps.get("struserid");
 	 console.log("*******  getting from other function *******" + JSON.stringify(args))
          var strProgram =  apireq.result.parameters.Programs;
 	 var strGenre =  apireq.result.parameters.Genre;
@@ -779,10 +782,17 @@ function PgmSearch(apireq,callback) {
 	 var strChannelName =  apireq.result.parameters.Channel;
 	 var strFiosId =  apireq.result.parameters.FiosId;
 	 var strStationId =  apireq.result.parameters.StationId;
-	 var strRegionId = "92377";
+	 //
+	var strRegionId = userData_maps.get("regionId");
+	
 	// var strRegionId = session.userData.regionId ;
  	 console.log("strRegionId:"+strRegionId);
 	 console.log("strProgram " + strProgram + "strGenre " + strGenre + "strdate " +strdate);
+	if (strRegionId== undefiend)
+	{
+	 console.log("regionid is not there login:");	
+	  accountlinking("",apireq);	
+	}
 	
         var headersInfo = { "Content-Type": "application/json" };
 	
