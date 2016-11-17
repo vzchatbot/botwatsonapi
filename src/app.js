@@ -53,9 +53,10 @@ function processEvent(event) {
             sessionIds.set(sender, uuid.v1());
         }
 	 
-	console.log("event content :- " +JSON.stringify(event));
+	//console.log("event content :- " +JSON.stringify(event));
+	    console.log('before if ');
 	  if (event.postback && event.postback.payload && event.postback.payload.indexOf("RetryAuthCode|")>0) {
-		  console.log('authCode ' + authCode);
+		  console.log('after if ' );
             var authCode = event.postback.payload.split("|")[1];
             getVzProfile(authCode, function (str) { getVzProfileCallBack(str, event) });
         }   
