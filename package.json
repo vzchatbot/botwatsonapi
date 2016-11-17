@@ -21,7 +21,8 @@
     "winston":"^2.2.0",
     "log4js":"^0.6.38",
     "util": "^0.10.3",
-    "fs":"0.0.0"
+    "fs":"0.0.0",
+     "express-session": "^1.7.6"
     
   },
   "repository": {
