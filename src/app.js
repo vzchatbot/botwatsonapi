@@ -62,14 +62,19 @@ function processEvent(event) {
         console.log("Error Text :-" + text);
 	  
 	    
-	console.log("event content :- " +JSON.stringify(event));
+	console.log("event content :- " +JSON.stringify(event.entry));
 	
-	
-		    if(event.entry.messaging)
+	    if(event.entry)
+	       {
+		   console.log("Account Linking null - event");
+		   if(event.messaging)
+		   {
+			    console.log("Account Linking null - 0");
+		    if(event.messaging.account_linking)
 		       {
 			       console.log("event account_linking content :- " +JSON.stringify(event.messaging.account_linking));
 			       console.log("Account Linking null - 1");
-				if (event.entry.messaging.account_linking == undefined) 
+				if (event.messaging.account_linking == undefined) 
 				{
 				    console.log("Account Linking null - 2");
 				}
@@ -82,12 +87,12 @@ function processEvent(event) {
 						sendFBMessage(sender,  {text:"Your account is linked now."});
 						getVzProfile(event,function (str){ getVzProfileCallBack(str,event)});   
 						MainMenu(event);
-				}		
+				}
+			}
+		   }
     		}
-	    else
-	    {
     
-    console.log("outside Account Linking "); 
+   
         var apiaiRequest  = apiAiService.textRequest(text,{sessionId: sessionIds.get(sender)});
         apiaiRequest .on('response', function (response)  {
             if (isDefined(response.result)) {
@@ -188,7 +193,7 @@ function processEvent(event) {
 	    }    
                 
         });
-	    }
+
        // apiaiRequest.on('error', function (error) {console.error(error)});
         apiaiRequest.end();
     }
@@ -716,7 +721,6 @@ function CategoryList(apireq,usersession) {
 		var strMsgid ="Msgid";
 
 		console.log('Inside AccountLink DB call-1')
-		
 		var args={
 			"headers": headersInfo,
 			"json": {Request: {ThisValue: 'AccountLinkingDB', 
