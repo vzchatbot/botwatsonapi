@@ -788,7 +788,7 @@ function PgmSearch(apireq,callback) {
 	// var strRegionId = session.userData.regionId ;
  	 console.log("strRegionId:"+strRegionId);
 	 console.log("strProgram " + strProgram + "strGenre " + strGenre + "strdate " +strdate);
-	if (strRegionId== undefiend)
+	if (strRegionId== undefined)
 	{
 	 console.log("regionid is not there login:");	
 	  accountlinking("",apireq);	
