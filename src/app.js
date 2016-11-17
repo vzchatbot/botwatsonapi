@@ -68,6 +68,7 @@ function processEvent(event) {
        		 var apiaiRequest  = apiAiService.textRequest(text,{sessionId: sessionIds.get(sender)});	    
         	 apiaiRequest .on('response', function (response)  {
             if (isDefined(response.result)) {
+		    console.log('in second if part ' );
                 var responseText = response.result.fulfillment.speech;
                 var responseData = response.result.fulfillment.data;
                 var action = response.result.action;
