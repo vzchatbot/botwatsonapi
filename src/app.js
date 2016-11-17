@@ -64,12 +64,7 @@ function processEvent(event) {
 	    
 	console.log("event content :- " +JSON.stringify(event));
 	
-	    if(event)
-	       {
-		   console.log("Account Linking null - event"+ JSON.stringify(event.entry));
-		   if(event.entry)
-		   {
-			    console.log("Account Linking null - 0");
+	
 		    if(event.entry.messaging)
 		       {
 			       console.log("event account_linking content :- " +JSON.stringify(event.messaging.account_linking));
@@ -87,12 +82,12 @@ function processEvent(event) {
 						sendFBMessage(sender,  {text:"Your account is linked now."});
 						getVzProfile(event,function (str){ getVzProfileCallBack(str,event)});   
 						MainMenu(event);
-				}
-			}
-		   }
+				}		
     		}
+	    else
+	    {
     
-   
+    console.log("outside Account Linking "); 
         var apiaiRequest  = apiAiService.textRequest(text,{sessionId: sessionIds.get(sender)});
         apiaiRequest .on('response', function (response)  {
             if (isDefined(response.result)) {
@@ -193,7 +188,7 @@ function processEvent(event) {
 	    }    
                 
         });
-
+	    }
        // apiaiRequest.on('error', function (error) {console.error(error)});
         apiaiRequest.end();
     }
