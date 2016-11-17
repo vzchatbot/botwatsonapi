@@ -774,8 +774,8 @@ function CategoryList(apireq,usersession) {
 
 function PgmSearch(apireq,callback) { 
 	console.log("<<<Inside PgmSearch>>>");
-	 var userData_maps.get("struserid");
-	 console.log("*******  getting from other function *******" + JSON.stringify(args))
+	 
+	 
          var strProgram =  apireq.result.parameters.Programs;
 	 var strGenre =  apireq.result.parameters.Genre;
 	 var strdate =  apireq.result.parameters.date;
