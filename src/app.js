@@ -47,21 +47,22 @@ function processEvent(event) {
     if ((event.message && event.message.text) || (event.postback && event.postback.payload)) {
         var text = event.message ? event.message.text : event.postback.payload;      
 	 console.log("Before Account Linking ");  
-	  /*  
+	  
 	if (!sessionIds.has(sender)){
-	    console.log("Inside sessionID:- ");
+	    console.log('Inside sessionID:- ');
             sessionIds.set(sender, uuid.v1());
         }
-	  */
-	//console.log("event content :- " +JSON.stringify(event.entry));
+	 
+	console.log("event content :- " +JSON.stringify(event.entry));
 	  if (event.postback && event.postback.payload && event.postback.payload.indexOf("RetryAuthCode|")>0) {
-		  console.log("inside event if content ");
+		  console.log('authCode ' + authCode);
             var authCode = event.postback.payload.split("|")[1];
             getVzProfile(authCode, function (str) { getVzProfileCallBack(str, event) });
-        }   else {
-       
-        var apiaiRequest  = apiAiService.textRequest(text,{sessionId: sessionIds.get(sender)});	    
-        apiaiRequest .on('response', function (response)  {
+        }   
+	    else 
+	    {       
+       		 var apiaiRequest  = apiAiService.textRequest(text,{sessionId: sessionIds.get(sender)});	    
+        	 apiaiRequest .on('response', function (response)  {
             if (isDefined(response.result)) {
                 var responseText = response.result.fulfillment.speech;
                 var responseData = response.result.fulfillment.data;
@@ -70,7 +71,7 @@ function processEvent(event) {
                 var intent = response.result.metadata.intentName;
 		console.log(JSON.stringify(response));
 		var Finished_Status=response.result.actionIncomplete;
-		 console.log("Finished_Status "+ Finished_Status);		    
+		 console.log('Finished_Status '+ Finished_Status);		    
 		console.log('responseText  : - '+ responseText);
 		console.log('responseData  : - '+ responseData);
 	        console.log('action : - '+ action );
