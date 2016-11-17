@@ -46,9 +46,9 @@ logger.fatal('fatel');
 function processEvent(event) {
     var sender = event.sender.id.toString();
 	
-var myrgionid = userData_maps.get("regionId")
-if (myrgionid==undefined)
-	userData_maps.set("regionId","91723" );
+//var myrgionid = userData_maps.get("regionId")
+//if (myrgionid==undefined)
+//	userData_maps.set("regionId","91723" );
 	
     if ((event.message && event.message.text) || (event.postback && event.postback.payload)) 
     {
