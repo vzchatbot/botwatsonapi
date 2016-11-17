@@ -767,6 +767,10 @@ function CategoryList(apireq,usersession) {
 
 function PgmSearch(apireq,callback) { 
 	console.log("<<<Inside PgmSearch>>>");
+	
+	 sess = JSON.stringify(args);
+	 console.log("SESS:"+ sess);
+	
          var strProgram =  apireq.result.parameters.Programs;
 	 var strGenre =  apireq.result.parameters.Genre;
 	 var strdate =  apireq.result.parameters.date;
