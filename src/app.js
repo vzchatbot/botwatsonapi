@@ -47,12 +47,12 @@ function processEvent(event) {
     if ((event.message && event.message.text) || (event.postback && event.postback.payload)) {
         var text = event.message ? event.message.text : event.postback.payload;      
 	 console.log("Before Account Linking ");  
-	    
+	  /*  
 	if (!sessionIds.has(sender)){
 	    console.log("Inside sessionID:- ");
             sessionIds.set(sender, uuid.v1());
         }
-	  
+	  */
 	//console.log("event content :- " +JSON.stringify(event.entry));
 	  if (event.postback && event.postback.payload && event.postback.payload.indexOf("RetryAuthCode|")>0) {
 		  console.log("inside event if content ");
