@@ -20,6 +20,8 @@ var FB_PAGE_ACCESS_TOKEN = "EAAEziYhGZAZAIBAOutH2TU9KoF5GtZAM2bzvr1VnophuxZBHu5P
 var APIAI_VERIFY_TOKEN = "verify123" ;
 var apiAiService = apiai(APIAI_ACCESS_TOKEN, {language: APIAI_LANG, requestSource: "fb"});
 var sessionIds = new Map();
+var userData_maps = new Map(); 
+
 
 //======================
 
@@ -508,6 +510,13 @@ function getVzProfileCallBack(apiresp,usersession) {
 	usersession.userData.VisionCustId = VisionCustId;
 	usersession.userData.VisionAcctId = VisionAcctId;
 	
+	userData_maps.set("regionId", regionId.replace(/\"/g, ""));
+        userData_maps.set("CKTID", CKTID_1.replace(/\"/g, ""));
+        userData_maps.set("vhoId", vhoId.replace(/\"/g, ""));
+	userData_maps.set("CanNo", CanNo.replace(/\"/g, ""));
+        userData_maps.set("VisionCustId", VisionCustId.replace(/\"/g, ""));
+        userData_maps.set("VisionAcctId", VisionAcctId.replace(/\"/g, ""));
+	
 	console.log("In userData Session CKT ID  " + usersession.userData.CKTID_1 );
 	console.log("In userData Session regionId  " + usersession.userData.regionId );
 	console.log("In userData Session vhoId  " + usersession.userData.vhoId );
@@ -757,6 +766,8 @@ function CategoryList(apireq,usersession) {
 
 function PgmSearch(apireq,callback) { 
 	console.log("<<<Inside PgmSearch>>>");
+	 userData_maps.get("args")
+	 console.log("*******  getting from other function *******" + JSON.stringify(args))
          var strProgram =  apireq.result.parameters.Programs;
 	 var strGenre =  apireq.result.parameters.Genre;
 	 var strdate =  apireq.result.parameters.date;
@@ -921,7 +932,7 @@ function recommendations(apireq,pgmtype,callback) {
 	
 	}
 		 console.log("args " + JSON.stringify(args));
-	
+     userData_maps.set("regionId", args.replace(/\"/g, ""));
     request.post("https://www.verizon.com/foryourhome/vzrepair/flowengine/restapi.ashx", args,
         function (error, response, body) {
             if (!error && response.statusCode == 200) {
