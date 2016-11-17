@@ -23,6 +23,9 @@ var apiAiService = apiai(APIAI_ACCESS_TOKEN, {language: APIAI_LANG, requestSourc
 var sessionIds = new Map();
 var sess;
 
+var app = express();
+app.use(session({secret: 'ssshhhhh'}));
+
 //======================
 
 log4js.loadAppender('file');
