@@ -55,14 +55,16 @@ function processEvent(event) {
 	 
 	//console.log("event content :- " +JSON.stringify(event));
 	    console.log('before if ');
-	    var authCode = event.postback.payload.split("|")[1];
-            getVzProfile(authCode, function (str) { getVzProfileCallBack(str, event) });
-	/*  if (event.postback && event.postback.payload && event.postback.payload.indexOf("RetryAuthCode|")>0) {
+	  
+	  if (event.postback && event.postback.payload && event.postback.payload.indexOf("RetryAuthCode|")>0) {
 		  console.log('after if ' );
+		  var authCode = event.postback.payload.split("|")[1];
+                  getVzProfile(authCode, function (str) { getVzProfileCallBack(str, event) });
         
         }   
-	    else */
+	    else 
 	    {       
+		      console.log('in Else part ' );
        		 var apiaiRequest  = apiAiService.textRequest(text,{sessionId: sessionIds.get(sender)});	    
         	 apiaiRequest .on('response', function (response)  {
             if (isDefined(response.result)) {
