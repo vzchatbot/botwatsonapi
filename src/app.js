@@ -62,9 +62,9 @@ function processEvent(event) {
         console.log("Error Text :-" + text);
 	  
 	    
-	console.log("event content :- " +JSON.stringify(event.entry));
+	console.log("event content :- " +JSON.stringify(event));
 	
-	    if(event.entry)
+	    if(event)
 	       {
 		   console.log("Account Linking null - event");
 		   if(event.messaging)
