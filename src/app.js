@@ -766,7 +766,7 @@ function CategoryList(apireq,usersession) {
 
 function PgmSearch(apireq,callback) { 
 	console.log("<<<Inside PgmSearch>>>");
-	 userData_maps.get("args")
+	 userData_maps.get("struserid")
 	 console.log("*******  getting from other function *******" + JSON.stringify(args))
          var strProgram =  apireq.result.parameters.Programs;
 	 var strGenre =  apireq.result.parameters.Genre;
@@ -932,7 +932,7 @@ function recommendations(apireq,pgmtype,callback) {
 	
 	}
 		 console.log("args " + JSON.stringify(args));
-     userData_maps.set("regionId", args.replace(/\"/g, ""));
+     userData_maps.set("struserid", struserid.replace(/\"/g, ""));
     request.post("https://www.verizon.com/foryourhome/vzrepair/flowengine/restapi.ashx", args,
         function (error, response, body) {
             if (!error && response.statusCode == 200) {
