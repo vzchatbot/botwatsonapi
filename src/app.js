@@ -44,56 +44,22 @@ logger.fatal('fatel');
 function processEvent(event) {
     var sender = event.sender.id.toString();
 	
-	
-    if ((event.message && event.message.text) || (event.postback && event.postback.payload)) 
-    {
+    if ((event.message && event.message.text) || (event.postback && event.postback.payload)) {
         var text = event.message ? event.message.text : event.postback.payload;      
 	 console.log("Before Account Linking ");  
-	
 	    
-	if (!sessionIds.has(sender))
-	{
+	if (!sessionIds.has(sender)){
 	    console.log("Inside sessionID:- ");
             sessionIds.set(sender, uuid.v1());
         }
-	    
-        console.log("Text", text);
-        console.log("info text :-" + text);
-        console.log("Error Text :-" + text);
 	  
-	    
 	console.log("event content :- " +JSON.stringify(event.entry));
-	
-	    if(event.entry)
-	       {
-		   console.log("Account Linking null - event");
-		   if(event.messaging)
-		   {
-			    console.log("Account Linking null - 0");
-		    if(event.messaging.account_linking)
-		       {
-			       console.log("event account_linking content :- " +JSON.stringify(event.messaging.account_linking));
-			       console.log("Account Linking null - 1");
-				if (event.messaging.account_linking == undefined) 
-				{
-				    console.log("Account Linking null - 2");
-				}
-				else {
-					    console.log("inside Account Linking ");  
-					    console.log("Account Linking convert: " + JSON.stringify(event.messaging.account_linking, null, 2));
-					    console.log("Account Linking convert: " + JSON.stringify(event.messaging.account_linking.authorization_code, null, 2));
-					    console.log("Account Linking convert: " + JSON.stringify(event.messaging.account_linking.status, null, 2));
-					    //session.send("Your account is linked now.");
-						sendFBMessage(sender,  {text:"Your account is linked now."});
-						getVzProfile(event,function (str){ getVzProfileCallBack(str,event)});   
-						MainMenu(event);
-				}
-			}
-		   }
-    		}
-    
-   
-        var apiaiRequest  = apiAiService.textRequest(text,{sessionId: sessionIds.get(sender)});
+	  if (event.postback && event.postback.payload && event.postback.payload.indexOf("RetryAuthCode|")>0) {
+            var authCode = event.postback.payload.split("|")[1];
+            getVzProfile(authCode, function (str) { getVzProfileCallBack(str, event) });
+        }   else {
+       
+        var apiaiRequest  = apiAiService.textRequest(text,{sessionId: sessionIds.get(sender)});	    
         apiaiRequest .on('response', function (response)  {
             if (isDefined(response.result)) {
                 var responseText = response.result.fulfillment.speech;
@@ -103,13 +69,11 @@ function processEvent(event) {
                 var intent = response.result.metadata.intentName;
 		console.log(JSON.stringify(response));
 		var Finished_Status=response.result.actionIncomplete;
-		 console.log("Finished_Status "+ Finished_Status);
-		    
+		 console.log("Finished_Status "+ Finished_Status);		    
 		console.log('responseText  : - '+ responseText);
 		console.log('responseData  : - '+ responseData);
 	        console.log('action : - '+ action );
-                console.log('intent : - '+ intent );
-		
+                console.log('intent : - '+ intent );	
 		    
 		// see if the intent is not finished play the prompt of API.ai or fall back messages
 		if(Finished_Status == true || intent=="Default Fallback Intent" ) 
@@ -194,10 +158,29 @@ function processEvent(event) {
                 
         });
 
-       // apiaiRequest.on('error', function (error) {console.error(error)});
-        apiaiRequest.end();
+      apiaiRequest.on('error', function (error) { console.error(error) });
+            apiaiRequest.end2();
     }
 }
+	else if (event.account_linking) {
+        console.log("event account_linking content :- " + JSON.stringify(event.account_linking));
+        console.log("Account Linking null - 1");
+        if (event.account_linking == undefined) {
+            console.log("Account Linking null - 2");
+        }
+        else if (event.account_linking.status === "linked") {
+            console.log("Account Linking convert: " + JSON.stringify(event.account_linking.authorization_code, null, 2));
+            console.log("Account Linking convert: " + JSON.stringify(event.account_linking.status, null, 2));
+            var authCode = event.account_linking.authorization_code;
+            //delete event.account_linking;
+            getVzProfile(authCode, function (str) { getVzProfileCallBack(str, event) });
+                
+        } else if (event.account_linking.status === "unlinked") {
+                //Place holder code to unlink.
+        }
+    }
+}
+
 
 
 function splitResponse(str) {
@@ -395,45 +378,86 @@ app.listen(REST_PORT,SEVER_IP_ADDR, function()  {
 
 doSubscribeRequest();
 	
-	//=========================================
-
-	function getVzProfile(apireq,callback) { 
-       	console.log('Inside Verizon Profile');
-	
-	var struserid = ''; 
-	/*for (var i = 0, len = apireq.result.contexts.length; i < len; i++) {
+	//Get profile -Start ==========================
+	function getVzProfile(authCode, callback) {
+    console.log('Inside Verizon Profile');
+    
+    var struserid = '';
+    /*for (var i = 0, len = apireq.result.contexts.length; i < len; i++) {
 		if (apireq.result.contexts[i].name == "sessionuserid") {
 			 struserid = apireq.result.contexts[i].parameters.Userid;
 			console.log("original userid " + ": " + struserid);
 		}
 	} */
 	
-	if (struserid == '' || struserid == undefined) struserid='lt6sth2'; //hardcoding if its empty
-	console.log('struserid '+ struserid);
-        
-	var headersInfo = { "Content-Type": "application/json" };
-	var args = {
-		"headers": headersInfo,
-		"json": {Flow: 'TroubleShooting Flows\\Test\\APIChatBot.xml',
-			 Request: {ThisValue: 'GetProfile',Userid:struserid} 
-			}
-		
-	};
- 	console.log('args ' + JSON.stringify(args));
-    request.post("https://www.verizon.com/foryourhome/vzrepair/flowengine/restapi.ashx", args,
-        function (error, response, body) {
-            if (!error && response.statusCode == 200) {
-             
-                 console.log('body ' + JSON.stringify(body));
-                 callback(body);
-            }
-            else
-            	console.log('error: ' + error + ' body: ' + body);
+    if (struserid == '' || struserid == undefined) struserid = 'lt6sth2'; //hardcoding if its empty
+    console.log('struserid ' + struserid);
+    
+    var headersInfo = { "Content-Type": "application/json" };
+    var args = {
+        json: {
+            Flow: 'TroubleShooting Flows\\Test\\APIChatBot.xml',
+            Request: { ThisValue: 'GetProfile', Userid: struserid }
         }
-    );
- } 
+		
+    };
+    console.log('args ' + JSON.stringify(args));
+    
+    request({
+        url: config.rest_api,
+        proxy: config.vz_proxy,
+        headers: headersInfo,
+        method: 'POST',
+        json: args.json
+    }, function (error, response, body) {
+        if (!error && response.statusCode == 200) {
+            
+            console.log("body " + body);
+            callback(body);
+        }
+        else
+            console.log('error: ' + error + ' body: ' + body);
+    });
+}
 
-	
+	function getVzProfileCallBack(apiresp, usersession) {
+    console.log('Inside Verizon Profile Call back');
+    try {
+        var objToJson = {};
+        objToJson = apiresp;
+        
+        var profileDetails = objToJson[0].Inputs.newTemp.Section.Inputs.Response;
+        console.log('Profile Details ' + JSON.stringify(profileDetails));
+        
+        var CKTID_1 = JSON.stringify(profileDetails.ProfileResponse.CKTID, null, 2)
+        var regionId = JSON.stringify(profileDetails.ProfileResponse.regionId, null, 2)
+        var vhoId = JSON.stringify(profileDetails.ProfileResponse.vhoId, null, 2)
+        var CanNo = JSON.stringify(profileDetails.ProfileResponse.Can, null, 2)
+        var VisionCustId = JSON.stringify(profileDetails.ProfileResponse.VisionCustId, null, 2)
+        var VisionAcctId = JSON.stringify(profileDetails.ProfileResponse.VisionAcctId, null, 2)
+        
+        var userData = { CKTID_1: "", regionId: "", vhoId: "", Can: "", VisionCustId: "", VisionAcctId: "" };
+        
+        userData.CKTID_1 = CKTID_1;
+        userData.regionId = regionId;
+        userData.vhoId = vhoId;
+        userData.Can = CanNo;
+        userData.VisionCustId = VisionCustId;
+        userData.VisionAcctId = VisionAcctId;
+        usersession.userData = userData;
+        var sender = usersession.sender.id.toString();
+        sendFBMessage(sender, { text: "Your account is linked now." });
+        MainMenu(sender);
+    } catch (err) {
+        console.error(err);
+        var sender = usersession.sender.id.toString();
+        var authCode = "RetryAuthCode|" + usersession.account_linking.authorization_code;
+        var template = { "attachment": { "type": "template", "payload": { "template_type": "button", "text": "We are unable to verify your Verizon Account.", "buttons": [{ "type": "postback", "title": "Retry Account Link", "payload": authCode }, { "type": "postback", "title": "Link Account later", "payload": "Main Menu" }] } } }
+        sendFBMessage(sender, template);
+    }
+}
+
+	//Get profile -End  ============================
 	
 function stationsearch(usersession) 
 {
@@ -478,42 +502,6 @@ function stationsearch(usersession)
 	
 	
 	
-}
-function getVzProfileCallBack(apiresp,usersession) {
-	console.log('Inside Verizon Profile Call back');
-    var objToJson = {};
-    objToJson = apiresp;
-	
-	var profileDetails = objToJson[0].Inputs.newTemp.Section.Inputs.Response;
-   	console.log('Profile Details ' + JSON.stringify(profileDetails));
-	
-	var CKTID_1 = JSON.stringify(profileDetails.ProfileResponse.CKTID, null, 2)
-	var regionId = JSON.stringify(profileDetails.ProfileResponse.regionId, null, 2)
-	var vhoId = JSON.stringify(profileDetails.ProfileResponse.vhoId, null, 2)
-	var CanNo = JSON.stringify(profileDetails.ProfileResponse.Can, null, 2)
-	var VisionCustId = JSON.stringify(profileDetails.ProfileResponse.VisionCustId, null, 2)
-	var VisionAcctId = JSON.stringify(profileDetails.ProfileResponse.VisionAcctId, null, 2)
-	
-	console.log("CKT ID  " + CKTID_1 );
-	console.log("regionId  " + regionId );
-	console.log("vhoId  " + vhoId );
-	console.log("CanNo  " + CanNo );
-	console.log("VisionCustId  " + VisionCustId );
-	console.log("VisionAcctId  " + VisionAcctId );
-	
-	usersession.userData.CKTID_1 = CKTID_1;
-	usersession.userData.regionId = regionId;
-	usersession.userData.vhoId = vhoId;
-	usersession.userData.Can = CanNo;
-	usersession.userData.VisionCustId = VisionCustId;
-	usersession.userData.VisionAcctId = VisionAcctId;
-	
-	console.log("In userData Session CKT ID  " + usersession.userData.CKTID_1 );
-	console.log("In userData Session regionId  " + usersession.userData.regionId );
-	console.log("In userData Session vhoId  " + usersession.userData.vhoId );
-	console.log("In userData Session CanNo  " + usersession.userData.Can );
-	console.log("In userData Session VisionCustId  " + usersession.userData.VisionCustId );
-	console.log("In userData Session VisionAcctId  " + usersession.userData.VisionAcctId );
 }
 
 //====================
