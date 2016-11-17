@@ -66,15 +66,15 @@ function processEvent(event) {
 	
 	    if(event)
 	       {
-		   console.log("Account Linking null - event");
-		   if(event.messaging)
+		   console.log("Account Linking null - event"+ JSON.stringify(event.entry));
+		   if(event.entry)
 		   {
 			    console.log("Account Linking null - 0");
-		    if(event.messaging.account_linking)
+		    if(event.entry.messaging)
 		       {
 			       console.log("event account_linking content :- " +JSON.stringify(event.messaging.account_linking));
 			       console.log("Account Linking null - 1");
-				if (event.messaging.account_linking == undefined) 
+				if (event.entry.messaging.account_linking == undefined) 
 				{
 				    console.log("Account Linking null - 2");
 				}
@@ -721,6 +721,7 @@ function CategoryList(apireq,usersession) {
 		var strMsgid ="Msgid";
 
 		console.log('Inside AccountLink DB call-1')
+		
 		var args={
 			"headers": headersInfo,
 			"json": {Request: {ThisValue: 'AccountLinkingDB', 
