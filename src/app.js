@@ -986,6 +986,8 @@ function LinkOptions(apireq,usersession)
 function RecordScenario (apiresp,usersession)
 {
 	console.log("inside RecordScenario");
+	 sess = JSON.stringify(args);
+	 console.log("SESS:"+ sess);
 	var channel = apiresp.result.parameters.Channel.toUpperCase();
 	var program = apiresp.result.parameters.Programs.toUpperCase();
 	var time = apiresp.result.parameters.timeofpgm;
