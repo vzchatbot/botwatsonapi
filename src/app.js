@@ -404,21 +404,17 @@ doSubscribeRequest();
     };
     console.log('args ' + JSON.stringify(args));
     
-    request({
-        url: config.rest_api,
-        proxy: config.vz_proxy,
-        headers: headersInfo,
-        method: 'POST',
-        json: args.json
-    }, function (error, response, body) {
-        if (!error && response.statusCode == 200) {
-            
-            console.log("body " + body);
-            callback(body);
+    request.post("https://www.verizon.com/foryourhome/vzrepair/flowengine/restapi.ashx", args,
+        function (error, response, body) {
+            if (!error && response.statusCode == 200) {
+             
+                 console.log('body ' + JSON.stringify(body));
+                 callback(body);
+            }
+            else
+            	console.log('error: ' + error + ' body: ' + body);
         }
-        else
-            console.log('error: ' + error + ' body: ' + body);
-    });
+    );
 }
 
 	function getVzProfileCallBack(apiresp, usersession) {
