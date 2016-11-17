@@ -64,7 +64,7 @@ function processEvent(event) {
 	    
 	console.log("event content :- " +JSON.stringify(event.entry));
 	
-	    if(event.entry)
+	   /* if(event.entry)
 	       {
 		   console.log("Account Linking null - event");
 		   if(event.messaging)
@@ -90,7 +90,29 @@ function processEvent(event) {
 				}
 			}
 		   }
-    		}
+    		}*/
+	    
+	    
+	if (event.account_linking) 
+ 	{
+		console.log("event account_linking content :- " + JSON.stringify(event.account_linking));
+		console.log("Account Linking null - 1");
+		if (event.account_linking == undefined) {
+		    console.log("Account Linking null - 2");
+        }
+        else if (event.account_linking.status == "linked") {
+            console.log("Account Linking convert: " + JSON.stringify(event.account_linking.authorization_code, null, 2));
+            console.log("Account Linking convert: " + JSON.stringify(event.account_linking.status, null, 2));
+            var authCode = event.account_linking.authorization_code;
+            //delete event.account_linking;
+            getVzProfile(authCode, function (str) { getVzProfileCallBack(str, event) });
+	    MainMenu(sender);
+                
+        } else if (event.account_linking.status == "unlinked") {
+                //Place holder code to unlink.
+        }
+	}
+	    
     
    
         var apiaiRequest  = apiAiService.textRequest(text,{sessionId: sessionIds.get(sender)});
