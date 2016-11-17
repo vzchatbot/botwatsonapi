@@ -788,12 +788,13 @@ function PgmSearch(apireq,callback) {
 	// var strRegionId = session.userData.regionId ;
  	 console.log("strRegionId:"+strRegionId);
 	 console.log("strProgram " + strProgram + "strGenre " + strGenre + "strdate " +strdate);
-	if (strRegionId== undefined)
-	{
+if (strRegionId== undefined)
+{
 	 console.log("regionid is not there login:");	
 	  accountlinking("",apireq);	
-	}
-	
+}
+else
+{
         var headersInfo = { "Content-Type": "application/json" };
 	
 	var args = {
@@ -824,6 +825,7 @@ function PgmSearch(apireq,callback) {
             	console.log('error: ' + error + ' body: ' + body);
         }
     );
+}
  } 
   
 function PgmSearchCallback(apiresp,usersession) {
