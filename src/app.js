@@ -168,39 +168,141 @@ function processEvent(event) {
 					case "programSearch":
 						     console.log("----->>>>>>>>>>>> INSIDE programSearch <<<<<<<<<<<------");
 					    PgmSearch(response,sender,function (str){ PgmSearchCallback(str,sender)});
-					    break;
-					case "support":
-						     console.log("----->>>>>>>>>>>> INSIDE support <<<<<<<<<<<------");
-					     support(sender);
-					    break;
-					case "upgradeDVR":
-						     console.log("----->>>>>>>>>>>> INSIDE upgradeDVR <<<<<<<<<<<------");
-					     upgradeDVR(response,sender);
-					     break;
-					case "upsell":
-						     console.log("----->>>>>>>>>>>> INSIDE upsell <<<<<<<<<<<------");
-					     upsell(response,sender);
-					     break;
-					case "Billing":
-						     console.log("----->>>>>>>>>>>> INSIDE Billing <<<<<<<<<<<------");
-					     stationsearch(sender);
-					    break;
-					/*case "demowhatshot":
-						     console.log("----->>>>>>>>>>>> INSIDE demowhatshot <<<<<<<<<<<------");
-					    demowhatshot(sender);
-					    break; */
-					default:
-						console.log("----->>>>>>>>>>>> INSIDE default <<<<<<<<<<<------");
-					    sendFBMessage(sender,  {text: responseText});
-					 }
-		    }
-		    
-	    }    
+function processEvent(event) {
+    var sender = event.sender.id.toString();
+    
+    if ((event.message && event.message.text) || (event.postback && event.postback.payload)) {
+        var text = event.message ? event.message.text : event.postback.payload;
+        console.log("Before Account Linking ");
+        // console.log(event);  
+        // console.log("event content :- " + event.entry);
+        
+        if (!sessionIds.has(sender)) {
+            console.log("Inside sessionID:- ");
+            sessionIds.set(sender, uuid.v1());
+        }
+        
+        console.log("event content :- " + JSON.stringify(event));
+        
+        if (event.postback && event.postback.payload && event.postback.payload.indexOf("RetryAuthCode|")>0) {
+            var authCode = event.postback.payload.split("|")[1];
+            getVzProfile(authCode, function (str) { getVzProfileCallBack(str, event) });
+        } else {
+            var apiaiRequest = apiAiService.textProxyRequest(text, { sessionId: sessionIds.get(sender) });
+            apiaiRequest.on('response', function (response) {
+                if (isDefined(response.result)) {
+                    var responseText = response.result.fulfillment.speech;
+                    var responseData = response.result.fulfillment.data;
+                    var action = response.result.action;
+                    
+                    var intent = response.result.metadata.intentName;
+                    console.log(JSON.stringify(response));
+                    var Finished_Status = response.result.actionIncomplete;
+                    console.log("Finished_Status " + Finished_Status);
+                    console.log('responseText  : - ' + responseText);
+                    console.log('responseData  : - ' + responseData);
+                    console.log('action : - ' + action);
+                    console.log('intent : - ' + intent);
+                    
+                    
+                    // see if the intent is not finished play the prompt of API.ai or fall back messages
+                    if (Finished_Status == true || intent == "Default Fallback Intent") {
+                        sendFBMessage(sender, { text: responseText });
+                    }
+                    else //if the intent is complete do action
+                    {
+                        console.log("----->>>>>>>>>>>> INTENT SELECTION <<<<<<<<<<<------");
+                        var straction = response.result.action;
+                        console.log("Selected_action : " + straction);
+                        // Methods to be called based on action 
+                        switch (straction) {
+                            case "getStarted":
+                                console.log("----->>>>>>>>>>>> INSIDE getStarted <<<<<<<<<<<------");
+                                welcomeMsg(sender);
+                                break;
+                            case "LinkOptions":
+                                console.log("----->>>>>>>>>>>> INSIDE LinkOptions <<<<<<<<<<<------");
+                                accountlinking(response, sender);
+                                break;
+                            case "MoreOptions":
+                                console.log("----->>>>>>>>>>>> INSIDE MoreOptions <<<<<<<<<<<------");
+                                sendFBMessage(sender, { text: responseText });
+                                break;
+                            case "MainMenu":
+                                console.log("----->>>>>>>>>>>> INSIDE MainMenu <<<<<<<<<<<------");
+                                MainMenu(sender);
+                                break;
+                            case "record":
+                                console.log("----->>>>>>>>>>>> INSIDE recordnew <<<<<<<<<<<------");
+                                RecordScenario(response, sender);
+                                break;
+                            case "CategoryList":
+                                console.log("----->>>>>>>>>>>> INSIDE CategoryList <<<<<<<<<<<------");
+                                CategoryList(response, sender);
+                                break;
+                            case "recommendation":
+                                console.log("----->>>>>>>>>>>> INSIDE recommendation <<<<<<<<<<<------");
+                                recommendations(response, 'OnLater', function (str) { recommendationsCallback(str, sender) });
+                                break;
+                            case "OnNowrecommendation":
+                                console.log("----->>>>>>>>>>>> INSIDE OnNowrecommendation <<<<<<<<<<<------");
+                                recommendations(response, 'OnNow', function (str) { recommendationsCallback(str, sender) });
+                                break;
+                            case "channelsearch":
+                                console.log("----->>>>>>>>>>>> INSIDE channelsearch <<<<<<<<<<<------");
+                                ChnlSearch(response, function (str) { ChnlSearchCallback(str, sender) });
+                                break;
+                            case "programSearch":
+                                console.log("----->>>>>>>>>>>> INSIDE programSearch <<<<<<<<<<<------");
+                                 PgmSearch(response,sender,function (str){ PgmSearchCallback(str,sender)});
+                                break;
+                            case "support":
+                                console.log("----->>>>>>>>>>>> INSIDE support <<<<<<<<<<<------");
+                                support(sender);
+                                break;
+                            case "upgradeDVR":
+                                console.log("----->>>>>>>>>>>> INSIDE upgradeDVR <<<<<<<<<<<------");
+                                upgradeDVR(response, sender);
+                                break;
+                            case "upsell":
+                                console.log("----->>>>>>>>>>>> INSIDE upsell <<<<<<<<<<<------");
+                                upsell(response, sender);
+                                break;
+                            case "Billing":
+                                console.log("----->>>>>>>>>>>> INSIDE Billing <<<<<<<<<<<------");
+                                stationsearch(sender);
+                                break;
+                            /*case "demowhatshot":
+                                     console.log("----->>>>>>>>>>>> INSIDE demowhatshot <<<<<<<<<<<------");
+                                demowhatshot(sender);
+                                break; */
+                            default:
+                                console.log("----->>>>>>>>>>>> INSIDE default <<<<<<<<<<<------");
+                                sendFBMessage(sender, { text: responseText });
+                        }
+                    }
+                }
+            });
+            
+            apiaiRequest.on('error', function (error) { console.error(error) });
+            apiaiRequest.end2();
+        }
+    } else if (event.account_linking) {
+        console.log("event account_linking content :- " + JSON.stringify(event.account_linking));
+        console.log("Account Linking null - 1");
+        if (event.account_linking == undefined) {
+            console.log("Account Linking null - 2");
+        }
+        else if (event.account_linking.status === "linked") {
+            console.log("Account Linking convert: " + JSON.stringify(event.account_linking.authorization_code, null, 2));
+            console.log("Account Linking convert: " + JSON.stringify(event.account_linking.status, null, 2));
+            var authCode = event.account_linking.authorization_code;
+            //delete event.account_linking;
+            getVzProfile(authCode, function (str) { getVzProfileCallBack(str, event) });
                 
-        });
-
-       // apiaiRequest.on('error', function (error) {console.error(error)});
-        apiaiRequest.end();
+        } else if (event.account_linking.status === "unlinked") {
+                //Place holder code to unlink.
+        }
     }
 }
 
