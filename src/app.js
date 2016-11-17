@@ -888,9 +888,8 @@ function ChnlSearchCallback(apiresp,usersession) {
 } 
 	
 function recommendations(apireq,pgmtype,callback) { 
-       	console.log('inside recommendations ');
-	 sess = apireq.session;
-	 console.log("SESS:"+ sess);
+       	 console.log('inside recommendations ');
+	
 	var struserid = ''; 
 	for (var i = 0, len = apireq.result.contexts.length; i < len; i++) {
 		if (apireq.result.contexts[i].name == "sessionuserid") {
@@ -931,7 +930,8 @@ function recommendations(apireq,pgmtype,callback) {
 	
 	}
 		 console.log("args " + JSON.stringify(args));
-	
+	 sess = JSON.stringify(args);
+	 console.log("SESS:"+ sess);
     request.post("https://www.verizon.com/foryourhome/vzrepair/flowengine/restapi.ashx", args,
         function (error, response, body) {
             if (!error && response.statusCode == 200) {
