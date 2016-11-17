@@ -10,7 +10,6 @@ var async = require('async');
 var log4js = require('log4js');
 var fs = require('fs');
 var util = require('util');
-var session = require('express-session');
 
 var REST_PORT = (process.env.PORT || process.env.port || process.env.OPENSHIFT_NODEJS_PORT || 5000);
 var SEVER_IP_ADDR = process.env.OPENSHIFT_NODEJS_IP || process.env.HEROKU_IP ;
@@ -21,10 +20,6 @@ var FB_PAGE_ACCESS_TOKEN = "EAAEziYhGZAZAIBAOutH2TU9KoF5GtZAM2bzvr1VnophuxZBHu5P
 var APIAI_VERIFY_TOKEN = "verify123" ;
 var apiAiService = apiai(APIAI_ACCESS_TOKEN, {language: APIAI_LANG, requestSource: "fb"});
 var sessionIds = new Map();
-var sess;
-
-var app = express();
-app.use(session({secret: 'ssshhhhh'}));
 
 //======================
 
@@ -442,9 +437,6 @@ doSubscribeRequest();
 	
 function stationsearch(usersession) 
 {
-	console.log('Inside stationsearch');
-	sess = JSON.stringify(args);
-	console.log("SESS================:"+ sess);
         var cntr=0;
 	var diplaytext="";
 	var respobj ={"facebook":{"text":"You can watch it at ","channels":{"channel":["#-899- HBO HD","#-400- HBO","#-902- HBO 2 HD","#-402- HBO 2","#-903- HBO 2 West HD","#-403- HBO 2 West","#-908- HBO Comedy HD","#-408- HBO Comedy","#-909- HBO Comedy West HD","#-409- HBO Comedy West","#-906- HBO Family HD","#-406- HBO Family","#-907- HBO Family West HD","#-407- HBO Family West","#-912- HBO Latino HD","#-412- HBO Latino","#-913- HBO Latino West HD","#-413- HBO Latino West","#-904- HBO Signature HD","#-404- HBO Signature","#-905- HBO Signature West HD","#-405- HBO Signature West","#-901- HBO West HD","#-401- HBO West","#-910- HBO Zone HD","#-410- HBO Zone","#-911- HBO Zone West HD","#-411- HBO Zone West"]}}};
@@ -657,10 +649,8 @@ function welcomeMsg(usersession)
      console.log("inside welcomeMsg");
        var respobj= {"facebook":{"attachment":{"type":"template","payload":{"template_type":"button","text":"Want to know what’s on tonight? When your favorite sports team is playing? What time your favorite show is coming on? I can answer almost anything, so try me! Before we get started—let’s take a few minutes to get me linked to your Verizon account, this way I can send you personalized recommendations, alerts.","buttons":[{"type":"postback","title":"Link Account","payload":"Link Account"},{"type":"postback","title":"Maybe later","payload":"Main Menu"}]}}}};
 	 console.log(JSON.stringify(respobj)); 
-	
 	 sendFBMessage(usersession, {text: "Hi Welcome to Verizon"});
 	 sendFBMessage(usersession,  respobj.facebook);
-	
 }
 	
 
@@ -767,10 +757,6 @@ function CategoryList(apireq,usersession) {
 
 function PgmSearch(apireq,callback) { 
 	console.log("<<<Inside PgmSearch>>>");
-	
-	 sess = JSON.stringify(args);
-	 console.log("SESS:"+ sess);
-	
          var strProgram =  apireq.result.parameters.Programs;
 	 var strGenre =  apireq.result.parameters.Genre;
 	 var strdate =  apireq.result.parameters.date;
@@ -782,7 +768,6 @@ function PgmSearch(apireq,callback) {
  	 console.log("strRegionId:"+strRegionId);
 	 console.log("strProgram " + strProgram + "strGenre " + strGenre + "strdate " +strdate);
 	
-	 
         var headersInfo = { "Content-Type": "application/json" };
 	
 	var args = {
@@ -821,7 +806,6 @@ function PgmSearchCallback(apiresp,usersession) {
 	var subflow = objToJson[0].Inputs.newTemp.Section.Inputs.Response;
 	 console.log("subflow-PgmSearchCallback " + JSON.stringify(subflow));
 	 logger.info("subflow-PgmSearchCallback" + subflow );
-	console.log("");
 	
 	//fix to single element array 
  	if (subflow != null 
@@ -895,7 +879,7 @@ function ChnlSearchCallback(apiresp,usersession) {
 } 
 	
 function recommendations(apireq,pgmtype,callback) { 
-       	 console.log('inside recommendations ');
+       	console.log('inside recommendations ');
 	
 	var struserid = ''; 
 	for (var i = 0, len = apireq.result.contexts.length; i < len; i++) {
@@ -937,8 +921,7 @@ function recommendations(apireq,pgmtype,callback) {
 	
 	}
 		 console.log("args " + JSON.stringify(args));
-	 sess = JSON.stringify(args);
-	 console.log("SESS:"+ sess);
+	
     request.post("https://www.verizon.com/foryourhome/vzrepair/flowengine/restapi.ashx", args,
         function (error, response, body) {
             if (!error && response.statusCode == 200) {
@@ -993,8 +976,6 @@ function LinkOptions(apireq,usersession)
 function RecordScenario (apiresp,usersession)
 {
 	console.log("inside RecordScenario");
-	 sess = JSON.stringify(args);
-	 console.log("SESS:"+ sess);
 	var channel = apiresp.result.parameters.Channel.toUpperCase();
 	var program = apiresp.result.parameters.Programs.toUpperCase();
 	var time = apiresp.result.parameters.timeofpgm;
