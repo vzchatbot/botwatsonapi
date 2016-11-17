@@ -167,7 +167,7 @@ function processEvent(event) {
 					   break;
 					case "programSearch":
 						     console.log("----->>>>>>>>>>>> INSIDE programSearch <<<<<<<<<<<------");
-					    PgmSearch(response,function (str){ PgmSearchCallback(str,sender)});
+					    PgmSearch(response,sender,function (str){ PgmSearchCallback(str,sender)});
 					    break;
 					case "support":
 						     console.log("----->>>>>>>>>>>> INSIDE support <<<<<<<<<<<------");
@@ -772,7 +772,7 @@ function CategoryList(apireq,usersession) {
 			    );
 		}
 
-function PgmSearch(apireq,callback) { 
+function PgmSearch(apireq,usersession,callback) { 
 	console.log("<<<Inside PgmSearch>>>");
 	 
 	 
@@ -791,7 +791,7 @@ function PgmSearch(apireq,callback) {
 if (strRegionId== undefined)
 {
 	 console.log("regionid is not there login:");	
-	  accountlinking("",apireq);	
+	  accountlinking(apireq,usersession);	
 }
 else
 {
