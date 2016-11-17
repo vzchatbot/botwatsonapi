@@ -775,8 +775,7 @@ function PgmSearch(apireq,callback) {
  	 console.log("strRegionId:"+strRegionId);
 	 console.log("strProgram " + strProgram + "strGenre " + strGenre + "strdate " +strdate);
 	
-	 sess = apireq.session;
-	 console.log("SESS:"+ sess);
+	 
         var headersInfo = { "Content-Type": "application/json" };
 	
 	var args = {
@@ -890,7 +889,8 @@ function ChnlSearchCallback(apiresp,usersession) {
 	
 function recommendations(apireq,pgmtype,callback) { 
        	console.log('inside recommendations ');
-	
+	 sess = apireq.session;
+	 console.log("SESS:"+ sess);
 	var struserid = ''; 
 	for (var i = 0, len = apireq.result.contexts.length; i < len; i++) {
 		if (apireq.result.contexts[i].name == "sessionuserid") {
