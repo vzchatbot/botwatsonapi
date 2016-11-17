@@ -561,16 +561,26 @@ app.get('/deeplink', function (req, res) {
         cType = contentType? ((contentType == 'MOVIE')? 'MOV' : (contentType == 'SEASON')? 'SEASON' : 'TVS') :'TVS';
         
         if (req.query.fiosID) {
-            reqUrl = "fiosID=" + req.query.fiosID + "&SeriesID=" + req.query.SeriesID + "&ContentType=" + cType;
+            
+            reqUrl = "fiosID=" + req.query.fiosID + "&ContentType=" + cType;
+
+            if (req.query.SeriesID)
+                reqUrl = reqUrl + "&SeriesID=" + req.query.SeriesID;
             
             console.log("TV Listing - " + contentType);
         }
         else {
             if (cType == 'SEASON')
+            {
                 reqUrl = "SeriesID=" + encodeURI(req.query.SeriesID);
+            }
             else
-                reqUrl = "PID=\\'" + req.query.PID + "\\'&PAID=\\'" + req.query.PAID + "\\'&CID=\\'" + req.query.CID + "\\'&ContentType=\\'" + cType + "\\'";
-            
+            {
+                if(req.query.PID && req.query.PAID)
+                    reqUrl = "PID=" + req.query.PID + "&PAID=" + req.query.PAID;
+                else
+                    reqUrl = "CID=" + req.query.CID + "&ContentType=" + cType;
+            }
             console.log("On Demand - " + contentType);
         }
         
