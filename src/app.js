@@ -65,10 +65,10 @@ function processEvent(event) {
 	    else 
 	    {       
 		      console.log('in Else part ' );
-       		 var apiaiRequest  = apiAiService.textRequest(text,{sessionId: sessionIds.get(sender)});	    
-        	 apiaiRequest .on('response', function (response)  {
+       			var apiaiRequest  = apiAiService.textRequest(text,{sessionId: sessionIds.get(sender)});
+        apiaiRequest .on('response', function (response)  {
             if (isDefined(response.result)) {
-		    console.log('in second if part ' );
+		    console.log('in apiai request ' );
                 var responseText = response.result.fulfillment.speech;
                 var responseData = response.result.fulfillment.data;
                 var action = response.result.action;
@@ -76,11 +76,13 @@ function processEvent(event) {
                 var intent = response.result.metadata.intentName;
 		console.log(JSON.stringify(response));
 		var Finished_Status=response.result.actionIncomplete;
-		 console.log('Finished_Status '+ Finished_Status);		    
+		 console.log("Finished_Status "+ Finished_Status);
+		    
 		console.log('responseText  : - '+ responseText);
 		console.log('responseData  : - '+ responseData);
 	        console.log('action : - '+ action );
-                console.log('intent : - '+ intent );	
+                console.log('intent : - '+ intent );
+		
 		    
 		// see if the intent is not finished play the prompt of API.ai or fall back messages
 		if(Finished_Status == true || intent=="Default Fallback Intent" ) 
@@ -164,7 +166,6 @@ function processEvent(event) {
 	    }    
                 
         });
-
       apiaiRequest.on('error', function (error) { console.error(error) });
             apiaiRequest.end2();
     }
