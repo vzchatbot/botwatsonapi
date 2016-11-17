@@ -20,8 +20,6 @@ var FB_PAGE_ACCESS_TOKEN = "EAAEziYhGZAZAIBAOutH2TU9KoF5GtZAM2bzvr1VnophuxZBHu5P
 var APIAI_VERIFY_TOKEN = "verify123" ;
 var apiAiService = apiai(APIAI_ACCESS_TOKEN, {language: APIAI_LANG, requestSource: "fb"});
 var sessionIds = new Map();
-var userData_maps = new Map(); 
-
 
 //======================
 
@@ -46,9 +44,6 @@ logger.fatal('fatel');
 function processEvent(event) {
     var sender = event.sender.id.toString();
 	
-//var myrgionid = userData_maps.get("regionId")
-//if (myrgionid==undefined)
-//	userData_maps.set("regionId","91723" );
 	
     if ((event.message && event.message.text) || (event.postback && event.postback.payload)) 
     {
@@ -68,8 +63,8 @@ function processEvent(event) {
 	  
 	    
 	console.log("event content :- " +JSON.stringify(event.entry));
-	/*
-	    if(event)
+	
+	    if(event.entry)
 	       {
 		   console.log("Account Linking null - event");
 		   if(event.messaging)
@@ -96,27 +91,7 @@ function processEvent(event) {
 			}
 		   }
     		}
-    */
-	    
-	     if (event.account_linking)
-	     {
-		console.log("event account_linking content :- " + JSON.stringify(event.account_linking));
-		console.log("Account Linking null - 1");
-		if (event.account_linking == undefined) {
-		    console.log("Account Linking null - 2");
-		}
-		else if (event.account_linking.status === "linked") {
-		    console.log("Account Linking convert: " + JSON.stringify(event.account_linking.authorization_code, null, 2));
-		    console.log("Account Linking convert: " + JSON.stringify(event.account_linking.status, null, 2));
-		    var authCode = event.account_linking.authorization_code;
-		    //delete event.account_linking;
-		    getVzProfile(authCode, function (str) { getVzProfileCallBack(str, event) });
-		    MainMenu(sender);
-
-		} else if (event.account_linking.status === "unlinked") {			//Place holder code to unlink.		}
-  	     }
-	    
-	    
+    
    
         var apiaiRequest  = apiAiService.textRequest(text,{sessionId: sessionIds.get(sender)});
         apiaiRequest .on('response', function (response)  {
@@ -187,7 +162,7 @@ function processEvent(event) {
 					   break;
 					case "programSearch":
 						     console.log("----->>>>>>>>>>>> INSIDE programSearch <<<<<<<<<<<------");
-					    PgmSearch(response,sender,function (str){ PgmSearchCallback(str,sender)});
+					    PgmSearch(response,function (str){ PgmSearchCallback(str,sender)});
 					    break;
 					case "support":
 						     console.log("----->>>>>>>>>>>> INSIDE support <<<<<<<<<<<------");
@@ -533,16 +508,6 @@ function getVzProfileCallBack(apiresp,usersession) {
 	usersession.userData.VisionCustId = VisionCustId;
 	usersession.userData.VisionAcctId = VisionAcctId;
 	
-	userData_maps.set("regionId", regionId.replace(/\"/g, ""));
-        userData_maps.set("CKTID", CKTID_1.replace(/\"/g, ""));
-        userData_maps.set("vhoId", vhoId.replace(/\"/g, ""));
-	userData_maps.set("CanNo", CanNo.replace(/\"/g, ""));
-        userData_maps.set("VisionCustId", VisionCustId.replace(/\"/g, ""));
-        userData_maps.set("VisionAcctId", VisionAcctId.replace(/\"/g, ""));
-	
-	
-	
-	
 	console.log("In userData Session CKT ID  " + usersession.userData.CKTID_1 );
 	console.log("In userData Session regionId  " + usersession.userData.regionId );
 	console.log("In userData Session vhoId  " + usersession.userData.vhoId );
@@ -681,8 +646,6 @@ function accountlinking(apireq,usersession)
 // function calls
 function welcomeMsg(usersession)
 {
-	var regiondid=	userData_maps.get("regionId");
-	console.log("my regid from session:" + regiondid);
      console.log("inside welcomeMsg");
        var respobj= {"facebook":{"attachment":{"type":"template","payload":{"template_type":"button","text":"Want to know what’s on tonight? When your favorite sports team is playing? What time your favorite show is coming on? I can answer almost anything, so try me! Before we get started—let’s take a few minutes to get me linked to your Verizon account, this way I can send you personalized recommendations, alerts.","buttons":[{"type":"postback","title":"Link Account","payload":"Link Account"},{"type":"postback","title":"Maybe later","payload":"Main Menu"}]}}}};
 	 console.log(JSON.stringify(respobj)); 
@@ -792,29 +755,19 @@ function CategoryList(apireq,usersession) {
 			    );
 		}
 
-function PgmSearch(apireq,usersession,callback) { 
+function PgmSearch(apireq,callback) { 
 	console.log("<<<Inside PgmSearch>>>");
-	 
-	 
          var strProgram =  apireq.result.parameters.Programs;
 	 var strGenre =  apireq.result.parameters.Genre;
 	 var strdate =  apireq.result.parameters.date;
 	 var strChannelName =  apireq.result.parameters.Channel;
 	 var strFiosId =  apireq.result.parameters.FiosId;
 	 var strStationId =  apireq.result.parameters.StationId;
-	 //
-	var strRegionId = userData_maps.get("regionId");
-	
+	 var strRegionId = "92377";
 	// var strRegionId = session.userData.regionId ;
  	 console.log("strRegionId:"+strRegionId);
 	 console.log("strProgram " + strProgram + "strGenre " + strGenre + "strdate " +strdate);
-if (strRegionId== undefined)
-{
-	 console.log("regionid is not there login:");	
-	  accountlinking(apireq,usersession);	
-}
-else
-{
+	
         var headersInfo = { "Content-Type": "application/json" };
 	
 	var args = {
@@ -845,7 +798,6 @@ else
             	console.log('error: ' + error + ' body: ' + body);
         }
     );
-}
  } 
   
 function PgmSearchCallback(apiresp,usersession) {
@@ -969,7 +921,7 @@ function recommendations(apireq,pgmtype,callback) {
 	
 	}
 		 console.log("args " + JSON.stringify(args));
-     userData_maps.set("struserid", struserid.replace(/\"/g, ""));
+	
     request.post("https://www.verizon.com/foryourhome/vzrepair/flowengine/restapi.ashx", args,
         function (error, response, body) {
             if (!error && response.statusCode == 200) {
