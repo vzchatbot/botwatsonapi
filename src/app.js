@@ -54,18 +54,7 @@ function processEvent(event) {
         }
 	 
 	//console.log("event content :- " +JSON.stringify(event));
-	    console.log('before if ');
-	  
-	  if (event.postback && event.postback.payload && event.postback.payload.indexOf("RetryAuthCode|")>0) {
-		  console.log('after if ' );
-		  var authCode = event.postback.payload.split("|")[1];
-                  getVzProfile(authCode, function (str) { getVzProfileCallBack(str, event) });
-        
-        }   
-	    else 
-	    {       
-		      console.log('in Else part ' );
-       			var apiaiRequest  = apiAiService.textRequest(text,{sessionId: sessionIds.get(sender)});
+       	var apiaiRequest  = apiAiService.textRequest(text,{sessionId: sessionIds.get(sender)});
         apiaiRequest .on('response', function (response)  {
             if (isDefined(response.result)) {
 		    console.log('in apiai request ' );
@@ -170,26 +159,6 @@ function processEvent(event) {
             apiaiRequest.end2();
     }
 }
-	else if (event.account_linking) {
-        console.log("event account_linking content :- " + JSON.stringify(event.account_linking));
-        console.log("Account Linking null - 1");
-        if (event.account_linking == undefined) {
-            console.log("Account Linking null - 2");
-        }
-        else if (event.account_linking.status === "linked") {
-            console.log("Account Linking convert: " + JSON.stringify(event.account_linking.authorization_code, null, 2));
-            console.log("Account Linking convert: " + JSON.stringify(event.account_linking.status, null, 2));
-            var authCode = event.account_linking.authorization_code;
-            //delete event.account_linking;
-            getVzProfile(authCode, function (str) { getVzProfileCallBack(str, event) });
-                
-        } else if (event.account_linking.status === "unlinked") {
-                //Place holder code to unlink.
-        }
-    }
-}
-
-
 
 function splitResponse(str) {
     if (str.length <= 320) {
