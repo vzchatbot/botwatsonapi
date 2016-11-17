@@ -10,6 +10,7 @@ var async = require('async');
 var log4js = require('log4js');
 var fs = require('fs');
 var util = require('util');
+var session = require('express-session');
 
 var REST_PORT = (process.env.PORT || process.env.port || process.env.OPENSHIFT_NODEJS_PORT || 5000);
 var SEVER_IP_ADDR = process.env.OPENSHIFT_NODEJS_IP || process.env.HEROKU_IP ;
@@ -20,6 +21,7 @@ var FB_PAGE_ACCESS_TOKEN = "EAAEziYhGZAZAIBAOutH2TU9KoF5GtZAM2bzvr1VnophuxZBHu5P
 var APIAI_VERIFY_TOKEN = "verify123" ;
 var apiAiService = apiai(APIAI_ACCESS_TOKEN, {language: APIAI_LANG, requestSource: "fb"});
 var sessionIds = new Map();
+var sess;
 
 //======================
 
@@ -649,8 +651,10 @@ function welcomeMsg(usersession)
      console.log("inside welcomeMsg");
        var respobj= {"facebook":{"attachment":{"type":"template","payload":{"template_type":"button","text":"Want to know what’s on tonight? When your favorite sports team is playing? What time your favorite show is coming on? I can answer almost anything, so try me! Before we get started—let’s take a few minutes to get me linked to your Verizon account, this way I can send you personalized recommendations, alerts.","buttons":[{"type":"postback","title":"Link Account","payload":"Link Account"},{"type":"postback","title":"Maybe later","payload":"Main Menu"}]}}}};
 	 console.log(JSON.stringify(respobj)); 
+	
 	 sendFBMessage(usersession, {text: "Hi Welcome to Verizon"});
 	 sendFBMessage(usersession,  respobj.facebook);
+	
 }
 	
 
@@ -768,6 +772,8 @@ function PgmSearch(apireq,callback) {
  	 console.log("strRegionId:"+strRegionId);
 	 console.log("strProgram " + strProgram + "strGenre " + strGenre + "strdate " +strdate);
 	
+	 sess = apireq.session;
+	 console.log("SESS:"+ sess);
         var headersInfo = { "Content-Type": "application/json" };
 	
 	var args = {
@@ -806,6 +812,7 @@ function PgmSearchCallback(apiresp,usersession) {
 	var subflow = objToJson[0].Inputs.newTemp.Section.Inputs.Response;
 	 console.log("subflow-PgmSearchCallback " + JSON.stringify(subflow));
 	 logger.info("subflow-PgmSearchCallback" + subflow );
+	console.log("");
 	
 	//fix to single element array 
  	if (subflow != null 
