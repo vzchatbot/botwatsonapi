@@ -20,6 +20,7 @@ var FB_PAGE_ACCESS_TOKEN = "EAAEziYhGZAZAIBAABLZAuLkFLCRcrbEg0wPlNtHwvENI2vOikW7
 var APIAI_VERIFY_TOKEN = "verify123" ;
 var apiAiService = apiai(APIAI_ACCESS_TOKEN, {language: APIAI_LANG, requestSource: "fb"});
 var sessionIds = new Map();
+var userData = new Map();
 
 //======================
 
@@ -419,18 +420,145 @@ app.listen(REST_PORT,SEVER_IP_ADDR, function()  {
 doSubscribeRequest();
 	
 //=========================================
+// function calls
+function getvzUserID(authCode, apireq, senderid) {
+    // Using Authcode pull the user ID from DB.
+    var strAuth = userData.get("authcode");
+
+    var args = {
+        json: {
+            Request: {
+                op: "GETFBACCOUNTLINKDETAILS",              
+                Authcode: strAuth               
+            }
+        }       
+    }
+    console.log('args ' + JSON.stringify(args));
+    request({
+        url: 'https://www25.verizon.com/fiostv/myservices/admin/botapinew.ashx',
+        proxy: '',
+        headers: headersInfo,
+        method: 'POST',
+        json: args.json
+    }, function (error, response, body) {
+        if (!error && response.statusCode == 200) {
+
+            console.log("body " + body);
+            callback(body);
+        }
+        else
+            console.log('error: ' + error + ' body: ' + body);
+    });
+}
+
+
+function getvzUserIDCallback(apiresp, senderid) {
+
+    // Using Authcode pull the user ID from DB.
+    var objToJson = {};
+    objToJson = apiresp;  
+
+    var UD_UserID = objToJson.oDSAccountDetails.oDAAccountDetails.strUserID;
+    userData.set("UD_UserID", UD_UserID.replace(/\"/g, ""));
+    console.log("UserID:" + JSON.stringify(UD_UserID))
+    console.log("UserID:" + UD_UserID)
+    
+    getVzProfileAccountUpdate(UD_UserID, function (str) { getVzProfileAccountUpdateCallBack(str, senderid) });
+  
+   
+} 
+
+function getVzProfileAccountUpdate(struserid, callback) {
+    console.log('Inside getVzProfileAccountUpdate Profile');
+       
+    if (struserid == '' || struserid == undefined) struserid = 'lt6sth2'; //hardcoding if its empty
+    console.log('struserid ' + struserid);
+
+    var headersInfo = { "Content-Type": "application/json" };
+    var args = {
+        json: {
+            Flow: 'TroubleShooting Flows\\Test\\APIChatBot.xml',
+            Request: { ThisValue: 'GetProfile', Userid: struserid }
+        }
+
+    };
+    console.log('args ' + JSON.stringify(args));
+
+    request({
+        url: config.rest_api,
+        proxy: config.vz_proxy,
+        headers: headersInfo,
+        method: 'POST',
+        json: args.json
+    }, function (error, response, body) {
+        if (!error && response.statusCode == 200) {
+
+            console.log("body " + body);
+            callback(body);
+        }
+        else
+            console.log('error: ' + error + ' body: ' + body);
+    });
+}
+
+function getVzProfileAccountUpdateCallBack(apiresp,senderid) {
+    console.log('Inside getVzProfileAccountUpdateCallBack');
+    try {
+        var strUserid = userData.get("UD_UserID");
+        var strAuth1 = userData.get("authcode");
+        var objToJson = {};
+        objToJson = apiresp;
+        var profileDetails = objToJson[0].Inputs.newTemp.Section.Inputs.Response;
+        console.log('Profile Details ' + JSON.stringify(profileDetails));
+        var CKTID_1 = JSON.stringify(profileDetails.ProfileResponse.CKTID, null, 2)
+        var regionId = JSON.stringify(profileDetails.ProfileResponse.regionId, null, 2)
+        var vhoId = JSON.stringify(profileDetails.ProfileResponse.vhoId, null, 2)
+        var CanNo = JSON.stringify(profileDetails.ProfileResponse.Can, null, 2)
+        var VisionCustId = JSON.stringify(profileDetails.ProfileResponse.VisionCustId, null, 2)
+        var VisionAcctId = JSON.stringify(profileDetails.ProfileResponse.VisionAcctId, null, 2)
+        
+        var args = {
+            json: {
+                Request: {
+                    op: "FBACCOUNTLINKACTIVITY",               
+                    VHOID: vhoId,
+                    RegionID: regionId,
+                    CircuitID: CKTID_1,
+                    SenderID: senderid,
+                    UserID: strUserid,
+                    Authcode: strAuth1
+                }
+            }       
+        }
+        console.log('args FBACCOUNTLINKACTIVITY' + JSON.stringify(args));
+
+        request({
+            url: 'https://www25.verizon.com/fiostv/myservices/admin/botapinew.ashx',
+            proxy: '',
+            headers: headersInfo,
+            method: 'POST',
+            json: args.json
+        }, function (error, response, body) {
+            if (!error && response.statusCode == 200) {
+
+                console.log("body " + body);
+                callback(body);
+            }
+            else
+                console.log('error: ' + error + ' body: ' + body);
+        });
+    }
+    catch (err) {
+        console.error(err);
+      
+    }
+}
 
 function getVzProfile(apireq,callback) { 
     console.log('Inside Verizon Profile');
 	
     var struserid = ''; 
-    /*for (var i = 0, len = apireq.result.contexts.length; i < len; i++) {
-		if (apireq.result.contexts[i].name == "sessionuserid") {
-			 struserid = apireq.result.contexts[i].parameters.Userid;
-			console.log("original userid " + ": " + struserid);
-		}
-	} */
-	
+    
     if (struserid == '' || struserid == undefined) struserid='lt6sth2'; //hardcoding if its empty
     console.log('struserid '+ struserid);
         
@@ -854,6 +982,8 @@ function accountlinking(apireq,usersession)
 // function calls
 function welcomeMsg(usersession)
 {
+	var authCode = "lt6sth2"; 
+    getvzUserID(authCode, function (str) { getvzUserIDCallBack(str, event) });
     console.log("inside welcomeMsg");
     var respobj= {"facebook":{"attachment":{"type":"template","payload":{"template_type":"button","text":"Want to know what’s on tonight? When your favorite sports team is playing? What time your favorite show is coming on? I can answer almost anything, so try me! Before we get started—let’s take a few minutes to get me linked to your Verizon account, this way I can send you personalized recommendations, alerts.","buttons":[{"type":"postback","title":"Link Account","payload":"Link Account"},{"type":"postback","title":"Maybe later","payload":"Main Menu"}]}}}};
     console.log(JSON.stringify(respobj)); 
