@@ -586,7 +586,7 @@ console.log ("splittedText:"+splittedText)
          console.log("channel: "+channel);
                 sendFBMessage(usersession,  {text: channel});}
            )};
-*/
+
 	
 	
 }
