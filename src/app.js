@@ -186,7 +186,7 @@ function processEvent(event) {
                             break;
                         case "programSearch":
                             console.log("----->>>>>>>>>>>> INSIDE programSearch <<<<<<<<<<<------");
-                            PgmSearch(response,function (str){ PgmSearchCallback(str,sender)});
+                            PgmSearch(response,sender,function (str){ PgmSearchCallback(str,sender)});
                             break;
                         case "support":
                             console.log("----->>>>>>>>>>>> INSIDE support <<<<<<<<<<<------");
@@ -935,11 +935,10 @@ function CategoryList(apireq,usersession) {
 } 
 
 	
-	function PgmSearch(apireq,callback) { 
-	 console.log("<<<Inside PgmSearch>>>");
-	 var strSenderid = userData.get("UD_UserID");
-	 console.log("<<<Senderid>>>" + JSON.stringify(strSenderid));
-		
+	function PgmSearch(apireq,sender,callback) 
+	{ 
+	 console.log("<<<Inside PgmSearch>>>");	
+	 console.log("<<<sender>>>" + sender);
          var strProgram =  apireq.result.parameters.Programs;
 	 var strGenre =  apireq.result.parameters.Genre;
 	 var strdate =  apireq.result.parameters.date;
@@ -954,7 +953,7 @@ function CategoryList(apireq,usersession) {
 		"headers": headersInfo,
 		"json": {Flow: 'TroubleShooting Flows\\Test\\APIChatBot.xml',
 			 Request: {ThisValue: 'AdvProgramSearch', //  EnhProgramSearch
-				   BotProviderId : strSenderid, //'1113342795429187',  // usersession ; sender id
+				   BotProviderId :sender, //'1113342795429187',  // usersession ; sender id
 				   BotstrTitleValue:strProgram, 
 				   BotdtAirStartDateTime : strdate,
 				   BotstrGenreRootId : strGenre,
@@ -1007,7 +1006,7 @@ function PgmSearchCallback(apiresp,usersession) {
 				}
 			 }catch (err) { console.log(err); }
         } 
-    subflow.facebook.text ='UserNotFound';
+   
 	if (subflow != null 
         && subflow.facebook != null 
         && subflow.facebook.text != null && subflow.facebook.text =='UserNotFound')
@@ -1016,100 +1015,16 @@ function PgmSearchCallback(apiresp,usersession) {
 		var respobj ={"facebook":{"attachment":{"type":"template","payload":{"template_type":"generic","elements":[
 		{"title":"You have to Login to Verizon to proceed","image_url":"https://www98.verizon.com/foryourhome/vzrepair/siwizard/img/verizon-logo-200.png","buttons":[
 			{"type":"account_link","url":"https://www98.verizon.com/vzssobot/upr/preauth"}]}]}}}};
-		//var msg = new builder.Message(usersession).sourceEvent(respobj);              
-        	//usersession.send(msg);
+		
 		sendFBMessage(usersession,  respobj.facebook);
 	}
 	else
-	{
-	//usersession.send("I found several related programs");	
+	{	
          sendFBMessage(usersession,  subflow.facebook);
 	}
 } 
 	
-	/*
-function PgmSearch(apireq,callback) { 
-    console.log("<<<Inside PgmSearch>>>");
-    var strProgram =  apireq.result.parameters.Programs;
-    var strGenre =  apireq.result.parameters.Genre;
-    var strdate =  apireq.result.parameters.date;
-    var strChannelName =  apireq.result.parameters.Channel;
-    var strFiosId =  apireq.result.parameters.FiosId;
-    var strStationId =  apireq.result.parameters.StationId;
-    var strRegionId = "92377";
-    // var strRegionId = session.userData.regionId ;
-    console.log("strRegionId:"+strRegionId);
-    console.log("strProgram " + strProgram + "strGenre " + strGenre + "strdate " +strdate);
 	
-    var headersInfo = { "Content-Type": "application/json" };
-	
-    var args = {
-        "headers": headersInfo,
-        "json": {Flow: 'TroubleShooting Flows\\Test\\APIChatBot.xml',
-            Request: {ThisValue: 'EnhProgramSearch', 
-                BotstrTitleValue:strProgram, 
-                BotdtAirStartDateTime : strdate,
-                BotstrGenreRootId : strGenre,
-                BotstrStationCallSign:strChannelName,
-                BotstrFIOSRegionID : strRegionId,
-                BotstrFIOSID : strFiosId,
-                BotstrFIOSServiceId : strStationId
-            } 
-        }
-    };
-	
-    console.log("args : " + JSON.stringify(args));
-	
-    request.post("https://www.verizon.com/foryourhome/vzrepair/flowengine/restapi.ashx", args,
-        function (error, response, body) {
-            if (!error && response.statusCode == 200) {
-             
-                console.log("body " + body);
-                callback(body);
-            }
-            else
-                console.log('error: ' + error + ' body: ' + body);
-        }
-    );
-} 
-  
-function PgmSearchCallback(apiresp,usersession) {
-    var objToJson = {};
-    objToJson = apiresp;
-    var subflow = objToJson[0].Inputs.newTemp.Section.Inputs.Response;
-    console.log("subflow-PgmSearchCallback " + JSON.stringify(subflow));
-    logger.info("subflow-PgmSearchCallback" + subflow );
-	
-    //fix to single element array 
-    if (subflow != null 
-         && subflow.facebook != null 
-         && subflow.facebook.attachment != null 
-         && subflow.facebook.attachment.payload != null 
-         && subflow.facebook.attachment.payload.buttons != null) 
-    {
-        try
-        {
-            var pgms = subflow.facebook.attachment.payload.buttons;
-            console.log ("Is array? "+ util.isArray(pgms))
-            if (!util.isArray(pgms))
-            {
-                subflow.facebook.attachment.payload.buttons = [];
-                subflow.facebook.attachment.payload.buttons.push(pgms);
-                console.log("ProgramSearchCallBack=After=" + JSON.stringify(subflow));
-            }
-        } 
-        catch (err) 
-        {
-            console.log(err);
-        }
-	  
-    }
-    if (subflow != null && subflow.facebook != null)
-        sendFBMessage(usersession,  subflow.facebook);
-    else
-        sendFBMessage(usersession,  {text:"Sorry I don't have the details. Can you try with the different one."});
-} 
-*/
 function ChnlSearch(apireq,callback) { 
     console.log("ChnlSearch called " );
 	
