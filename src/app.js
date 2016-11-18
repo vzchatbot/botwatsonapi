@@ -1212,7 +1212,7 @@ function STBList(apireq,sender,callback) {
     var args = {
         "headers": headersInfo,
         "json": {Flow: 'TroubleShooting Flows\\Test\\APIChatBot.xml',
-            Request: {ThisValue: 'STBList',
+            Request: {ThisValue: 'AuthSTBList',
 		       BotProviderId :sender, 
 		      Userid:''} 
         }		
