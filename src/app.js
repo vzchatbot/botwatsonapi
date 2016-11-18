@@ -180,7 +180,8 @@ function processEvent(event) {
                             break;
                         case "channelsearch":
                             console.log("----->>>>>>>>>>>> INSIDE channelsearch <<<<<<<<<<<------");
-                            ChnlSearch(response,function (str){ ChnlSearchCallback(str,sender)}); 
+                            //ChnlSearch(response,function (str){ ChnlSearchCallback(str,sender)}); 
+				    stationsearch(response,function (str){ stationsearchCallback(str,sender)}); 
                             break;
                         case "programSearch":
                             console.log("----->>>>>>>>>>>> INSIDE programSearch <<<<<<<<<<<------");
@@ -455,8 +456,96 @@ function getVzProfile(apireq,callback) {
     );
 } 
 
+function stationsearch(apireq,callback) { 
+	console.log("srationSearch called " );
 	
+      var strChannelName =  apireq.result.parameters.Channel.toUpperCase();
+      var strChannelNo =  apireq.result.parameters.ChannelNo;
+      var strRegionid =  91629;
 	
+	  console.log("strChannelName " + strChannelName +" strChannelNo: "+strChannelNo);
+        var headersInfo = { "Content-Type": "application/json" };
+	var args = {
+		"headers": headersInfo,
+		"json": {Flow: 'TroubleShooting Flows\\Test\\APIChatBot.xml',
+			 Request: {
+				 ThisValue: 'StationSearch',
+				 BotRegionID : strRegionid ,
+				 BotstrFIOSServiceId : strChannelNo, //channel number search
+				 BotstrStationCallSign:strChannelName
+			 	  } 
+			}
+		
+	};
+  console.log("json " + String(args));
+	
+    request.post("https://www.verizon.com/foryourhome/vzrepair/flowengine/restapi.ashx", args,
+        function (error, response, body) {
+            if (!error && response.statusCode == 200) {
+             
+                 console.log("body " + body);
+                callback(body);
+            }
+            else
+            	console.log('error: ' + error + ' body: ' + body);
+        }
+    );
+ } 
+  
+function stationsearchCallback(apiresp,usersession) {
+    var objToJson = {};
+    objToJson = apiresp;
+	var respobj = objToJson[0].Inputs.newTemp.Section.Inputs.Response;
+	 console.log(JSON.stringify(respobj));
+	if (respobj != null && respobj.facebook != null && respobj.facebook.channels != null)
+	{
+	 if (respobj.facebook.channels.channel) {
+           // let entries = respobj.facebook.channels.channel;
+		  var entries = respobj.facebook.channels.channel;
+		 console.log("entries: "+entries);
+            entries.forEach((channel) => {
+		     console.log("channel: "+channel);
+               			sendFBMessage(usersession,  {text: channel});
+		    		//usersession.send(channel);
+	    			}
+			   )};
+	}
+	else if (respobj != null && respobj.facebook != null && respobj.facebook.attachment != null)
+	{	 console.log("less than 10 channels ");
+		//sendFBMessage(usersession,  respobj.facebook);
+	 
+	 		//fix to single element array 
+			if (respobj != null 
+			&& respobj.facebook != null 
+			&& respobj.facebook.attachment != null 
+			&& respobj.facebook.attachment.payload != null 
+			&& respobj.facebook.attachment.payload.elements != null) {
+			try {
+				var chanls = respobj.facebook.attachment.payload.elements;
+				console.log ("Is array? "+ util.isArray(chanls))
+						if (!util.isArray(chanls))
+						{
+							respobj.facebook.attachment.payload.elements = [];
+							respobj.facebook.attachment.payload.elements.push(chanls);
+							console.log("ProgramSearchCallBack=After=" + JSON.stringify(respobj));
+						}
+					 }catch (err) { console.log(err); }
+			}
+
+	 	sendFBMessage(usersession, respobj.facebook);
+	 	//var msg = new builder.Message(usersession).sourceEvent(respobj);              
+          	//usersession.send(msg);
+	}
+	else
+	{
+		 console.log("Sorry i dont find channel details");
+		sendFBMessage(usersession,  {text: "Sorry I dont find the channel details. Can you try another."});
+		
+		//usersession.send("Sorry I dont find the channel details. Can you try another.");
+	}
+	
+} 	
+/*	
 function stationsearch(usersession) 
 {
     var cntr=0;
@@ -501,6 +590,9 @@ console.log ("splittedText:"+splittedText)
 	
 	
 }
+*/
+
+
 function getVzProfileCallBack(apiresp,usersession) {
     console.log('Inside Verizon Profile Call back');
     var objToJson = {};
