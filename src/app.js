@@ -1007,7 +1007,7 @@ function PgmSearchCallback(apiresp,usersession) {
 				}
 			 }catch (err) { console.log(err); }
         } 
-    subflow =null;
+    subflow.facebook.text ='UserNotFound';
 	if (subflow != null 
         && subflow.facebook != null 
         && subflow.facebook.text != null && subflow.facebook.text =='UserNotFound')
