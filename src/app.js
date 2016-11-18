@@ -982,8 +982,8 @@ function accountlinking(apireq,usersession)
 // function calls
 function welcomeMsg(usersession)
 {
-	var authCode = "lt6sth2"; 
-    getvzUserID(authCode, function (str) { getvzUserIDCallBack(str, event) });
+	//var authCode = "lt6sth2"; 
+   // getvzUserID(authCode, function (str) { getvzUserIDCallBack(str, event) });
     console.log("inside welcomeMsg");
     var respobj= {"facebook":{"attachment":{"type":"template","payload":{"template_type":"button","text":"Want to know what’s on tonight? When your favorite sports team is playing? What time your favorite show is coming on? I can answer almost anything, so try me! Before we get started—let’s take a few minutes to get me linked to your Verizon account, this way I can send you personalized recommendations, alerts.","buttons":[{"type":"postback","title":"Link Account","payload":"Link Account"},{"type":"postback","title":"Maybe later","payload":"Main Menu"}]}}}};
     console.log(JSON.stringify(respobj)); 
@@ -1040,59 +1040,99 @@ function CategoryList(apireq,usersession) {
 	
 	
 } 
-function AccountLinkDBcall(apireq,usersession)
-{
-    console.log('Inside AccountLink DB call-0');
-    //Account Linking log variable's
-    var strUsrid ="userid";
-    var strVZID ="VZID";
-    var strAuthtoken ="Authtoken";
-    var strAuthcode ="Authcode";
-    var strFBid ="FBid";
-    var strFirstName ="FirstName";
-    var strLastName ="LastName";
-    var strLocale ="Locale";
-    var strTimezone ="Timezone";
-    var strServername ="Servername";
-    var strLinkStatus ="LinkStatus";
-    var strCnvrstid ="Cnvrstid";
-    var strMsgid ="Msgid";
 
-    console.log('Inside AccountLink DB call-1')
-    var args={
-        "headers": headersInfo,
-        "json": {Request: {ThisValue: 'AccountLinkingDB', 
-            Usrid: strUsrid, 
-            VZID : strVZID,
-            Authtoken : strAuthtoken,
-            Authcode: strAuthcode,
-            FBid : strFBid,
-            FirstName : strFirstName,
-            LastName : strLastName,
-            Locale: strLocale, 
-            Timezone : strTimezone,
-            Servername : strServername,
-            LinkStatus: strLinkStatus,
-            Cnvrstid : strCnvrstid,
-            Msgid : strMsgid				   
+	
+	function PgmSearch(apireq,callback) { 
+	 console.log("<<<Inside PgmSearch>>>");
+	 var strSenderid = userData.get("UD_UserID");
+         var strProgram =  apireq.result.parameters.Programs;
+	 var strGenre =  apireq.result.parameters.Genre;
+	 var strdate =  apireq.result.parameters.date;
+	 var strChannelName =  apireq.result.parameters.Channel;
+	 var strFiosId =  apireq.result.parameters.FiosId;
+	 var strStationId =  apireq.result.parameters.StationId;
+	 var strRegionId = "";	
+	
+        var headersInfo = { "Content-Type": "application/json" };
+	
+	var args = {
+		"headers": headersInfo,
+		"json": {Flow: 'TroubleShooting Flows\\Test\\APIChatBot.xml',
+			 Request: {ThisValue: 'AdvProgramSearch', //  EnhProgramSearch
+				   BotProviderId : strSenderid, //'1113342795429187',  // usersession ; sender id
+				   BotstrTitleValue:strProgram, 
+				   BotdtAirStartDateTime : strdate,
+				   BotstrGenreRootId : strGenre,
+				   BotstrStationCallSign:strChannelName,
+				   BotstrFIOSRegionID : strRegionId,
+				   BotstrFIOSID : strFiosId,
+				   BotstrFIOSServiceId : strStationId		   
+				  } 
+			}
+		};
+		
+	  console.log("args " + JSON.stringify(args));
+	
+    request.post("https://www.verizon.com/foryourhome/vzrepair/flowengine/restapi.ashx", args,
+        function (error, response, body) {
+            if (!error && response.statusCode == 200) {
+             
+                 console.log("body " + body);
+                callback(body);
+            }
+            else
+            	console.log('error: ' + error + ' body: ' + body);
         }
-        }
-    };
-    console.log('Inside AccountLink DB call-3')
-    console.log("args : " + JSON.stringify(args));
-    request.post("https://www.verizon.com/fiostv/myservices/admin/botapi.asmx", args,
-       function (error, response, body) {
-           if (!error && response.statusCode == 200) {
+    );
+ } 
 
-               console.log("body " + body);
-               usersession(body);
-           }
-           else
-               console.log('error: ' + error + ' body: ' + body);
-       }
-       );
-}
 
+
+function PgmSearchCallback(apiresp,usersession) {
+    var objToJson = {};
+    objToJson = apiresp;
+	var subflow = objToJson[0].Inputs.newTemp.Section.Inputs.Response;
+	 console.log("subflow " + JSON.stringify(subflow));
+	 logger.info("subflow-PgmSearchCallback" + subflow );
+	
+	//fix to single element array 
+	if (subflow != null 
+        && subflow.facebook != null 
+        && subflow.facebook.attachment != null 
+        && subflow.facebook.attachment.payload != null 
+        && subflow.facebook.attachment.payload.buttons != null) {
+        try {
+				var pgms = subflow.facebook.attachment.payload.buttons;
+		console.log ("Is array? "+ util.isArray(pgms))
+				if (!util.isArray(pgms))
+				{
+					subflow.facebook.attachment.payload.buttons = [];
+					subflow.facebook.attachment.payload.buttons.push(pgms);
+					console.log("ProgramSearchCallBack=After=" + JSON.stringify(subflow));
+				}
+			 }catch (err) { console.log(err); }
+        } 
+    
+	if (subflow != null 
+        && subflow.facebook != null 
+        && subflow.facebook.text != null && subflow.facebook.text =='UserNotFound')
+	{
+		console.log (subflow.facebook.text);
+		var respobj ={"facebook":{"attachment":{"type":"template","payload":{"template_type":"generic","elements":[
+		{"title":"You have to Login to Verizon to proceed","image_url":"https://www98.verizon.com/foryourhome/vzrepair/siwizard/img/verizon-logo-200.png","buttons":[
+			{"type":"account_link","url":"https://www98.verizon.com/vzssobot/upr/preauth"}]}]}}}};
+		//var msg = new builder.Message(usersession).sourceEvent(respobj);              
+        	//usersession.send(msg);
+		sendFBMessage(usersession,  respobj.facebook);
+	}
+	else
+	{
+	//usersession.send("I found several related programs");	
+         sendFBMessage(usersession,  subflow.facebook);
+	}
+} 
+	
+	/*
 function PgmSearch(apireq,callback) { 
     console.log("<<<Inside PgmSearch>>>");
     var strProgram =  apireq.result.parameters.Programs;
@@ -1174,7 +1214,7 @@ function PgmSearchCallback(apiresp,usersession) {
     else
         sendFBMessage(usersession,  {text:"Sorry I don't have the details. Can you try with the different one."});
 } 
-
+*/
 function ChnlSearch(apireq,callback) { 
     console.log("ChnlSearch called " );
 	
