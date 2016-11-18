@@ -1252,7 +1252,22 @@ function STBListCallBack(apiresp,usersession) {
         }catch (err) { console.log(err); }
     } 
     console.log("STBListCallBack=before=" + JSON.stringify(subflow));
-    sendFBMessage(usersession,  subflow.facebook);
+	
+	if (subflow != null 
+        && subflow.facebook != null 
+        && subflow.facebook.text != null && subflow.facebook.text =='UserNotFound')
+	{
+		console.log ("STBListCallBack subflow "+ subflow.facebook.text);
+		var respobj ={"facebook":{"attachment":{"type":"template","payload":{"template_type":"generic","elements":[
+		{"title":"You have to Login to Verizon to proceed","image_url":"https://www98.verizon.com/foryourhome/vzrepair/siwizard/img/verizon-logo-200.png","buttons":[
+			{"type":"account_link","url":"https://www98.verizon.com/vzssobot/upr/preauth"}]}]}}}};		
+		sendFBMessage(usersession,  respobj.facebook);
+	}
+	else
+	{	
+         sendFBMessage(usersession,  subflow.facebook);
+	}
+   
 } 
 
 function DVRRecord(apireq,callback) { 
