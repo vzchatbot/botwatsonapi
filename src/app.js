@@ -1217,7 +1217,7 @@ function STBList(apireq,sender,callback) {
 		      Userid:''} 
         }		
     };
-
+console.log("args=" + JSON.stringify(args));
     request.post("https://www.verizon.com/foryourhome/vzrepair/flowengine/restapi.ashx", args,
         function (error, response, body) {
             if (!error && response.statusCode == 200) {
@@ -1235,7 +1235,7 @@ function STBListCallBack(apiresp,usersession) {
     var objToJson = {};
     objToJson = apiresp;
     var subflow = objToJson[0].Inputs.newTemp.Section.Inputs.Response; 
-	
+	console.log("STBListCresp=" + JSON.stringify(subflow));
     //fix to single element array 
     if (subflow != null 
          && subflow.facebook != null 
@@ -1253,7 +1253,7 @@ function STBListCallBack(apiresp,usersession) {
             }
         }catch (err) { console.log(err); }
     } 
-    console.log("STBListCallBack=before=" + JSON.stringify(subflow));
+    console.log("STBListCallBack=" + JSON.stringify(subflow));
 	
 	if (subflow != null 
         && subflow.facebook != null 
