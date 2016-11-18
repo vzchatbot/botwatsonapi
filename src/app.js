@@ -165,7 +165,7 @@ function processEvent(event) {
                             break;
                         case "record":
                             console.log("----->>>>>>>>>>>> INSIDE recordnew <<<<<<<<<<<------");	    
-                            RecordScenario (response,sender); 
+                            RecordScenario (response,sender,sender); 
                             break;  
                         case "CategoryList":
                             console.log("----->>>>>>>>>>>> INSIDE CategoryList <<<<<<<<<<<------");
@@ -1161,7 +1161,7 @@ function LinkOptions(apireq,usersession)
     sendFBMessage(usersession,  respobj.facebook);
 }
 
-function RecordScenario (apiresp,usersession)
+function RecordScenario (apiresp,sender,usersession)
 {
     console.log("inside RecordScenario");
     var channel = apiresp.result.parameters.Channel.toUpperCase();
@@ -1174,7 +1174,7 @@ function RecordScenario (apiresp,usersession)
     if (time == "") //if time is empty show schedule
     { PgmSearch(apiresp,function (str){ PgmSearchCallback(str,usersession)});}
     else if (SelectedSTB == "" || SelectedSTB == undefined) 
-    { STBList(apiresp,function (str){ STBListCallBack(str,usersession)}); }
+    { STBList(apiresp,sender,function (str){ STBListCallBack(str,usersession)}); }
         /*else if (channel == 'HBOSIG') //not subscribed scenario - call to be made
 			{
 			  var respobj = {"facebook":{"attachment":{"type":"template","payload":{"template_type":"button","text":" Sorry you are not subscribed to " + channel +". Would you like to subscribe " + channel + " ?","buttons":[{"type":"postback","title":"Subscribe","payload":"Subscribe"},{"type":"postback","title":"No, I'll do it later ","payload":"Main Menu"}]}}}};	
@@ -1194,7 +1194,7 @@ function RecordScenario (apiresp,usersession)
 }
 
 
-function STBList(apireq,callback) { 
+function STBList(apireq,sender,callback) { 
     console.log('inside external call '+ apireq.contexts);
     var struserid = ''; 
     for (var i = 0, len = apireq.result.contexts.length; i < len; i++) {
@@ -1212,7 +1212,9 @@ function STBList(apireq,callback) {
     var args = {
         "headers": headersInfo,
         "json": {Flow: 'TroubleShooting Flows\\Test\\APIChatBot.xml',
-            Request: {ThisValue: 'STBList',Userid:struserid} 
+            Request: {ThisValue: 'STBList',
+		       BotProviderId :sender, 
+		      Userid:''} 
         }		
     };
 
