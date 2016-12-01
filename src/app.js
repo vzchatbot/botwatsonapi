@@ -76,7 +76,7 @@ logger.fatal('fatel');
 function processEvent(event) {
     var sender = event.sender.id.toString();
     console.log("senderid", sender);
-	ChatHistoryLog.log(sender)
+    ChatHistoryLog.log("senderid", sender);
 	
     if ((event.message && event.message.text) || (event.postback && event.postback.payload)) 
     {
