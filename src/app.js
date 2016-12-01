@@ -22,6 +22,8 @@ var apiAiService = apiai(APIAI_ACCESS_TOKEN, {language: APIAI_LANG, requestSourc
 var sessionIds = new Map();
 var userData = new Map();
 
+
+
 //======================
 /*
 log4js.loadAppender('file');
@@ -82,16 +84,16 @@ function processEvent(event) {
             sessionIds.set(sender, uuid.v1());
         }
 	    
-	var SenderID = event.sender.id.toString();
-        var RecipientID = event.recipient.id.toString();
-        var TimeStamp = event.timestamp.toString();        
-        var RequestMessageID = event.message.mid.toString();
-        var RequestMessageText = event.message.text.toString();   
-        console.log("ReqSenderID :" + JSON.stringify(SenderID));
-        console.log("ReqRecipientID :" + JSON.stringify(RecipientID));
-        console.log("ReqTimeStamp :" + JSON.stringify(TimeStamp));
-        console.log("ReqMessageID :" + JSON.stringify(RequestMessageID));
-        console.log("ReqMessageText :" + JSON.stringify(RequestMessageText));
+	var ReqSenderID = event.sender.id.toString();
+        var ReqRecipientID = event.recipient.id.toString();
+        var ReqTimeStamp = event.timestamp.toString();        
+        var ReqMessageID = event.message.mid.toString();
+        var ReqMessageText = event.message.text.toString();   
+        console.log("ReqSenderID :" + JSON.stringify(ReqSenderID));
+        console.log("ReqRecipientID :" + JSON.stringify(ReqRecipientID));
+        console.log("ReqTimeStamp :" + JSON.stringify(ReqTimeStamp));
+        console.log("ReqMessageID :" + JSON.stringify(ReqMessageID));
+        console.log("ReqMessageText :" + JSON.stringify(ReqMessageText));
 	    
 	    
         console.log("Text Value", text);   
@@ -392,6 +394,17 @@ app.post('/webhook/', function (req, res)  {
     try {
         var data = JSONbig.parse(req.body);
         console.log("xyz - ResBodyMessage" + req.body);
+	var ResSenderID = req.body.entry.messaging.toString();
+      //  var ResRecipientID = req.body.recipient.id.toString();
+      //  var ResTimeStamp = req.body.timestamp.toString();        
+      //  var ResMessageID = req.body.message.mid.toString();
+      //  var ResMessageText = req.body.message.text.toString();   
+        console.log("ResSenderID :" + JSON.stringify(ResSenderID));
+     //   console.log("ResRecipientID :" + JSON.stringify(ResRecipientID));
+     //   console.log("ResTimeStamp :" + JSON.stringify(ResTimeStamp));
+     //   console.log("ResMessageID :" + JSON.stringify(ResMessageID));
+    //    console.log("ResMessageText :" + JSON.stringify(ResMessageText));
+	    
         if (data.entry) {
             var entries = data.entry;
             entries.forEach(function (entry)  {
