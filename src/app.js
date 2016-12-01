@@ -399,7 +399,7 @@ app.post('/webhook/', function (req, res)  {
       //  var ResTimeStamp = req.body.timestamp.toString();        
       //  var ResMessageID = req.body.message.mid.toString();
       //  var ResMessageText = req.body.message.text.toString();   
-        console.log("ResSenderID :" + JSON.stringify(ResSenderID));
+       // console.log("ResSenderID :" + JSON.stringify(ResSenderID));
      //   console.log("ResRecipientID :" + JSON.stringify(ResRecipientID));
      //   console.log("ResTimeStamp :" + JSON.stringify(ResTimeStamp));
      //   console.log("ResMessageID :" + JSON.stringify(ResMessageID));
