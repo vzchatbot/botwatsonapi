@@ -23,14 +23,45 @@ var sessionIds = new Map();
 var userData = new Map();
 
 //======================
-
+/*
 log4js.loadAppender('file');
 //log4js.addAppender(log4js.appenders.console());
 log4js.addAppender(log4js.appenders.file('./logger.txt'), 'VZ');
 
 var logger = log4js.getLogger('VZ');
 logger.setLevel('INFO');
+*/
 
+log4js.configure({
+    appenders: 
+    [
+        { type: 'console' },
+        {
+            type: 'dateFile', filename: 'D:\\app\\log\\bot\\botws.log', category: 'botws', "pattern": "-yyyy-MM-dd","alwaysIncludePattern": false
+        },
+        {
+            type: 'logLevelFilter',
+            level: 'ERROR', appender: {
+                type: "dateFile",
+                filename: 'D:\\app\\log\\bot\\boterrors.log',
+                category: 'errorlog',"pattern": "-yyyy-MM-dd","alwaysIncludePattern": false
+            }
+        }
+        ,
+        {
+            type: 'logLevelFilter',
+            level: 'debug', appender: {
+                type: "dateFile",
+                filename: 'D:\\app\\log\\bot\\ChatHistory.log',
+                category: 'Debug', "pattern": "-yyyy-MM-dd", "alwaysIncludePattern": false
+            }
+        }
+    ]
+});
+
+var logger = log4js.getLogger("botws");
+var Errlogger = log4js.getLogger('errorlog');
+var ChatHistoryLog = log4js.getLogger('Debug');
 /*
 logger.trace('Entering cheese testing');
 logger.debug('Got cheese.');
@@ -45,6 +76,7 @@ logger.fatal('fatel');
 function processEvent(event) {
     var sender = event.sender.id.toString();
     console.log("senderid", sender);
+	ChatHistoryLog.log(sender)
 	
     if ((event.message && event.message.text) || (event.postback && event.postback.payload)) 
     {
