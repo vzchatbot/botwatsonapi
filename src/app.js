@@ -87,11 +87,11 @@ function processEvent(event) {
         var TimeStamp = event.timestamp.toString();        
         var RequestMessageID = event.message.mid.toString();
         var RequestMessageText = event.message.text.toString();   
-        console.log("SenderID :" + JSON.stringify(SenderID));
-        console.log("RecipientID :" + JSON.stringify(RecipientID));
-        console.log("TimeStamp :" + JSON.stringify(TimeStamp));
-        console.log("RequestMessageID :" + JSON.stringify(RequestMessageID));
-        console.log("RequestMessageText :" + JSON.stringify(RequestMessageText));
+        console.log("ReqSenderID :" + JSON.stringify(SenderID));
+        console.log("ReqRecipientID :" + JSON.stringify(RecipientID));
+        console.log("ReqTimeStamp :" + JSON.stringify(TimeStamp));
+        console.log("ReqMessageID :" + JSON.stringify(RequestMessageID));
+        console.log("ReqMessageText :" + JSON.stringify(RequestMessageText));
 	    
 	    
         console.log("Text Value", text);   
@@ -267,7 +267,7 @@ function chunkString(s, len) {
 
 function sendFBMessage(sender, messageData, callback) {
 	
-    //  console.log('sendFBMessage: sender '+ sender + "messageData  " + messageData);
+     console.log('Prabu - sendFBMessage: sender '+ sender + "messageData  " + messageData);
     request({
         url: 'https://graph.facebook.com/v2.6/me/messages',
         qs: {access_token: FB_PAGE_ACCESS_TOKEN},
@@ -287,8 +287,8 @@ function sendFBMessage(sender, messageData, callback) {
             callback();
         }
     });
-	   console.log('sendFBMessage - RecipienID :' + sender);
-           console.log('sendFBMessage - ResponseText :' + messageData );
+	   console.log('sendFBMessage - ResSenderID :' + sender);   
+	console.log('sendFBMessage - ResMessage :' + messageData);
 }
 
 function sendFBSenderAction(sender, action, callback) {
