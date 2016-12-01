@@ -394,7 +394,7 @@ app.post('/webhook/', function (req, res)  {
     try {
         var data = JSONbig.parse(req.body);
         console.log("xyz - ResBodyMessage" + req.body);
-	var ResSenderID = req.body.entry.messaging.toString();
+	var ResSenderID = req.body.toString();
       //  var ResRecipientID = req.body.recipient.id.toString();
       //  var ResTimeStamp = req.body.timestamp.toString();        
       //  var ResMessageID = req.body.message.mid.toString();
