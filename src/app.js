@@ -267,7 +267,7 @@ function chunkString(s, len) {
 
 function sendFBMessage(sender, messageData, callback) {
 	
-     console.log('Prabu - sendFBMessage: sender '+ sender + "messageData  " + messageData);
+     console.log('sendFBMessage: sender '+ sender + "messageData  " + messageData);
     request({
         url: 'https://graph.facebook.com/v2.6/me/messages',
         qs: {access_token: FB_PAGE_ACCESS_TOKEN},
@@ -288,7 +288,7 @@ function sendFBMessage(sender, messageData, callback) {
         }
     });
 	   console.log('sendFBMessage - ResSenderID :' + sender);   
-	console.log('sendFBMessage - ResMessage :' + messageData);
+
 }
 
 function sendFBSenderAction(sender, action, callback) {
@@ -347,7 +347,6 @@ app.use(bodyParser.text({type: 'application/json'}));
 app.get('/webhook/', function (req, res)  {
     if (req.query['hub.verify_token'] == FB_VERIFY_TOKEN) {
         res.send(req.query['hub.challenge']);
-
         setTimeout(function()  {
             doSubscribeRequest();
         }, 3000);
@@ -392,6 +391,7 @@ app.post('/apiaiwebhook/', function (req, res)  {
 app.post('/webhook/', function (req, res)  {
     try {
         var data = JSONbig.parse(req.body);
+	console.log('Prabu - ResBodyMessage :' + data);
         console.log(req.body);
         if (data.entry) {
             var entries = data.entry;
