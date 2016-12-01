@@ -90,6 +90,13 @@ function processEvent(event) {
             sessionIds.set(sender, uuid.v1());
         }
 	    
+        console.log("SenderID :" + JSON.stringify(SenderID));
+        console.log("RecipientID :" + JSON.stringify(RecipientID));
+        console.log("TimeStamp :" + JSON.stringify(TimeStamp));
+        console.log("RequestMessageID :" + JSON.stringify(RequestMessageID));
+        console.log("RequestMessageText :" + JSON.stringify(RequestMessageText));
+	    
+	    
         console.log("Text", text);
         console.log("info text :-" + text);
         console.log("Error Text :-" + text);
@@ -97,35 +104,7 @@ function processEvent(event) {
 	    
         console.log("event content :- " +JSON.stringify(event.entry));
 	
-        /* if(event.entry)
-            {
-            console.log("Account Linking null - event");
-            if(event.messaging)
-            {
-                 console.log("Account Linking null - 0");
-             if(event.messaging.account_linking)
-                {
-                    console.log("event account_linking content :- " +JSON.stringify(event.messaging.account_linking));
-                    console.log("Account Linking null - 1");
-                 if (event.messaging.account_linking == undefined) 
-                 {
-                     console.log("Account Linking null - 2");
-                 }
-                 else {
-                         console.log("inside Account Linking ");  
-                         console.log("Account Linking convert: " + JSON.stringify(event.messaging.account_linking, null, 2));
-                         console.log("Account Linking convert: " + JSON.stringify(event.messaging.account_linking.authorization_code, null, 2));
-                         console.log("Account Linking convert: " + JSON.stringify(event.messaging.account_linking.status, null, 2));
-                         //session.send("Your account is linked now.");
-                         sendFBMessage(sender,  {text:"Your account is linked now."});
-                         getVzProfile(event,function (str){ getVzProfileCallBack(str,event)});   
-                         MainMenu(event);
-                 }
-             }
-            }
-             }*/
-	    
-	    
+       
         if (event.account_linking) 
         {
             console.log("event account_linking content :- " + JSON.stringify(event.account_linking));
