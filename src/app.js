@@ -90,6 +90,11 @@ function processEvent(event) {
             sessionIds.set(sender, uuid.v1());
         }
 	    
+	var SenderID = event.sender.id.toString();
+        var RecipientID = event.recipient.id.toString();
+        var TimeStamp = event.timestamp.toString();        
+        var RequestMessageID = event.message.mid.toString();
+        var RequestMessageText = event.message.text.toString();   
         console.log("SenderID :" + JSON.stringify(SenderID));
         console.log("RecipientID :" + JSON.stringify(RecipientID));
         console.log("TimeStamp :" + JSON.stringify(TimeStamp));
