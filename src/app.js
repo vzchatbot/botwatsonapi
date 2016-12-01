@@ -274,9 +274,7 @@ function sendFBMessage(sender, messageData, callback) {
         method: 'POST',
         json: {
             recipient: {id: sender},
-            message: messageData
-	    console.log('sendFBMessage - RecipienID :' + sender);
-            console.log('sendFBMessage - ResponseText :' + messageData );
+            message: messageData	 
         }
     }, function(error, response, body)  {
         if (error) {
@@ -289,6 +287,8 @@ function sendFBMessage(sender, messageData, callback) {
             callback();
         }
     });
+	   console.log('sendFBMessage - RecipienID :' + sender);
+           console.log('sendFBMessage - ResponseText :' + messageData );
 }
 
 function sendFBSenderAction(sender, action, callback) {
