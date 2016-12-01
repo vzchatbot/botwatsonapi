@@ -391,8 +391,7 @@ app.post('/apiaiwebhook/', function (req, res)  {
 app.post('/webhook/', function (req, res)  {
     try {
         var data = JSONbig.parse(req.body);
-	console.log('Prabu - ResBodyMessage :' + data);
-        console.log(req.body);
+        console.log("xyz - ResBodyMessage" + req.body);
         if (data.entry) {
             var entries = data.entry;
             entries.forEach(function (entry)  {
