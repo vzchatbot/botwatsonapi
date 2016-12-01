@@ -62,14 +62,6 @@ log4js.configure({
 var logger = log4js.getLogger("botws");
 var Errlogger = log4js.getLogger('errorlog');
 var ChatHistoryLog = log4js.getLogger('Debug');
-/*
-logger.trace('Entering cheese testing');
-logger.debug('Got cheese.');
-logger.info('Cheese is Gouda.');
-logger.warn('Cheese is quite smelly.');
-logger.error('error');
-logger.fatal('fatel');
-*/
 
 //=========================================================
 
@@ -102,10 +94,7 @@ function processEvent(event) {
         console.log("RequestMessageText :" + JSON.stringify(RequestMessageText));
 	    
 	    
-        console.log("Text", text);
-        console.log("info text :-" + text);
-        console.log("Error Text :-" + text);
-	  
+        console.log("Text Value", text);   
 	    
         console.log("event content :- " +JSON.stringify(event.entry));
 	
@@ -286,6 +275,8 @@ function sendFBMessage(sender, messageData, callback) {
         json: {
             recipient: {id: sender},
             message: messageData
+	    console.log('sendFBMessage - RecipienID :' + sender);
+            console.log('sendFBMessage - ResponseText :' + messageData );
         }
     }, function(error, response, body)  {
         if (error) {
