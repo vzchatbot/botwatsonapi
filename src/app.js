@@ -85,13 +85,13 @@ function processEvent(event) {
             console.log("Inside sessionID:- ");
             sessionIds.set(sender, uuid.v1());
         }
-	
+	/*
 	var ReqSenderID = event.sender.id.toString();
         var ReqRecipientID = event.recipient.id.toString();
         var ReqTimeStamp = event.timestamp.toString();        
         var ReqMessageID = event.message.mid.toString();
         var ReqMessageText = event.message.text.toString();   
-	
+	*/
 	    
         console.log("Text Value", text);   
         console.log("event content :- " +JSON.stringify(event.entry));
