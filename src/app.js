@@ -105,7 +105,7 @@ function processEvent(event) {
 		 ReqMessageText = event.message.text.toString();   
 	    }
 	    */
-	     console.log("RRR In Event "+JSON.stringify(event));
+	     console.log("RRR In Event "+JSON.stringify(event.sender));
         console.log("ReqSenderID :" + JSON.stringify(ReqSenderID));
         console.log("ReqRecipientID :" + JSON.stringify(ReqRecipientID));
   //      console.log("ReqTimeStamp :" + JSON.stringify(ReqTimeStamp));
