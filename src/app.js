@@ -398,7 +398,11 @@ app.post('/webhook/', function (req, res)  {
             var entries = data.entry;
 		console.log("abc Entries :" + JSON.stringify(entries));			
             entries.forEach(function (entry)  {
-		     if (event.sender)
+		    		
+                var messaging_events = entry.messaging;
+                if (messaging_events) {
+                    messaging_events.forEach(function (event)  {
+			     if (event.sender)
 				{
 				  var SenderID = event.sender.id;
 				 
@@ -407,17 +411,14 @@ app.post('/webhook/', function (req, res)  {
 			    {
 				    var RecipientID = event.recipient.id;
 				  
-			    } 				
-                var messaging_events = entry.messaging;
-                if (messaging_events) {
-                    messaging_events.forEach(function (event)  {
+			    } 		
 			     if (event.message) 
 				 {
 					  var TimeStamp = event.timestamp;
 					  var MessageID = event.message.mid;
 					  var MessageText = event.message.text;
-				  console.log("SenderID :" + JSON.stringify(SenderID));
-			          console.log("RecipientID :" + JSON.stringify(RecipientID));
+				   console.log("SenderID :" + JSON.stringify(SenderID));
+			           console.log("RecipientID :" + JSON.stringify(RecipientID));
 				   console.log("TimeStamp :" + JSON.stringify(TimeStamp));		 
 				   console.log("MessageID :" + JSON.stringify(MessageID));
 				   console.log("MessageText :" + JSON.stringify(MessageText));
