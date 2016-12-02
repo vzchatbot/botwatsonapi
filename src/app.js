@@ -412,7 +412,8 @@ app.post('/webhook/', function (req, res)  {
                 if (messaging_events) {
                     messaging_events.forEach(function (event)  {
                         if (event.message && !event.message.is_echo ||
-                            event.postback && event.postback.payload) {
+                            event.postback && event.postback.payload) {				
+                            processEvent(event);
 				  if (event.sender )
 				  {
 					  var ResSenderID = event.sender.id;
@@ -432,7 +433,6 @@ app.post('/webhook/', function (req, res)  {
 				   console.log("ResMessageID :" + JSON.stringify(ResMessageID));
 				   console.log("ResMessageText :" + JSON.stringify(ResMessageText));
                        		 } 
-                            processEvent(event);
                         }
                     });
                 }
