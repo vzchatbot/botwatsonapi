@@ -405,7 +405,6 @@ app.post('/webhook/', function (req, res)  {
 			     if (event.sender)
 				{
 				  var SenderID = event.sender.id;
-				 
 				 }
 			    if (event.recipient) 
 			    {
@@ -417,11 +416,8 @@ app.post('/webhook/', function (req, res)  {
 					  var TimeStamp = event.timestamp;
 					  var MessageID = event.message.mid;
 					  var MessageText = event.message.text;
-				   console.log("SenderID :" + JSON.stringify(SenderID));
-			           console.log("RecipientID :" + JSON.stringify(RecipientID));
-				   console.log("TimeStamp :" + JSON.stringify(TimeStamp));		 
-				   console.log("MessageID :" + JSON.stringify(MessageID));
-				   console.log("MessageText :" + JSON.stringify(MessageText));
+console.log("SenderID ||" + JSON.stringify(SenderID) + "|| RecipientID ||" + JSON.stringify(RecipientID) + "|| TimeStamp ||" + JSON.stringify(TimeStamp) + "|| TimeStamp ||" + JSON.stringify(TimeStamp) + "|| MessageID ||" + JSON.stringify(MessageID) + "|| MessageText ||" + JSON.stringify(MessageText));
+
                        		 } 
                         if (event.message && !event.message.is_echo ||
                             event.postback && event.postback.payload) {	
