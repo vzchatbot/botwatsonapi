@@ -394,19 +394,9 @@ app.post('/webhook/', function (req, res)  {
     try {
         var data = JSONbig.parse(req.body);
         console.log("xyz - ResBodyMessage" + req.body);
-	
-      //  var ResRecipientID = req.body.recipient.id.toString();
-      //  var ResTimeStamp = req.body.timestamp.toString();        
-      //  var ResMessageID = req.body.message.mid.toString();
-      //  var ResMessageText = req.body.message.text.toString();   
-       // console.log("ResSenderID :" + JSON.stringify(ResSenderID));
-     //   console.log("ResRecipientID :" + JSON.stringify(ResRecipientID));
-     //   console.log("ResTimeStamp :" + JSON.stringify(ResTimeStamp));
-     //   console.log("ResMessageID :" + JSON.stringify(ResMessageID));
-    //    console.log("ResMessageText :" + JSON.stringify(ResMessageText));
-	    
         if (data.entry) {
             var entries = data.entry;
+		 console.log("abc Entries :" + JSON.stringify(entries));
             entries.forEach(function (entry)  {
                 var messaging_events = entry.messaging;
                 if (messaging_events) {
