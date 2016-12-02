@@ -396,33 +396,34 @@ app.post('/webhook/', function (req, res)  {
         console.log("xyz - ResBodyMessage" + req.body);
         if (data.entry) {
             var entries = data.entry;
-		console.log("abc Entries :" + JSON.stringify(entries));
-			 if (event.sender)
+		console.log("abc Entries :" + JSON.stringify(entries));			
+            entries.forEach(function (entry)  {
+		     if (event.sender)
 				{
 				  var SenderID = event.sender.id;
-				  console.log("SenderID :" + JSON.stringify(SenderID));
+				 
 				 }
 			    if (event.recipient) 
 			    {
 				    var RecipientID = event.recipient.id;
-				     console.log("RecipientID :" + JSON.stringify(RecipientID));
-			    } 
-				 if (event.message) 
+				  
+			    } 				
+                var messaging_events = entry.messaging;
+                if (messaging_events) {
+                    messaging_events.forEach(function (event)  {
+			     if (event.message) 
 				 {
 					  var TimeStamp = event.timestamp;
 					  var MessageID = event.message.mid;
 					  var MessageText = event.message.text;
+				  console.log("SenderID :" + JSON.stringify(SenderID));
+			          console.log("RecipientID :" + JSON.stringify(RecipientID));
 				   console.log("TimeStamp :" + JSON.stringify(TimeStamp));		 
 				   console.log("MessageID :" + JSON.stringify(MessageID));
 				   console.log("MessageText :" + JSON.stringify(MessageText));
                        		 } 
-            entries.forEach(function (entry)  {
-                var messaging_events = entry.messaging;
-                if (messaging_events) {
-                    messaging_events.forEach(function (event)  {
                         if (event.message && !event.message.is_echo ||
                             event.postback && event.postback.payload) {	
-				 
                             processEvent(event);
 				
                         }
