@@ -390,10 +390,9 @@ app.post('/apiaiwebhook/', function (req, res)  {
 app.post('/webhook/', function (req, res)  {
     try {
         var data = JSONbig.parse(req.body);
-        console.log("xyz - ResBodyMessage" + req.body);
+        console.log("ResBodyMessage" + req.body);
         if (data.entry) {
-            var entries = data.entry;
-		console.log("abc Entries :" + JSON.stringify(entries));			
+            var entries = data.entry;				
             entries.forEach(function (entry)  {
 		    		
                 var messaging_events = entry.messaging;
@@ -413,7 +412,7 @@ app.post('/webhook/', function (req, res)  {
 					  var TimeStamp = event.timestamp;
 					  var MessageID = event.message.mid;
 					  var MessageText = event.message.text;
-console.log("||" + JSON.stringify(SenderID) + "||" + JSON.stringify(RecipientID) +"||"+ JSON.stringify(TimeStamp) + "||" + JSON.stringify(MessageID) + "|| " + JSON.stringify(MessageText));
+console.log("||" + JSON.stringify(SenderID) + "||" + JSON.stringify(RecipientID) +"||"+ JSON.stringify(TimeStamp) + "||" + JSON.stringify(MessageID) + "|| " + JSON.stringify(MessageText)+ "|| " + JSON.stringify(data));
 
                        		 } 
                         if (event.message && !event.message.is_echo ||
