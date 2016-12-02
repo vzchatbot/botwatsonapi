@@ -95,9 +95,12 @@ function processEvent(event) {
 	    
 	var ReqSenderID = event.sender.id.toString();
         var ReqRecipientID = event.recipient.id.toString();
-        var ReqTimeStamp = event.timestamp.toString();        
-        var ReqMessageID = event.message.mid.toString();
-        var ReqMessageText = event.message.text.toString();   
+	    if(event.timestamp && event.message.mid )
+	    {
+		var ReqTimeStamp = event.timestamp.toString();        
+		var ReqMessageID = event.message.mid.toString();
+		var ReqMessageText = event.message.text.toString();   
+	    }
         console.log("ReqSenderID :" + JSON.stringify(ReqSenderID));
         console.log("ReqRecipientID :" + JSON.stringify(ReqRecipientID));
         console.log("ReqTimeStamp :" + JSON.stringify(ReqTimeStamp));
