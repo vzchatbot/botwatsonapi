@@ -105,6 +105,7 @@ function processEvent(event) {
 		 ReqMessageText = event.message.text.toString();   
 	    }
 	    */
+	     console.log("In Event "+ event);
         console.log("ReqSenderID :" + JSON.stringify(ReqSenderID));
         console.log("ReqRecipientID :" + JSON.stringify(ReqRecipientID));
   //      console.log("ReqTimeStamp :" + JSON.stringify(ReqTimeStamp));
@@ -151,7 +152,7 @@ function processEvent(event) {
                 console.log('action : - '+ action );
                 console.log('intent : - '+ intent );	
 		    
-//console.log("||" + JSON.stringify(ReqSenderID) + "||" + JSON.stringify(ReqRecipientID) +"||"+ JSON.stringify(ReqTimeStamp) + "||" + JSON.stringify(ReqMessageID) + "|| "+ JSON.stringify(ReqMessageText)+ "||"  + JSON.stringify(action) + "||"+  JSON.stringify(intent)+ "|| Undefined");	    
+ console.log("||" + JSON.stringify(ReqSenderID) + "||" + JSON.stringify(ReqRecipientID) +"||"+ JSON.stringify(ReqTimeStamp) + "||" + JSON.stringify(ReqMessageID) + "|| "+ JSON.stringify(ReqMessageText)+ "||"  + JSON.stringify(action) + "||"+  JSON.stringify(intent)+ "|| Undefined");	    
  
 		    
                 // see if the intent is not finished play the prompt of API.ai or fall back messages
