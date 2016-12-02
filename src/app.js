@@ -396,20 +396,19 @@ app.post('/webhook/', function (req, res)  {
         console.log("xyz - ResBodyMessage" + req.body);
         if (data.entry) {
             var entries = data.entry;
-		 console.log("abc Entries :" + JSON.stringify(entries));
+		console.log("abc Entries :" + JSON.stringify(entries));
             entries.forEach(function (entry)  {
                 var messaging_events = entry.messaging;
                 if (messaging_events) {
                     messaging_events.forEach(function (event)  {
                         if (event.message && !event.message.is_echo ||
-                            event.postback && event.postback.payload) {				
-                            processEvent(event);
-				  if (event.sender )
+                            event.postback && event.postback.payload) {	
+				  if (event.sender)
 				  {
 					  var ResSenderID = event.sender.id;
 					  console.log("ResSenderID :" + JSON.stringify(ResSenderID));
 						     }
-			    if (event.recipient ) 
+			    if (event.recipient) 
 			    {
 				    var ResRecipientID = event.recipient.id;
 				     console.log("ResRecipientID :" + JSON.stringify(ResRecipientID));
@@ -423,6 +422,8 @@ app.post('/webhook/', function (req, res)  {
 				   console.log("ResMessageID :" + JSON.stringify(ResMessageID));
 				   console.log("ResMessageText :" + JSON.stringify(ResMessageText));
                        		 } 
+                            processEvent(event);
+				
                         }
                     });
                 }
