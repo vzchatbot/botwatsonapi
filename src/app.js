@@ -128,18 +128,15 @@ function processEvent(event) {
             if (isDefined(response.result)) {
                 var responseText = response.result.fulfillment.speech;
                 var responseData = response.result.fulfillment.data;
-                var action = response.result.action;
-		    
+                var action = response.result.action;		    
                 var intent = response.result.metadata.intentName;
                 console.log(JSON.stringify(response));
                 var Finished_Status=response.result.actionIncomplete;
-                console.log("Finished_Status "+ Finished_Status);
-		    
+                console.log("Finished_Status "+ Finished_Status);		    
                 console.log('responseText  : - '+ responseText);
                 console.log('responseData  : - '+ responseData);
                 console.log('action : - '+ action );
-                console.log('intent : - '+ intent );
-		
+                console.log('intent : - '+ intent );		
 		    
                 // see if the intent is not finished play the prompt of API.ai or fall back messages
                 if(Finished_Status == true || intent=="Default Fallback Intent" ) 
@@ -416,7 +413,7 @@ app.post('/webhook/', function (req, res)  {
 					  var TimeStamp = event.timestamp;
 					  var MessageID = event.message.mid;
 					  var MessageText = event.message.text;
-console.log("SenderID ||" + JSON.stringify(SenderID) + "|| RecipientID ||" + JSON.stringify(RecipientID) + "|| TimeStamp ||" + JSON.stringify(TimeStamp) + "|| TimeStamp ||" + JSON.stringify(TimeStamp) + "|| MessageID ||" + JSON.stringify(MessageID) + "|| MessageText ||" + JSON.stringify(MessageText));
+console.log("||" + JSON.stringify(SenderID) + "||" + JSON.stringify(RecipientID) +"||"+ JSON.stringify(TimeStamp) + "||" + JSON.stringify(MessageID) + "|| " + JSON.stringify(MessageText));
 
                        		 } 
                         if (event.message && !event.message.is_echo ||
