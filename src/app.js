@@ -413,15 +413,21 @@ app.post('/webhook/', function (req, res)  {
                     messaging_events.forEach(function (event)  {
                         if (event.message && !event.message.is_echo ||
                             event.postback && event.postback.payload) {
-				  if (event.sender ) {var ResSenderID = event.sender.id;}
-			    if (event.recipient ) {var ResRecipientID = event.recipient.id;} 
-				 if (event.message ) 
+				  if (event.sender )
+				  {
+					  var ResSenderID = event.sender.id;
+					  console.log("ResSenderID :" + JSON.stringify(ResSenderID));
+						     }
+			    if (event.recipient ) 
+			    {
+				    var ResRecipientID = event.recipient.id;
+				     console.log("ResRecipientID :" + JSON.stringify(ResRecipientID));
+			    } 
+				 if (event.message) 
 				 {
 					  var ResTimeStamp = event.timestamp;
 					  var ResMessageID = event.message.mid;
 					  var ResMessageText = event.message.text;
-				   console.log("ResSenderID :" + JSON.stringify(ResSenderID));
-				   console.log("ResRecipientID :" + JSON.stringify(ResRecipientID));
 				   console.log("ResTimeStamp :" + JSON.stringify(ResTimeStamp));		 
 				   console.log("ResMessageID :" + JSON.stringify(ResMessageID));
 				   console.log("ResMessageText :" + JSON.stringify(ResMessageText));
