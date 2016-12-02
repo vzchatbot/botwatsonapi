@@ -83,23 +83,9 @@ function processEvent(event) {
             console.log("Inside sessionID:- ");
             sessionIds.set(sender, uuid.v1());
         }
-	/*    
-	var ReqSenderID = event.sender.id.toString();
-        var ReqRecipientID = event.recipient.id.toString();
-        var ReqTimeStamp = event.timestamp.toString();        
-        var ReqMessageID = event.message.mid.toString();
-        var ReqMessageText = event.message.text.toString();   
-        console.log("ReqSenderID :" + JSON.stringify(ReqSenderID));
-        console.log("ReqRecipientID :" + JSON.stringify(ReqRecipientID));
-        console.log("ReqTimeStamp :" + JSON.stringify(ReqTimeStamp));
-        console.log("ReqMessageID :" + JSON.stringify(ReqMessageID));
-        console.log("ReqMessageText :" + JSON.stringify(ReqMessageText));
 	    
-	*/    
         console.log("Text Value", text);   
-	    
         console.log("event content :- " +JSON.stringify(event.entry));
-	
        
         if (event.account_linking) 
         {
@@ -136,7 +122,18 @@ function processEvent(event) {
                 console.log('responseText  : - '+ responseText);
                 console.log('responseData  : - '+ responseData);
                 console.log('action : - '+ action );
-                console.log('intent : - '+ intent );		
+                console.log('intent : - '+ intent );	
+		    
+	var ReqSenderID = event.sender.id.toString();
+        var ReqRecipientID = event.recipient.id.toString();
+        var ReqTimeStamp = event.timestamp.toString();        
+        var ReqMessageID = event.message.mid.toString();
+        var ReqMessageText = event.message.text.toString();   
+      
+console.log("||" + JSON.stringify(ReqSenderID) + "||" + JSON.stringify(ReqRecipientID) 
+    +"||"+ JSON.stringify(ReqTimeStamp) + "||" + JSON.stringify(ReqMessageID) + "|| "
+	    + JSON.stringify(ReqMessageText)+  + JSON.stringify(action)+  JSON.stringify(intent)+ "|| Undefined");	    
+ 
 		    
                 // see if the intent is not finished play the prompt of API.ai or fall back messages
                 if(Finished_Status == true || intent=="Default Fallback Intent" ) 
@@ -412,7 +409,8 @@ app.post('/webhook/', function (req, res)  {
 					  var TimeStamp = event.timestamp;
 					  var MessageID = event.message.mid;
 					  var MessageText = event.message.text;
-console.log("||" + JSON.stringify(SenderID) + "||" + JSON.stringify(RecipientID) +"||"+ JSON.stringify(TimeStamp) + "||" + JSON.stringify(MessageID) + "|| " + JSON.stringify(MessageText)+ "|| " + JSON.stringify(data));
+console.log("||" + JSON.stringify(SenderID) + "||" + JSON.stringify(RecipientID) +"||"+ JSON.stringify(TimeStamp) +
+	    "||" + JSON.stringify(MessageID) + "|| " + JSON.stringify(MessageText)+ "|| Undefined || Undefined ||" + JSON.stringify(data));
 
                        		 } 
                         if (event.message && !event.message.is_echo ||
