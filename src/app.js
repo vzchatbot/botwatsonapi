@@ -83,7 +83,7 @@ function processEvent(event) {
             console.log("Inside sessionID:- ");
             sessionIds.set(sender, uuid.v1());
         }
-	    
+	/*    
 	var ReqSenderID = event.sender.id.toString();
         var ReqRecipientID = event.recipient.id.toString();
         var ReqTimeStamp = event.timestamp.toString();        
@@ -95,7 +95,7 @@ function processEvent(event) {
         console.log("ReqMessageID :" + JSON.stringify(ReqMessageID));
         console.log("ReqMessageText :" + JSON.stringify(ReqMessageText));
 	    
-	    
+	*/    
         console.log("Text Value", text);   
 	    
         console.log("event content :- " +JSON.stringify(event.entry));
@@ -397,31 +397,32 @@ app.post('/webhook/', function (req, res)  {
         if (data.entry) {
             var entries = data.entry;
 		console.log("abc Entries :" + JSON.stringify(entries));
+			 if (event.sender)
+				{
+				  var SenderID = event.sender.id;
+				  console.log("SenderID :" + JSON.stringify(SenderID));
+				 }
+			    if (event.recipient) 
+			    {
+				    var RecipientID = event.recipient.id;
+				     console.log("RecipientID :" + JSON.stringify(RecipientID));
+			    } 
+				 if (event.message) 
+				 {
+					  var TimeStamp = event.timestamp;
+					  var MessageID = event.message.mid;
+					  var MessageText = event.message.text;
+				   console.log("TimeStamp :" + JSON.stringify(TimeStamp));		 
+				   console.log("MessageID :" + JSON.stringify(MessageID));
+				   console.log("MessageText :" + JSON.stringify(MessageText));
+                       		 } 
             entries.forEach(function (entry)  {
                 var messaging_events = entry.messaging;
                 if (messaging_events) {
                     messaging_events.forEach(function (event)  {
                         if (event.message && !event.message.is_echo ||
                             event.postback && event.postback.payload) {	
-				  if (event.sender)
-				  {
-					  var ResSenderID = event.sender.id;
-					  console.log("ResSenderID :" + JSON.stringify(ResSenderID));
-						     }
-			    if (event.recipient) 
-			    {
-				    var ResRecipientID = event.recipient.id;
-				     console.log("ResRecipientID :" + JSON.stringify(ResRecipientID));
-			    } 
-				 if (event.message) 
-				 {
-					  var ResTimeStamp = event.timestamp;
-					  var ResMessageID = event.message.mid;
-					  var ResMessageText = event.message.text;
-				   console.log("ResTimeStamp :" + JSON.stringify(ResTimeStamp));		 
-				   console.log("ResMessageID :" + JSON.stringify(ResMessageID));
-				   console.log("ResMessageText :" + JSON.stringify(ResMessageText));
-                       		 } 
+				 
                             processEvent(event);
 				
                         }
